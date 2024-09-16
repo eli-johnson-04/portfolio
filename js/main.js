@@ -23,8 +23,8 @@ scene.add(directionalLight);
 /* X is red
    Y is green
    Z is blue */
-const axesHelper = new THREE.AxesHelper( 5 );
-scene.add(axesHelper); 
+// const axesHelper = new THREE.AxesHelper( 5 );
+// scene.add(axesHelper); 
 
 // Set up raycaster, mouse location, intersected objects, and reference to hovered obj
 var raycaster = new THREE.Raycaster();
