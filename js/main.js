@@ -57,7 +57,11 @@ controls.enableDamping = true; // Enable damping (inertia)
 controls.dampingFactor = 0.25; // Damping factor
 controls.enablePan = false;
 
-// Camera positioning
+// Lock orbital controls to not go past XY plane
+controls.minAzimuthAngle = -Math.PI / 2;
+controls.maxAzimuthAngle = Math.PI / 2;
+
+// Camera position
 camera.position.z = 20;
 
 function render() {
