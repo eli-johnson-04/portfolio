@@ -84,11 +84,11 @@ function render() {
 
         // Check if hovered object is a sphere, then tell it to handle hover
         if (obj.userData.instance instanceof Sphere) {
-            obj.userData.instance.handleHover(true);
+            obj.userData.instance.handleMouseHover(true);
         }
     } else {
         // If not hovered, tell the sphere
-        sampleSphere.handleHover(false);
+        sampleSphere.handleMouseHover(false);
     }
 
     // Update orbitcontrols

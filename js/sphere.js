@@ -15,7 +15,7 @@ export default class Sphere {
         this.mesh.receiveShadow = true;
 
         // Track hover state
-        this.isHovered = false;
+        this.mouseHovered = false;
     }
 
     setPosition(x = 0, y = 0, z = 0) {
@@ -59,12 +59,12 @@ export default class Sphere {
     }
 
     // Hover behavior
-    handleHover(isHovered) {
-        if (isHovered && !this.isHovered) {
+    handleMouseHover(mouseHover) {
+        if (mouseHover && !this.mouseHovered) {
             this.swell();
-            this.isHovered = true;
-        } else if (!isHovered && this.isHovered) {
-            this.isHovered = false;
+            this.mouseHovered = true;
+        } else if (!mouseHover && this.mouseHovered) {
+            this.mouseHovered = false;
             this.reset();
         }
     }
