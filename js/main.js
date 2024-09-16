@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { gsap } from 'gsap';
 import * as CANNON from 'cannon-es';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import Circle from './circle.js';
+import { Raycaster } from 'three';
 import Sphere from './sphere.js';
 
 // Scene
@@ -20,14 +20,24 @@ document.body.appendChild(renderer.domElement);
 const axesHelper = new THREE.AxesHelper( 5 );
 scene.add(axesHelper); 
 
-// Sample circle
-/* const activityCircle = new Circle();
-activityCircle.setPosition(0, 0, 0);
-scene.add(activityCircle.mesh);
- */
+// Set up raycaster, mouse location, intersected objects, and reference to hovered obj
+var raycaster = new THREE.Raycaster();
+var mouse = new THREE.Vector2();
+var intersects = [];
+var hoveredObj = null;
+
+// Detect mouse movement, change mouse position
+function mouseMove(event) {
+    mouse.x = ( event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = - ( event.clientY / window.innerHeight) * 2 + 1;
+}
+
+// Initial Mouse Position
+mouse.x = -1000;
+mouse.y = -1000;
 
 // Sample sphere
-const sampleSphere = new Sphere({ wireframe: true });
+const sampleSphere = new Sphere();
 sampleSphere.setPosition(0, 0, 0);
 scene.add(sampleSphere.mesh);
 
@@ -40,13 +50,36 @@ controls.enablePan = false;
 // Camera positioning
 camera.position.z = 20;
 
-function animate() {
-    requestAnimationFrame(animate);
+function render() {
+    requestAnimationFrame(render);
 
-    // Animate the circles
-    //sampleSphere.animate();
+    // Reset hoveredObj to null to prevent persistent animating
+    hoveredObj = null;
+
+    // Update the picking ray with the camera and cursor position
+    raycaster.setFromCamera( mouse, camera );
+    intersects = raycaster.intersectObjects(scene.children);
+
+    // If an object is detected to be hovered over
+    if (intersects.length > 0) {
+        let obj = intersects[0].object;
+
+        // Check if hovered object is a sphere
+        if (obj.userData.instance instanceof Sphere) {
+            hoveredObj = obj.userData.instance;
+        }
+    }
+
+    // Animate the detected sphere
+    if (hoveredObj != null) {
+        hoveredObj.animate();
+    }
+
+    // Update orbitcontrols
+    controls.update();
 
     renderer.render(scene, camera);
 }
 
-animate();
+window.addEventListener('mousemove', mouseMove);
+render();

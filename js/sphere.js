@@ -6,6 +6,7 @@ export default class Sphere {
         this.material = new THREE.MeshPhysicalMaterial({ color:color, wireframe: wireframe });
 
         this.mesh = new THREE.Mesh(this.geometry, this.material);
+        this.mesh.userData = { instance: this };
     }
 
     setPosition(x = 0, y = 0, z = 0) {
