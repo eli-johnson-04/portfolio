@@ -7,7 +7,7 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor( 0xe8e8e8, 0);
+renderer.setClearColor( 0xefefef, 1);
 renderer.shadowMap.enabled = true;
 document.body.appendChild(renderer.domElement);
 
@@ -48,9 +48,10 @@ scene.add(sampleSphere.mesh);
 
 // OrbitControls
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true; // Enable damping (inertia)
-controls.dampingFactor = 0.25; // Damping factor
+controls.enableDamping = true;
+controls.dampingFactor = 0.25;
 controls.enablePan = false;
+controls.enableZoom = false;
 
 // Lock orbital controls to not go past XY plane
 controls.minAzimuthAngle = -Math.PI / 2;
@@ -58,6 +59,17 @@ controls.maxAzimuthAngle = Math.PI / 2;
 
 // Camera position
 camera.position.z = 20;
+
+// Handle window resize
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    controls.target.set(0, 0, 0); // Ensure the target is always at the center
+    controls.update();
+}
+
+window.addEventListener('resize', onWindowResize, false);
 
 function render() {
     requestAnimationFrame(render);

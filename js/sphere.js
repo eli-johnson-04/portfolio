@@ -28,7 +28,8 @@ export default class Sphere {
             y: 1.3,
             z: 1.3,
             duration: 0.3,
-            ease: "back.inOut"
+            ease: "back.inOut",
+            overwrite: "auto"
         });
     }
     
@@ -39,7 +40,8 @@ export default class Sphere {
             y: 1, 
             z: 1, 
             duration: 0.18,
-            ease: "power1.inOut"
+            ease: "power1.inOut",
+            overwrite: "auto"
         });
     }
 
