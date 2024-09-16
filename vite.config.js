@@ -5,4 +5,7 @@ export default defineConfig({
   build: {
     outDir: 'dist', // Output directory for the build
   },
+  server: {
+    open: true, // Open the browser when the server starts
+  },
 });
