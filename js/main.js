@@ -1,8 +1,5 @@
 import * as THREE from 'three';
-import { gsap } from 'gsap';
-import * as CANNON from 'cannon-es';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { Raycaster } from 'three';
 import Sphere from './sphere.js';
 
 // Scene
@@ -18,12 +15,11 @@ document.body.appendChild(renderer.domElement);
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.075);
 scene.add(ambientLight);
 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
 directionalLight.position.set(-6, 3.5, 8);
 scene.add(directionalLight);
 
 // Axes helper
-
 /* X is red
    Y is green
    Z is blue */
@@ -34,7 +30,6 @@ scene.add(axesHelper);
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
 var intersects = [];
-var hoveredObj = null;
 
 // Detect mouse movement, change mouse position
 function mouseMove(event) {
@@ -67,9 +62,6 @@ camera.position.z = 20;
 function render() {
     requestAnimationFrame(render);
 
-    // Reset hoveredObj to null to prevent persistent animating
-    hoveredObj = null;
-
     // Update the picking ray with the camera and cursor position
     raycaster.setFromCamera( mouse, camera );
     intersects = raycaster.intersectObjects(scene.children);
@@ -78,15 +70,13 @@ function render() {
     if (intersects.length > 0) {
         let obj = intersects[0].object;
 
-        // Check if hovered object is a sphere
+        // Check if hovered object is a sphere, then tell it to handle hover
         if (obj.userData.instance instanceof Sphere) {
-            hoveredObj = obj.userData.instance;
+            obj.userData.instance.handleHover(true);
         }
-    }
-
-    // Animate the detected sphere
-    if (hoveredObj != null) {
-        hoveredObj.animate();
+    } else {
+        // If not hovered, tell the sphere
+        sampleSphere.handleHover(false);
     }
 
     // Update orbitcontrols

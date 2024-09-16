@@ -1,7 +1,8 @@
 import * as THREE from 'three';
+import { gsap } from 'gsap';
 
 export default class Sphere {
-    constructor({ name = 'Sphere', radius = 3, segments = 100, color = 0xd0d0d0, wireframe = false } = {}) {
+    constructor({ name = 'Sphere', radius = 3, segments = 100, color = 0xffffff, wireframe = false } = {}) {
         this.geometry = new THREE.SphereGeometry(radius, segments);
         this.material = new THREE.MeshStandardMaterial({ color: color, wireframe: wireframe });
         this.material.transparent = true;
@@ -11,16 +12,46 @@ export default class Sphere {
         this.mesh.userData = { instance: this };
         this.mesh.name = name;
         this.mesh.receiveShadow = true;
+
+        // Track hover state
+        this.isHovered = false;
     }
 
     setPosition(x = 0, y = 0, z = 0) {
         this.mesh.position.set(x, y, z); // may need to tinker with z-pos when content cards are behind circles
     }
 
-    // Basic animation for testing
-    animate() {
-        this.mesh.rotation.x += 0.01;
-        this.mesh.rotation.y += 0.01;
+    // Swell animation
+    swell() {
+        gsap.to(this.mesh.scale, {
+            x: 1.3,
+            y: 1.3,
+            z: 1.3,
+            duration: 0.3,
+            ease: "back.inOut"
+        });
+    }
+    
+    // Size reset animation
+    reset() {
+        gsap.to(this.mesh.scale, {
+            x: 1, 
+            y: 1, 
+            z: 1, 
+            duration: 0.18,
+            ease: "power1.inOut"
+        });
+    }
+
+    // Hover behavior
+    handleHover(isHovered) {
+        if (isHovered && !this.isHovered) {
+            this.swell();
+            this.isHovered = true;
+        } else if (!isHovered && this.isHovered) {
+            this.isHovered = false;
+            this.reset();
+        }
     }
 
 }
