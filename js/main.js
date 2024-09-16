@@ -11,9 +11,19 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setClearColor( 0xe8e8e8, 0);
+renderer.shadowMap.enabled = true;
 document.body.appendChild(renderer.domElement);
 
+// Lighting
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.075);
+scene.add(ambientLight);
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
+directionalLight.position.set(-6, 3.5, 8);
+scene.add(directionalLight);
+
 // Axes helper
+
 /* X is red
    Y is green
    Z is blue */
