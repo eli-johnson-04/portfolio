@@ -16,6 +16,14 @@ export default class Sphere {
 
         // Track hover state
         this.mouseHovered = false;
+
+        /* Make the radius of the curvature of the text ever so slightly bigger than the sphere (to prevent clipping)
+        but this way, the text will appear to wrap around the sphere nicely
+        I may need to play around with the position of the text though.
+        I could also add a more pronounced up-down hover effect with slight left-right rotation (gamecube analogy)
+        for a pretty visual effect :D 
+        
+        I will definitely need to implement left-right boundaries on the text to make it stay in view */
     }
 
     setPosition(x = 0, y = 0, z = 0) {
