@@ -55,7 +55,8 @@ function mouseMove(event) {
 }
 
 // Sample spheres
-const sampleSphere = new Sphere();
+const sampleSphere = new Sphere({name: 'sample sphere with lots of text so i can test the wrapping and' + 
+    'eventually figure out the left-right boundaries of the text to be wrapped on the sphere'});
 sampleSphere.setPosition(0, 0, 0);
 scene.add(sampleSphere.mesh);
 

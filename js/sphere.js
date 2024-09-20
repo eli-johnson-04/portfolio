@@ -33,9 +33,9 @@ export default class Sphere {
         loader.load('fonts/gentilis_regular.typeface.json', (font) => {
             const titleGeometry = new TextGeometry( name , {
                 font: font,
+                curveSegments: 12,
                 size: 0.5,
-                depth: 0.1,
-                justify: "center"
+                depth: 0.01,
             });
 
             // Find the bounding box of the text geometry to center this geometry on the sphere. 
@@ -50,10 +50,32 @@ export default class Sphere {
             // Center the text geometry
             titleGeometry.translate(-centerX, -centerY, -centerZ);
 
+            // Bend the text geometry to wrap around the sphere
+            const radiusOffset = radius + 0.01;
+            const positionAttribute = titleGeometry.attributes.position;
+            const vertex = new THREE.Vector3();
+            for (let i = 0; i < positionAttribute.count; i++) {
+                vertex.fromBufferAttribute(positionAttribute, i);
+
+                // Calculate the angle based on the x position
+                const angle = vertex.x / radiusOffset;
+
+                // Calculate the new position
+                const newX = radiusOffset * Math.sin(angle);
+                const newZ = radiusOffset * Math.cos(angle) - radiusOffset;
+
+                // Update vertex position
+                vertex.set(newX, vertex.y, newZ);
+                positionAttribute.setXYZ(i, vertex.x, vertex.y, vertex.z);
+            }
+
+            // Update position attribute
+            positionAttribute.needsUpdate = true;
+
             // Construct the text to be drawn onto the sphere
             const titleMaterial = new THREE.MeshStandardMaterial({ color: 0x000000, transparent: true, opacity: 0 });
             const titleMesh = new THREE.Mesh(titleGeometry, titleMaterial);
-            titleMesh.position.set(this.mesh.position.x, this.mesh.position.y, this.mesh.position.z + radius);
+            titleMesh.position.set(0, 0, radiusOffset); // Adjusted for radius of the sphere
             this.mesh.add(titleMesh);
         });
     }
