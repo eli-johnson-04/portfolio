@@ -25,7 +25,7 @@ controls.minAzimuthAngle = -Math.PI / 2;
 controls.maxAzimuthAngle = Math.PI / 2;
 
 // Lighting
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.075);
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 scene.add(ambientLight);
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
@@ -55,8 +55,7 @@ function mouseMove(event) {
 }
 
 // Sample spheres
-const sampleSphere = new Sphere({name: 'sample sphere with lots of text so i can test the wrapping and' + 
-    'eventually figure out the left-right boundaries of the text to be wrapped on the sphere'});
+const sampleSphere = new Sphere({ sphereText: 'squid'});
 sampleSphere.setPosition(0, 0, 0);
 scene.add(sampleSphere.mesh);
 
