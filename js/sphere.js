@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { gsap } from 'gsap';
 
 export default class Sphere {
@@ -24,6 +26,36 @@ export default class Sphere {
         for a pretty visual effect :D 
         
         I will definitely need to implement left-right boundaries on the text to make it stay in view */
+
+        // Based on font loading example from Three.JS docs
+        const loader = new FontLoader();
+
+        loader.load('fonts/gentilis_regular.typeface.json', (font) => {
+            const titleGeometry = new TextGeometry( name , {
+                font: font,
+                size: 0.5,
+                depth: 0.1,
+                justify: "center"
+            });
+
+            // Find the bounding box of the text geometry to center this geometry on the sphere. 
+            titleGeometry.computeBoundingBox();
+            const boundingBox = titleGeometry.boundingBox;
+
+            // Calculate the center of the bounding box
+            const centerX = (boundingBox.max.x - boundingBox.min.x) / 2;
+            const centerY = (boundingBox.max.y - boundingBox.min.y) / 2;
+            const centerZ = (boundingBox.max.z - boundingBox.min.z) / 2;
+
+            // Center the text geometry
+            titleGeometry.translate(-centerX, -centerY, -centerZ);
+
+            // Construct the text to be drawn onto the sphere
+            const titleMaterial = new THREE.MeshStandardMaterial({ color: 0x000000, transparent: true, opacity: 0 });
+            const titleMesh = new THREE.Mesh(titleGeometry, titleMaterial);
+            titleMesh.position.set(this.mesh.position.x, this.mesh.position.y, this.mesh.position.z + radius);
+            this.mesh.add(titleMesh);
+        });
     }
 
     setPosition(x = 0, y = 0, z = 0) {
@@ -45,7 +77,13 @@ export default class Sphere {
             duration: 0.35,
             ease: "back.inOut",
             overwrite: "auto"
-        })
+        });
+        gsap.to(this.mesh.children[0].material, {
+            opacity: 1,
+            duration: 0.35,
+            ease: "back.inOut",
+            overwrite: "auto",
+        });
     }
     
     // Size and opacity reset animation
@@ -63,7 +101,13 @@ export default class Sphere {
             duration: 0.3,
             ease: "bounce.out",
             overwrite: "auto"
-        })
+        });
+        gsap.to(this.mesh.children[0].material, {
+            opacity: 0,
+            duration: 0.3,
+            ease: "bounce.out",
+            overwrite: "auto",
+        });
     }
 
     // Hover behavior

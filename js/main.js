@@ -54,10 +54,14 @@ function mouseMove(event) {
     mouse.y = - ( event.clientY / window.innerHeight) * 2 + 1;
 }
 
-// Sample sphere
+// Sample spheres
 const sampleSphere = new Sphere();
 sampleSphere.setPosition(0, 0, 0);
 scene.add(sampleSphere.mesh);
+
+// const sphere2 = new Sphere();
+// sphere2.setPosition(5, 0, 0);
+// scene.add(sphere2.mesh);
 
 // Handle window resize
 function onWindowResize() {
@@ -85,7 +89,10 @@ function render() {
         }
     } else {
         // If not hovered, tell the sphere
+        // TODO: currently only works for one sphere. I hate this. I don't want to do it for each sphere, 
+        // I would prefer to store all spheres in an array and iterate through them maybe?????
         sampleSphere.handleMouseHover(false);
+        //sphere2.handleMouseHover(false);
     }
 
     // Update orbitcontrols
