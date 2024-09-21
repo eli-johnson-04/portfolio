@@ -37,9 +37,6 @@ export default class Sphere {
         this.mesh.userData = { instance: this };
         this.mesh.receiveShadow = true;
 
-        // Track hover state
-        this.mouseHovered = false;
-
         /* I could add a more pronounced up-down hover effect with slight left-right rotation (gamecube analogy)
         for a pretty visual effect :D 
         
@@ -170,6 +167,10 @@ export default class Sphere {
         // CANNON.JS OBJECT SETUP
         this.cannonSphere = new CANNON.Sphere(radius);
         this.cannonBody = new CANNON.Body({ mass: DEFAULT_SPHERE_MASS, shape: this.cannonSphere });
+
+
+        // Track hover state
+        this.mouseHovered = false;
     }
 
     setPosition(x = 0, y = 0, z = 0) {

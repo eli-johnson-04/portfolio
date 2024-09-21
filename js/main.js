@@ -44,6 +44,15 @@ scene.add(directionalLight);
 // const axesHelper = new THREE.AxesHelper( 5 );
 // scene.add(axesHelper); 
 
+// Sample spheres
+const sampleSphere = new Sphere({ sphereText: 'squid'});
+sampleSphere.setPosition(0, 0, 0);
+sampleSphere.addToView(scene, world);
+
+// const sphere2 = new Sphere();
+// sphere2.setPosition(5, 0, 0);
+// sphere2.addToView(scene, world);
+
 // Set up raycaster, mouse location, intersected objects, and reference to hovered obj
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
@@ -59,29 +68,10 @@ function mouseMove(event) {
     mouse.y = - ( event.clientY / window.innerHeight) * 2 + 1;
 }
 
-// Sample spheres
-const sampleSphere = new Sphere({ sphereText: 'squid'});
-sampleSphere.setPosition(0, 0, 0);
-sampleSphere.addToView(scene, world);
-
-// const sphere2 = new Sphere();
-// sphere2.setPosition(5, 0, 0);
-// sphere2.addToView(scene, world);
-
-// Handle window resize
-function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    controls.target.set(0, 0, 0); // Ensure the target is always at the center
-    controls.update();
-}
-
-function render() {
-    requestAnimationFrame(render);
-
-    // Update the picking ray with the camera and cursor position
-    raycaster.setFromCamera( mouse, camera );
+// Handle hover behavior
+function checkHover() {
+    // Update the raycaster with camera and cursor positions
+    raycaster.setFromCamera(mouse, camera);
     intersects = raycaster.intersectObjects(scene.children);
 
     // If an object is detected to be hovered over
@@ -99,13 +89,44 @@ function render() {
         sampleSphere.handleMouseHover(false);
         //sphere2.handleMouseHover(false);
     }
+}
 
-    // Update orbitcontrols
+// Handle window resize
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    controls.target.set(0, 0, 0); // Ensure the target is always at the center
     controls.update();
+}
 
+// Handle click event
+/* function onClick(event) {
+    mouseMove(event);
+
+    // Upodate the ray with camera and cursor positions
+    raycaster.setFromCamera(mouse, camera);
+    intersects = raycaster.intersectObjects(scene.children);
+
+    // Check if the sphere was clicked
+    if (intersects.length > 0 && intersects[0].object.userData.instance instanceof Sphere) {
+
+    })
+
+} */
+
+function render() {
+    requestAnimationFrame(render);
+
+    checkHover();
+
+    controls.update();
+    
     renderer.render(scene, camera);
 }
 
 window.addEventListener('resize', onWindowResize, false);
 window.addEventListener('mousemove', mouseMove);
+//window.addEventListener('click', onClick, false);
+
 render();
