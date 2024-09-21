@@ -8,10 +8,12 @@ const DEFAULT_SPHERE_RADIUS = 3
 const DEFAULT_SPHERE_COLOR = 0xffffff
 const DEFAULT_SPHERE_MASS = 1
 const TEXT_SIZE = 0.5
+const RADIUS_OFFSET = 0.01
 
 export default class Sphere {
-    constructor({ 
-            sphereText = 'Sphere', 
+    constructor({
+            label = 'Default Sphere',
+            hoverText = 'Default Hover Text', 
             sphereTextSize = TEXT_SIZE, 
             radius = DEFAULT_SPHERE_RADIUS, 
             segments = 128, 
@@ -47,7 +49,7 @@ export default class Sphere {
         const maxWidth = 4;
 
         // Helper function to split the text into lines based on the max width
-        function truncateTitle(title, font, maxWidth) {
+        function truncateText(title, font, maxWidth) {
             const words = title.split(' ');
             let truncatedTitle = '';
             let currentWidth = 0;
@@ -78,40 +80,30 @@ export default class Sphere {
             return truncatedTitle.trim();
         }
 
-        // Based on font loading example from Three.JS docs
-        const loader = new FontLoader();
+        // Helper function for centering then spherically wrapping text geometry
+        function centerAndWrap(text) {
+            // Find the bounding box of the text geometry to center the geometry on the sphere. 
+            text.computeBoundingBox();
+            let boundingBox = text.boundingBox;
 
-        loader.load('fonts/gentilis_regular.typeface.json', (font) => {
-            const truncatedTitle = truncateTitle(sphereText, font, maxWidth);
-            const titleGeometry = new TextGeometry( truncatedTitle , {
-                font: font,
-                curveSegments: 12,
-                size: sphereTextSize,
-                depth: 0.01
-            });
-
-            // Find the bounding box of the text geometry to center this geometry on the sphere. 
-            titleGeometry.computeBoundingBox();
-            let boundingBox = titleGeometry.boundingBox;
-            
             // Calculate the center of the bounding box
             const centerX = (boundingBox.max.x - boundingBox.min.x) / 2;
             const centerY = (boundingBox.max.y - boundingBox.min.y) / 2;
             const centerZ = (boundingBox.max.z - boundingBox.min.z) / 2;
-            
+
             // Center the text geometry
-            titleGeometry.translate(-centerX, -centerY, -centerZ);
-            
-            // Adjust vertical position of text
+            text.translate(-centerX, -centerY, -centerZ);
+
+            // Adjust the vertical position of the text
             /* This works for now, I probably won't have huge amounts of text on the spheres, so 
             this should work for a few words, but if I want bigger text or more text, I will need to
             make changes. 
             The title-esque centering with only one word doesn't look TOO bad... */ 
-            titleGeometry.translate(0, (boundingBox.max.y - boundingBox.min.y) / 2, 0);
+            text.translate(0, (boundingBox.max.y - boundingBox.min.y) / 2, 0);
 
             // Bend the text geometry to wrap around the sphere
-            const radiusOffset = radius + 0.01;
-            const positionAttribute = titleGeometry.attributes.position;
+            const radiusOffset = radius + RADIUS_OFFSET;
+            const positionAttribute = text.attributes.position;
             const vertex = new THREE.Vector3();
             for (let i = 0; i < positionAttribute.count; i++) {
                 vertex.fromBufferAttribute(positionAttribute, i);
@@ -130,17 +122,49 @@ export default class Sphere {
 
             // Update position attribute
             positionAttribute.needsUpdate = true;
+        }
+
+        // Based on font loading example from Three.JS docs
+        const loader = new FontLoader();
+
+        loader.load('fonts/gentilis_regular.typeface.json', (font) => {
+            // Create geometries for sphere texts
+            const labelText = new TextGeometry(label, {
+                font: font,
+                curveSegments: 12,
+                size: sphereTextSize,
+                depth: 0.1
+            });
+
+            const cutText = truncateText(hoverText, font, maxWidth);
+            const hoverTextGeometry = new TextGeometry( cutText , {
+                font: font,
+                curveSegments: 12,
+                size: sphereTextSize,
+                depth: 0.01
+            });
+
+            // Center and wrap the text geometry
+            centerAndWrap(hoverTextGeometry);
+            centerAndWrap(labelText);
 
             // Construct the text to be drawn onto the sphere
-            const titleMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0 });
-            const titleMesh = new THREE.Mesh(titleGeometry, titleMaterial);
+            const labelMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 1 });
+            const labelMesh = new THREE.Mesh(labelText, labelMaterial);
+            
+            const hoverTextMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0 });
+            const hoverTextMesh = new THREE.Mesh(hoverTextGeometry, hoverTextMaterial);
 
-            // Store access to the titleMesh
-            this.title = titleMesh;
+            // Store access to the text meshes
+            this.labelMesh = labelMesh;
+            this.hoverTextMesh = hoverTextMesh;
 
             // Set title position and add to sphere mesh
-            titleMesh.position.set(0, 0, radiusOffset); // Adjusted for radius of the sphere
-            this.mesh.add(titleMesh);
+            labelMesh.position.set(0, 0, radius + RADIUS_OFFSET);
+            hoverTextMesh.position.set(0, 0, radius + (2 * RADIUS_OFFSET)); // 2x to prevent clipping between title and text
+            
+            this.mesh.add(labelMesh);
+            this.mesh.add(hoverTextMesh);
         });
 
         // CANNON.JS OBJECT SETUP
@@ -160,6 +184,7 @@ export default class Sphere {
 
     // Swell animation for size and opacity
     swell() {
+        // Make sphere bigger on swell
         gsap.to(this.mesh.scale, {
             x: 1.3,
             y: 1.3,
@@ -168,13 +193,25 @@ export default class Sphere {
             ease: "back.inOut",
             overwrite: "auto"
         });
+
+        // Make sphere more opaque on swell
         gsap.to(this.mesh.material,{
             opacity: 0.87,
             duration: 0.35,
             ease: "back.inOut",
             overwrite: "auto"
         });
-        gsap.to(this.title.material, {
+
+        // Hide title on swell
+        gsap.to(this.labelMesh.material, {
+            opacity: 0,
+            duration: 0.35,
+            ease: "back.inOut",
+            overwrite: "auto",
+        });
+
+        // Show text on swell
+        gsap.to(this.hoverTextMesh.material, {
             opacity: 1,
             duration: 0.35,
             ease: "back.inOut",
@@ -183,7 +220,8 @@ export default class Sphere {
     }
     
     // Size and opacity reset animation
-    reset() {
+    shrink() {
+        // Shrink sphere to normal size
         gsap.to(this.mesh.scale, {
             x: 1, 
             y: 1, 
@@ -192,15 +230,27 @@ export default class Sphere {
             ease: "bounce.out",
             overwrite: "auto"
         });
+
+        // Make sphere less opaque on shrink
         gsap.to(this.mesh.material,{
             opacity: 0.6,
             duration: 0.3,
             ease: "bounce.out",
             overwrite: "auto"
         });
-        gsap.to(this.title.material, {
-            opacity: 0,
+
+        // Show title on shrink
+        gsap.to(this.labelMesh.material, {
+            opacity: 1,
             duration: 0.3,
+            ease: "bounce.out",
+            overwrite: "auto",
+        });
+
+        // Hide text on shrink
+        gsap.to(this.hoverTextMesh.material, {
+            opacity: 0,
+            duration: 0.2,
             ease: "bounce.out",
             overwrite: "auto",
         });
@@ -213,7 +263,7 @@ export default class Sphere {
             this.mouseHovered = true;
         } else if (!mouseHover && this.mouseHovered) {
             this.mouseHovered = false;
-            this.reset();
+            this.shrink();
         }
     }
 
