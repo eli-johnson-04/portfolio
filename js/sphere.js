@@ -205,7 +205,7 @@ export default class Sphere {
         // Hide title on swell
         gsap.to(this.labelMesh.material, {
             opacity: 0,
-            duration: 0.35,
+            duration: 0.25,
             ease: "back.inOut",
             overwrite: "auto",
         });
@@ -250,7 +250,7 @@ export default class Sphere {
         // Hide text on shrink
         gsap.to(this.hoverTextMesh.material, {
             opacity: 0,
-            duration: 0.2,
+            duration: 0.15,
             ease: "bounce.out",
             overwrite: "auto",
         });
