@@ -1,10 +1,12 @@
 import * as THREE from 'three';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import * as CANNON from 'cannon-es';
 import { gsap } from 'gsap';
 
 const DEFAULT_SPHERE_RADIUS = 3
 const DEFAULT_SPHERE_COLOR = 0xffffff
+const DEFAULT_SPHERE_MASS = 1
 const TEXT_SIZE = 0.5
 
 export default class Sphere {
@@ -16,7 +18,8 @@ export default class Sphere {
             color = DEFAULT_SPHERE_COLOR, 
             wireframe = false 
             } = {}) {
-                
+        
+        // THREE.JS OBJECT SETUP
         this.geometry = new THREE.SphereGeometry(radius, segments);
         this.material = new THREE.MeshPhysicalMaterial({ 
             color: color, 
@@ -139,10 +142,20 @@ export default class Sphere {
             titleMesh.position.set(0, 0, radiusOffset); // Adjusted for radius of the sphere
             this.mesh.add(titleMesh);
         });
+
+        // CANNON.JS OBJECT SETUP
+        this.cannonSphere = new CANNON.Sphere(radius);
+        this.cannonBody = new CANNON.Body({ mass: DEFAULT_SPHERE_MASS, shape: this.cannonSphere });
     }
 
     setPosition(x = 0, y = 0, z = 0) {
         this.mesh.position.set(x, y, z); // may need to tinker with z-pos when content cards are behind circles
+    }
+
+    // Add the sphere to the Three scene and the Cannon world
+    addToView(scene, world) {
+        scene.add(this.mesh);
+        world.addBody(this.cannonBody);
     }
 
     // Swell animation for size and opacity

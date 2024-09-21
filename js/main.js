@@ -1,6 +1,11 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import * as CANNON from 'cannon-es';
 import Sphere from './sphere.js';
+
+// Cannon world
+const world = new CANNON.World();
+world.gravity.set(0, 0, 0); // TODO: update gravity and add some functions to sphere for gravity/hover/physics
 
 // Scene and Camera
 const scene = new THREE.Scene();
@@ -57,11 +62,11 @@ function mouseMove(event) {
 // Sample spheres
 const sampleSphere = new Sphere({ sphereText: 'squid'});
 sampleSphere.setPosition(0, 0, 0);
-scene.add(sampleSphere.mesh);
+sampleSphere.addToView(scene, world);
 
 // const sphere2 = new Sphere();
 // sphere2.setPosition(5, 0, 0);
-// scene.add(sphere2.mesh);
+// sphere2.addToView(scene, world);
 
 // Handle window resize
 function onWindowResize() {
