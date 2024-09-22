@@ -3,6 +3,7 @@ import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import * as CANNON from 'cannon-es';
 import { gsap } from 'gsap';
+import tingle from 'tingle.js';
 
 const DEFAULT_SPHERE_RADIUS = 3
 const DEFAULT_SPHERE_COLOR = 0xffffff
@@ -168,9 +169,52 @@ export default class Sphere {
         this.cannonSphere = new CANNON.Sphere(radius);
         this.cannonBody = new CANNON.Body({ mass: DEFAULT_SPHERE_MASS, shape: this.cannonSphere });
 
-
         // Track hover state
         this.mouseHovered = false;
+
+        // Tingle Modal - example from https://tingle.robinparisi.com/
+        this.isModalOpen = false;
+        const self = this;
+        this.modal = new tingle.modal({
+            footer: true,
+            stickyFooter: false,
+            closeMethods: ['overlay', 'button', 'escape'],
+            closeLabel: "Close",
+            cssClass: ['custom-tingle-modal'],
+            onOpen: function() {
+                document.querySelector('.tingle-modal').style.display = 'block';
+                console.log('modal open');
+                self.isModalOpen = true;
+            },
+            onClose: function() {
+                document.querySelector('.tingle-modal').style.display = 'none';
+                console.log('modal closed');
+                self.isModalOpen = false;
+            },
+            beforeClose: function() {
+                return true; // close the modal
+            }
+        });
+
+        // Set modal content TODO: make this useful
+        this.modal.setContent('<h1>Modal Content</h1>');
+
+        this.modal.addFooterBtn('Close Modal', 'tingle-btn tingle-btn--primary', function() {
+            self.modal.close();
+        });
+
+        this.modal.addFooterBtn('Dangerous action!', 'tingle-btn tingle-btn--danger', function() {
+            self.modal.close();
+        });
+
+    }
+
+    // Handle clicking on the sphere
+    handleClick() {
+        if (!this.isModalOpen) {
+            this.modal.open();
+            this.isModalOpen = true;
+        }
     }
 
     setPosition(x = 0, y = 0, z = 0) {

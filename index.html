@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Portfolio</title>
   <link href="css/output.css" rel="stylesheet">
+  <link href="tingle.min.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
   <style>
     body, html {
       margin: 0;
@@ -15,10 +17,21 @@
     }
     canvas {
       display: block; /* Remove default margin and padding */
+      z-index: 1;
+      position: fixed;
+    }
+    .tingle-modal {
+      z-index: 2;
+      position: relative;
+    }
+    .tingle-modal-box {
+      z-index: 3;
+      position: relative;
     }
   </style>
 </head>
 <body>
+  <script src="js/tingle.min.js"></script>
   <script src="js/main.js" type="module"></script>
 </body>
 </html>

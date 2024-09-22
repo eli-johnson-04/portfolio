@@ -49,10 +49,6 @@ const sampleSphere = new Sphere({ sphereText: 'squid'});
 sampleSphere.setPosition(0, 0, 0);
 sampleSphere.addToView(scene, world);
 
-// const sphere2 = new Sphere();
-// sphere2.setPosition(5, 0, 0);
-// sphere2.addToView(scene, world);
-
 // Set up raycaster, mouse location, intersected objects, and reference to hovered obj
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
@@ -87,7 +83,6 @@ function checkHover() {
         // TODO: currently only works for one sphere. I hate this. I don't want to do it for each sphere, 
         // I would prefer to store all spheres in an array and iterate through them maybe?????
         sampleSphere.handleMouseHover(false);
-        //sphere2.handleMouseHover(false);
     }
 }
 
@@ -101,19 +96,19 @@ function onWindowResize() {
 }
 
 // Handle click event
-/* function onClick(event) {
+function onClick(event) {
     mouseMove(event);
 
-    // Upodate the ray with camera and cursor positions
+    // Update the ray with camera and cursor positions
     raycaster.setFromCamera(mouse, camera);
     intersects = raycaster.intersectObjects(scene.children);
 
     // Check if the sphere was clicked
     if (intersects.length > 0 && intersects[0].object.userData.instance instanceof Sphere) {
+        intersects[0].object.userData.instance.handleClick();
+    }
 
-    })
-
-} */
+}
 
 function render() {
     requestAnimationFrame(render);
@@ -127,6 +122,6 @@ function render() {
 
 window.addEventListener('resize', onWindowResize, false);
 window.addEventListener('mousemove', mouseMove);
-//window.addEventListener('click', onClick, false);
+window.addEventListener('click', onClick, false);
 
 render();
