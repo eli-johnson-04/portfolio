@@ -8,17 +8,20 @@
     "build": "vite build",
     "serve": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:css": "npx tailwindcss -i ./css/styles.css -o ./css/output.css --watch"
+    "build:css": "postcss css/styles.css -o css/output.css"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "tailwindcss": "^3.4.10"
+    "postcss-cli": "^11.0.0",
+    "tailwindcss": "^3.4.12"
   },
   "dependencies": {
+    "autoprefixer": "^10.4.20",
     "cannon-es": "^0.20.0",
     "gsap": "^3.12.5",
+    "postcss": "^8.4.47",
     "three": "^0.168.0",
     "tingle.js": "^0.16.0",
     "vite": "^5.4.4"

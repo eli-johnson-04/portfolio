@@ -189,7 +189,8 @@ export default class Sphere {
             onClose: function() {
                 document.querySelector('.tingle-modal').style.display = 'none';
                 console.log('modal closed');
-                self.isModalOpen = false;
+                setTimeout(function() {
+                    self.isModalOpen = false;}, 300);
             },
             beforeClose: function() {
                 return true; // close the modal
@@ -197,16 +198,16 @@ export default class Sphere {
         });
 
         // Set modal content TODO: make this useful
-        this.modal.setContent('<h1>Modal Content</h1>');
+        this.modal.setContent(`
+            <div class="p-6 bg-white rounded-lg shadow-lg mx-auto my-auto">
+                <h1 class="text-2xl font-bold mb-4">Modal Content</h1>
+                <p class="mb-4">This is the content of the modal.</p>
+            </div>
+        `);
 
-        this.modal.addFooterBtn('Close Modal', 'tingle-btn tingle-btn--primary', function() {
+        this.modal.addFooterBtn('Close Modal', 'tingle-btn tingle-btn--primary tingle-modal__close bg-blue-500 text-white px-4 py-2 rounded', function() {
             self.modal.close();
         });
-
-        this.modal.addFooterBtn('Dangerous action!', 'tingle-btn tingle-btn--danger', function() {
-            self.modal.close();
-        });
-
     }
 
     // Handle clicking on the sphere

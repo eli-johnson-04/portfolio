@@ -4,10 +4,19 @@
 
 /* Tingle modal */
 .custom-tingle-modal .tingle-modal-box {
-    background-color: white;
-    padding: 24px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 10000; /* Ensure the modal is above other elements */
-    position: relative; /* Ensure the z-index is applied */
+    @apply fixed inset-0 flex items-center justify-center;
+}
+
+.custom-tingle-modal .tingle-modal-box__content {
+    @apply bg-white rounded-lg shadow-lg p-6;
+    width: 80vw; /* 80% of the viewport width */
+    height: 70vh; /* 70% of the viewport height */
+}
+
+.custom-tingle-modal .tingle-modal__close {
+    @apply absolute top-4 right-4 text-gray-500 hover:text-gray-700;
+}
+
+.custom-tingle-modal .tingle-modal__footer {
+    @apply flex justify-end space-x-4 mt-4;
 }
