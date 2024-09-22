@@ -130,7 +130,7 @@ export default class Sphere {
                 font: font,
                 curveSegments: 12,
                 size: sphereTextSize,
-                depth: 0.1
+                depth: 0.01
             });
 
             const cutText = truncateText(hoverText, font, maxWidth);
