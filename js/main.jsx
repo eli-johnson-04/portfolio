@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as CANNON from 'cannon-es';
-import Sphere from './sphere.js';
+import Sphere from './sphere.jsx';
 
 // Cannon world
 const world = new CANNON.World();
@@ -100,20 +100,23 @@ function onWindowResize() {
     controls.update();
 }
 
+
 // Handle click event
-/* function onClick(event) {
+function onClick(event) {
     mouseMove(event);
 
     // Upodate the ray with camera and cursor positions
     raycaster.setFromCamera(mouse, camera);
     intersects = raycaster.intersectObjects(scene.children);
 
-    // Check if the sphere was clicked
-    if (intersects.length > 0 && intersects[0].object.userData.instance instanceof Sphere) {
+    // If something is clicked
+    if (intersects.length > 0) {
+        let obj = intersects[0].object;
 
-    })
-
-} */
+        // Check if a sphere was clicked, and handle the click
+        if (obj.userData.instance instanceof Sphere) { obj.userData.instance.handleClick(); }
+    }
+}
 
 function render() {
     requestAnimationFrame(render);
@@ -127,6 +130,6 @@ function render() {
 
 window.addEventListener('resize', onWindowResize, false);
 window.addEventListener('mousemove', mouseMove);
-//window.addEventListener('click', onClick, false);
+window.addEventListener('click', onClick, false);
 
 render();

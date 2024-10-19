@@ -3,12 +3,17 @@ import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import * as CANNON from 'cannon-es';
 import { gsap } from 'gsap';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import Modal from 'react-modal';
 
 const DEFAULT_SPHERE_RADIUS = 3
 const DEFAULT_SPHERE_COLOR = 0xffffff
 const DEFAULT_SPHERE_MASS = 1
 const TEXT_SIZE = 0.5
 const RADIUS_OFFSET = 0.01
+
+Modal.setAppElement('#root');
 
 export default class Sphere {
     constructor({
@@ -168,9 +173,25 @@ export default class Sphere {
         this.cannonSphere = new CANNON.Sphere(radius);
         this.cannonBody = new CANNON.Body({ mass: DEFAULT_SPHERE_MASS, shape: this.cannonSphere });
 
-
         // Track hover state
         this.mouseHovered = false;
+
+        // Create a div for the modal
+        this.modalRoot = document.createElement('div');
+        this.modalRoot.id = `modal-root-${this.id}`;
+        document.body.appendChild(this.modalRoot);
+
+        // Initialize modal's state to false
+        this.modalIsOpen = false;
+
+        // Bind the openModal method to the sphere
+        this.mesh.userData.openModal = this.openModal.bind(this);
+
+        // Create the root for this sphere's modal
+        this.root = createRoot(this.modalRoot);
+        
+        // Only render the modal once
+        this.renderModal();
     }
 
     setPosition(x = 0, y = 0, z = 0) {
@@ -266,6 +287,49 @@ export default class Sphere {
             this.mouseHovered = false;
             this.shrink();
         }
+    }
+
+    // Click behavior
+    handleClick() {
+        if (!this.modalIsOpen) { this.openModal(); }
+        else if (this.modalIsOpen) { this.closeModal(); }
+    }
+
+    // Modal Behavior
+    openModal() {
+        this.modalIsOpen = true;
+        this.renderModal();
+    }
+
+    closeModal() {
+        this.modalIsOpen = false;
+        this.renderModal();
+    }
+
+    renderModal() {
+    const ModalContent = () => (
+        <Modal
+        isOpen={this.modalIsOpen}
+        onRequestClose={() => this.closeModal()}
+        contentLabel="Sphere Information"
+        contentClassName='w-2/5 h-3/5 p-8 mx-auto mt-24 outline-none'
+        >
+        <h2>Sphere Information</h2>
+        <p>ID: {this.id}</p>
+        <p>Color: #{this.material.color.getHexString()}</p>
+        <p>Position: (0, 0, 0)</p>
+        <p>Created: {this.createdAt}</p>
+        <button onClick={() => this.closeModal()}>Close</button>
+        </Modal>
+    );
+    
+    this.root.render(<ModalContent />);
+    }
+
+    // Clean up method to remove the modal root when the sphere is destroyed
+    destroy() {
+        ReactDOM.unmount(this.modalRoot);
+        document.body.removeChild(this.modalRoot);
     }
 
 }
