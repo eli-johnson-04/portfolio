@@ -6,6 +6,7 @@ import { gsap } from 'gsap';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Modal from 'react-modal';
+import SphereModal from './sphereModal.jsx';
 
 const DEFAULT_SPHERE_RADIUS = 3
 const DEFAULT_SPHERE_COLOR = 0xffffff
@@ -25,8 +26,10 @@ export default class Sphere {
             color = DEFAULT_SPHERE_COLOR, 
             wireframe = false 
             } = {}) {
+
+        this.label = label;
         
-        // THREE.JS OBJECT SETUP
+        // ---------------------THREE.JS OBJECT SETUP---------------------
         this.geometry = new THREE.SphereGeometry(radius, segments);
         this.material = new THREE.MeshPhysicalMaterial({ 
             color: color, 
@@ -169,12 +172,14 @@ export default class Sphere {
             this.mesh.add(hoverTextMesh);
         });
 
-        // CANNON.JS OBJECT SETUP
+        // ---------------------CANNON.JS OBJECT SETUP---------------------
         this.cannonSphere = new CANNON.Sphere(radius);
         this.cannonBody = new CANNON.Body({ mass: DEFAULT_SPHERE_MASS, shape: this.cannonSphere });
 
         // Track hover state
         this.mouseHovered = false;
+
+        // ---------------------MODAL SETUP---------------------
 
         // Create a div for the modal
         this.modalRoot = document.createElement('div');
@@ -182,7 +187,7 @@ export default class Sphere {
         document.body.appendChild(this.modalRoot);
 
         // Initialize modal's state to false
-        this.modalIsOpen = false;
+        this.isModalOpen = false;
 
         // Bind the openModal method to the sphere
         this.mesh.userData.openModal = this.openModal.bind(this);
@@ -279,56 +284,61 @@ export default class Sphere {
     }
 
     // Hover behavior
+    // TODO: this may need some tweaking when multiple spheres are in the picture...
     handleMouseHover(mouseHover) {
-        if (mouseHover && !this.mouseHovered) {
-            this.swell();
-            this.mouseHovered = true;
-        } else if (!mouseHover && this.mouseHovered) {
-            this.mouseHovered = false;
-            this.shrink();
+        // Only proceed if the modal is closed.
+        if (!this.isModalOpen) {
+
+            // If mouse is hovering and sphere is not hovered, hover sphere and swell.
+            if (mouseHover && !this.mouseHovered) {
+                this.swell();
+                this.mouseHovered = true;
+
+            // If mouse is not hovering and sphere is hovered, sphere is no longer hovered and should shrink. 
+            } else if (!mouseHover && this.mouseHovered) {
+                this.mouseHovered = false;
+                this.shrink();
+            }
         }
     }
 
     // Click behavior
     handleClick() {
-        if (!this.modalIsOpen) { this.openModal(); }
-        else if (this.modalIsOpen) { this.closeModal(); }
+        if (!this.isModalOpen) { this.openModal(); }
     }
 
     // Modal Behavior
+    // I might be re-rendering the modal every open and close but i will worry about this later....
     openModal() {
-        this.modalIsOpen = true;
+        // The mouse can no longer be considered as hovering over the sphere. 
+        this.mouseHovered = false;
+        this.shrink();
+
+        // Show the modal
+        this.isModalOpen = true;
         this.renderModal();
     }
 
     closeModal() {
-        this.modalIsOpen = false;
+        this.isModalOpen = false;
         this.renderModal();
     }
 
+    // Render the modal onto the screen
     renderModal() {
-    const ModalContent = () => (
-        <Modal
-        isOpen={this.modalIsOpen}
-        onRequestClose={() => this.closeModal()}
-        contentLabel="Sphere Information"
-        contentClassName='w-2/5 h-3/5 p-8 mx-auto mt-24 outline-none'
-        >
-        <h2>Sphere Information</h2>
-        <p>ID: {this.id}</p>
-        <p>Color: #{this.material.color.getHexString()}</p>
-        <p>Position: (0, 0, 0)</p>
-        <p>Created: {this.createdAt}</p>
-        <button onClick={() => this.closeModal()}>Close</button>
-        </Modal>
-    );
-    
-    this.root.render(<ModalContent />);
+        const ModalContent = () => (
+            <SphereModal
+                isOpen={this.isModalOpen}
+                onRequestClose={() => this.closeModal()}
+            />
+        );
+
+        this.root.render(<ModalContent />);
     }
 
     // Clean up method to remove the modal root when the sphere is destroyed
     destroy() {
-        ReactDOM.unmount(this.modalRoot);
+        this.root.unmount();
         document.body.removeChild(this.modalRoot);
     }
 
