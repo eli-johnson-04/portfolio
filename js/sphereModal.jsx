@@ -8,7 +8,7 @@ Modal.setAppElement('#root');
 const SphereModal = ({ isOpen, onRequestClose, label }) => {
     const customStyling = {
         overlay: {
-            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Darker overlay for visibility
+            backgroundColor: 'rgba(0, 0, 0, 0.2)', // Darker overlay for visibility
         },
         
         content: {
@@ -21,7 +21,7 @@ const SphereModal = ({ isOpen, onRequestClose, label }) => {
             borderRadius: '10px',
             width: '60%',
             height: '75%',
-            backgroundColor: 'rgba(255, 255, 255, 0.85)',
+            backgroundColor: 'rgba(224, 224, 224, 0.8)',
         },
     };
 
