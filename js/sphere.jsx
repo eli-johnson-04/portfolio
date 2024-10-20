@@ -285,6 +285,7 @@ export default class Sphere {
 
     // Hover behavior
     // TODO: this may need some tweaking when multiple spheres are in the picture...
+    // Update: i was right.
     handleMouseHover(mouseHover) {
         // Only proceed if the modal is closed.
         if (!this.isModalOpen) {

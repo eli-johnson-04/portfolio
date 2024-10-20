@@ -45,7 +45,7 @@ scene.add(directionalLight);
 // scene.add(axesHelper); 
 
 // Sample spheres
-const sampleSphere = new Sphere({ sphereText: 'squid'});
+const sampleSphere = new Sphere({ label: 'squid sphere'});
 sampleSphere.setPosition(0, 0, 0);
 sampleSphere.addToView(scene, world);
 
