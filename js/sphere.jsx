@@ -305,7 +305,7 @@ export default class Sphere {
 
     // Click behavior
     handleClick() {
-        if (!this.isModalOpen) { this.openModal(); }
+        if (!this.isModalOpen && this.mouseHovered) { this.openModal(); }
     }
 
     // Modal Behavior
