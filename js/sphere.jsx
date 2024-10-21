@@ -86,7 +86,7 @@ export default class Sphere {
         }
 
         // Helper function for centering then spherically wrapping text geometry
-        function centerAndWrap(text) {
+        function centerAndWrapToSphere(text) {
             // Find the bounding box of the text geometry to center the geometry on the sphere. 
             text.computeBoundingBox();
             let boundingBox = text.boundingBox;
@@ -142,7 +142,7 @@ export default class Sphere {
             });
 
             const cutText = truncateText(hoverText, font, maxWidth);
-            const hoverTextGeometry = new TextGeometry( cutText , {
+            const hoverTextGeometry = new TextGeometry(cutText , {
                 font: font,
                 curveSegments: 12,
                 size: sphereTextSize,
@@ -150,8 +150,8 @@ export default class Sphere {
             });
 
             // Center and wrap the text geometry
-            centerAndWrap(hoverTextGeometry);
-            centerAndWrap(labelText);
+            centerAndWrapToSphere(hoverTextGeometry);
+            centerAndWrapToSphere(labelText);
 
             // Construct the text to be drawn onto the sphere
             const labelMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 1 });
@@ -165,8 +165,8 @@ export default class Sphere {
             this.hoverTextMesh = hoverTextMesh;
 
             // Set title position and add to sphere mesh
-            labelMesh.position.set(0, 0, radius + RADIUS_OFFSET);
-            hoverTextMesh.position.set(0, 0, radius + (2 * RADIUS_OFFSET)); // 2x to prevent clipping between title and text
+            labelMesh.position.set(0, 0, radius + (2 *RADIUS_OFFSET)); // 2x to prevent clipping between title and text
+            hoverTextMesh.position.set(0, 0, radius + RADIUS_OFFSET);
             
             this.mesh.add(labelMesh);
             this.mesh.add(hoverTextMesh);
