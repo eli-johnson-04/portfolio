@@ -49,9 +49,9 @@ const sampleSphere = new Sphere({ label: 'squid sphere'});
 sampleSphere.setPosition(0, 0, 0);
 sampleSphere.addToView(scene, world);
 
-// const sphere2 = new Sphere();
-// sphere2.setPosition(5, 0, 0);
-// sphere2.addToView(scene, world);
+//const sphere2 = new Sphere();
+//sphere2.setPosition(5, 0, 0);
+//sphere2.addToView(scene, world);
 
 // Set up raycaster, mouse location, intersected objects, and reference to hovered obj
 var raycaster = new THREE.Raycaster();
