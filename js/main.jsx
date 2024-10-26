@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as CANNON from 'cannon-es';
 import Sphere from './sphere.jsx';
+//import { GUI } from 'dat.gui';
 
 // Cannon world
 const world = new CANNON.World();
@@ -48,6 +49,15 @@ scene.add(directionalLight);
 const sampleSphere = new Sphere({ label: 'squid sphere'});
 sampleSphere.setPosition(0, 0, 0);
 sampleSphere.addToView(scene, world);
+
+// dat GUI
+// const gui = new GUI();
+// const sphereFolder = gui.addFolder('Sphere');
+// sphereFolder.add(sampleSphere.mesh.material, 'opacity', 0, 1);
+// sphereFolder.open();
+// const cameraFolder = gui.addFolder('Camera');
+// cameraFolder.add(camera.position, 'z', 0, 10);
+// cameraFolder.open();
 
 //const sphere2 = new Sphere();
 //sphere2.setPosition(5, 0, 0);
