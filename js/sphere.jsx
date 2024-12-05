@@ -3,12 +3,26 @@ import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import * as CANNON from 'cannon-es';
 import { gsap } from 'gsap';
+import CustomEase from 'gsap/customEase';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import Modal from 'react-modal';
+import SphereModal from './sphereModal.jsx';
 
 const DEFAULT_SPHERE_RADIUS = 3
 const DEFAULT_SPHERE_COLOR = 0xffffff
 const DEFAULT_SPHERE_MASS = 1
 const TEXT_SIZE = 0.5
 const RADIUS_OFFSET = 0.01
+
+// Create the custom swell ease. 
+gsap.registerPlugin(CustomEase);
+CustomEase.create(
+    "swell", 
+    "M0,0 C0,0 0.039,-0.121 0.096,-0.121 0.236,-0.121 0.279,0.504 0.319,0.634 0.333,0.681 0.376,0.8 0.46,0.833 0.671,0.914 0.686,1.1 0.686,1.1 0.686,1.006 1,1 1,1 "
+);
+
+Modal.setAppElement('#root');
 
 export default class Sphere {
     constructor({
@@ -18,10 +32,14 @@ export default class Sphere {
             radius = DEFAULT_SPHERE_RADIUS, 
             segments = 128, 
             color = DEFAULT_SPHERE_COLOR, 
-            wireframe = false 
+            wireframe = false ,
+            content = null
             } = {}) {
+
+        this.content = content;
+        this.label = label;
         
-        // THREE.JS OBJECT SETUP
+        // ---------------------THREE.JS OBJECT SETUP---------------------
         this.geometry = new THREE.SphereGeometry(radius, segments);
         this.material = new THREE.MeshPhysicalMaterial({ 
             color: color, 
@@ -78,7 +96,7 @@ export default class Sphere {
         }
 
         // Helper function for centering then spherically wrapping text geometry
-        function centerAndWrap(text) {
+        function centerAndWrapToSphere(text) {
             // Find the bounding box of the text geometry to center the geometry on the sphere. 
             text.computeBoundingBox();
             let boundingBox = text.boundingBox;
@@ -134,7 +152,7 @@ export default class Sphere {
             });
 
             const cutText = truncateText(hoverText, font, maxWidth);
-            const hoverTextGeometry = new TextGeometry( cutText , {
+            const hoverTextGeometry = new TextGeometry(cutText , {
                 font: font,
                 curveSegments: 12,
                 size: sphereTextSize,
@@ -142,8 +160,8 @@ export default class Sphere {
             });
 
             // Center and wrap the text geometry
-            centerAndWrap(hoverTextGeometry);
-            centerAndWrap(labelText);
+            centerAndWrapToSphere(hoverTextGeometry);
+            centerAndWrapToSphere(labelText);
 
             // Construct the text to be drawn onto the sphere
             const labelMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 1 });
@@ -157,20 +175,38 @@ export default class Sphere {
             this.hoverTextMesh = hoverTextMesh;
 
             // Set title position and add to sphere mesh
-            labelMesh.position.set(0, 0, radius + RADIUS_OFFSET);
-            hoverTextMesh.position.set(0, 0, radius + (2 * RADIUS_OFFSET)); // 2x to prevent clipping between title and text
+            labelMesh.position.set(0, 0, radius + (2 *RADIUS_OFFSET)); // 2x to prevent clipping between title and text
+            hoverTextMesh.position.set(0, 0, radius + RADIUS_OFFSET);
             
             this.mesh.add(labelMesh);
             this.mesh.add(hoverTextMesh);
         });
 
-        // CANNON.JS OBJECT SETUP
+        // ---------------------CANNON.JS OBJECT SETUP---------------------
         this.cannonSphere = new CANNON.Sphere(radius);
         this.cannonBody = new CANNON.Body({ mass: DEFAULT_SPHERE_MASS, shape: this.cannonSphere });
 
-
         // Track hover state
         this.mouseHovered = false;
+
+        // ---------------------MODAL SETUP---------------------
+
+        // Create a div for the modal
+        this.modalRoot = document.createElement('div');
+        this.modalRoot.id = `modal-root-${this.id}`;
+        document.body.appendChild(this.modalRoot);
+
+        // Initialize modal's state to false
+        this.isModalOpen = false;
+
+        // Bind the openModal method to the sphere
+        this.mesh.userData.openModal = this.openModal.bind(this);
+
+        // Create the root for this sphere's modal
+        this.root = createRoot(this.modalRoot);
+        
+        // Only render the modal once
+        this.renderModal();
     }
 
     setPosition(x = 0, y = 0, z = 0) {
@@ -190,8 +226,9 @@ export default class Sphere {
             x: 1.3,
             y: 1.3,
             z: 1.3,
-            duration: 0.35,
-            ease: "back.inOut",
+            duration: 0.3,
+            //ease: "back.inOut",
+            ease: "swell",
             overwrite: "auto"
         });
 
@@ -199,15 +236,17 @@ export default class Sphere {
         gsap.to(this.mesh.material,{
             opacity: 0.87,
             duration: 0.35,
-            ease: "back.inOut",
+            //ease: "back.inOut",
+            ease: "swell",
             overwrite: "auto"
         });
 
         // Hide title on swell
         gsap.to(this.labelMesh.material, {
             opacity: 0,
-            duration: 0.25,
-            ease: "back.inOut",
+            duration: 0.19,
+            //ease: "back.inOut",
+            ease: "swell",
             overwrite: "auto",
         });
 
@@ -215,7 +254,8 @@ export default class Sphere {
         gsap.to(this.hoverTextMesh.material, {
             opacity: 1,
             duration: 0.35,
-            ease: "back.inOut",
+            //ease: "back.inOut",
+            ease: "swell",
             overwrite: "auto",
         });
     }
@@ -251,21 +291,72 @@ export default class Sphere {
         // Hide text on shrink
         gsap.to(this.hoverTextMesh.material, {
             opacity: 0,
-            duration: 0.15,
+            duration: 0.12,
             ease: "bounce.out",
             overwrite: "auto",
         });
     }
 
     // Hover behavior
+    // TODO: this may need some tweaking when multiple spheres are in the picture...
+    // Update: i was right.
     handleMouseHover(mouseHover) {
-        if (mouseHover && !this.mouseHovered) {
-            this.swell();
-            this.mouseHovered = true;
-        } else if (!mouseHover && this.mouseHovered) {
-            this.mouseHovered = false;
-            this.shrink();
+        // Only proceed if the modal is closed.
+        if (!this.isModalOpen) {
+
+            // If mouse is hovering and sphere is not hovered, hover sphere and swell.
+            if (mouseHover && !this.mouseHovered) {
+                this.swell();
+                this.mouseHovered = true;
+
+            // If mouse is not hovering and sphere is hovered, sphere is no longer hovered and should shrink. 
+            } else if (!mouseHover && this.mouseHovered) {
+                this.mouseHovered = false;
+                this.shrink();
+            }
         }
+    }
+
+    // Click behavior
+    handleClick() {
+        if (!this.isModalOpen && this.mouseHovered) { this.openModal(); }
+    }
+
+    // Modal Behavior
+    // I might be re-rendering the modal every open and close but i will worry about this later....
+    openModal() {
+        // The mouse can no longer be considered as hovering over the sphere. 
+        this.mouseHovered = false;
+        this.shrink();
+
+        // Show the modal
+        this.isModalOpen = true;
+        this.renderModal();
+    }
+
+    closeModal() {
+        this.isModalOpen = false;
+        this.renderModal();
+    }
+
+    // Render the modal onto the screen
+    renderModal() {
+        const ModalContent = () => (
+            <SphereModal
+                isOpen={this.isModalOpen}
+                onRequestClose={() => this.closeModal()}
+                label={this.label}
+                content={this.content}
+            />
+        );
+
+        this.root.render(<ModalContent />);
+    }
+
+    // Clean up method to remove the modal root when the sphere is destroyed
+    destroy() {
+        this.root.unmount();
+        document.body.removeChild(this.modalRoot);
     }
 
 }

@@ -1,7 +1,15 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as CANNON from 'cannon-es';
-import Sphere from './sphere.js';
+import Sphere from './sphere.jsx';
+import ContentFeed from './contentFeed.jsx';
+import React from 'react';
+
+const ACTIVITY_PATH = 'activity';
+const PORTFOLIO_PATH = 'pf';
+//import { GUI } from 'dat.gui';
+
+
 
 // Cannon world
 const world = new CANNON.World();
@@ -20,6 +28,7 @@ document.body.appendChild(renderer.domElement);
 
 // OrbitControls
 const controls = new OrbitControls(camera, renderer.domElement);
+//controls.enabled = false;
 controls.enableDamping = true;
 controls.dampingFactor = 0.25;
 controls.enablePan = false;
@@ -44,14 +53,47 @@ scene.add(directionalLight);
 // const axesHelper = new THREE.AxesHelper( 5 );
 // scene.add(axesHelper); 
 
+// Import all markdown content.
+const allContent = import.meta.glob('/*/*.md', { query: '?raw', import: 'default' });
+
+// Helper function that gets a specific set of markdown content. 
+async function makeFeed(folder) {
+    // Filter out the specified content. 
+    const entries = Object.entries(allContent)
+        .filter(([path]) => path.includes(`/${folder}/`))
+        .map(([path, entry]) => {
+            const id = path.split(`/${folder}/`)[1].replace('.md', '');
+            return { path, id }; 
+        });
+
+    // Resolve the content of all markdown files. 
+    const contentPromises = entries.map(async (entry) => {
+        const md = await allContent[entry.path](); // Resolves the markdown content
+        return { ...entry, md }; // Merge the content with the other data
+    });
+
+    // Wait for all the content to be loaded. 
+    const resolvedContent = await Promise.all(contentPromises);
+    return <ContentFeed data={resolvedContent}/>;
+}
+
 // Sample spheres
-const sampleSphere = new Sphere({ sphereText: 'squid'});
+const sampleSphere = new Sphere({ label: 'squid sphere', content: await makeFeed(ACTIVITY_PATH) }); // this sphere uses a feed!!
 sampleSphere.setPosition(0, 0, 0);
 sampleSphere.addToView(scene, world);
 
-// const sphere2 = new Sphere();
-// sphere2.setPosition(5, 0, 0);
-// sphere2.addToView(scene, world);
+// dat GUI
+// const gui = new GUI();
+// const sphereFolder = gui.addFolder('Sphere');
+// sphereFolder.add(sampleSphere.mesh.material, 'opacity', 0, 1);
+// sphereFolder.open();
+// const cameraFolder = gui.addFolder('Camera');
+// cameraFolder.add(camera.position, 'z', 0, 10);
+// cameraFolder.open();
+
+//const sphere2 = new Sphere();
+//sphere2.setPosition(5, 0, 0);
+//sphere2.addToView(scene, world);
 
 // Set up raycaster, mouse location, intersected objects, and reference to hovered obj
 var raycaster = new THREE.Raycaster();
@@ -100,20 +142,23 @@ function onWindowResize() {
     controls.update();
 }
 
+
 // Handle click event
-/* function onClick(event) {
+function onClick(event) {
     mouseMove(event);
 
     // Upodate the ray with camera and cursor positions
     raycaster.setFromCamera(mouse, camera);
     intersects = raycaster.intersectObjects(scene.children);
 
-    // Check if the sphere was clicked
-    if (intersects.length > 0 && intersects[0].object.userData.instance instanceof Sphere) {
+    // If something is clicked
+    if (intersects.length > 0) {
+        let obj = intersects[0].object;
 
-    })
-
-} */
+        // Check if a sphere was clicked, and handle the click
+        if (obj.userData.instance instanceof Sphere) { obj.userData.instance.handleClick(); }
+    }
+}
 
 function render() {
     requestAnimationFrame(render);
@@ -127,6 +172,6 @@ function render() {
 
 window.addEventListener('resize', onWindowResize, false);
 window.addEventListener('mousemove', mouseMove);
-//window.addEventListener('click', onClick, false);
+window.addEventListener('click', onClick, false);
 
 render();
