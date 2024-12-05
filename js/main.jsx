@@ -77,7 +77,7 @@ async function makeFeed(folder) {
 }
 
 // Sample spheres
-const sampleSphere = new Sphere({ label: 'Activity', hoverText: 'Check out my recent work!', content: await makeFeed(ACTIVITY_PATH) }); // this sphere uses a feed!!
+const sampleSphere = new Sphere({ label: 'Activity', hoverText: 'Recent Work and Projects', content: await makeFeed(ACTIVITY_PATH) }); // this sphere uses a feed!!
 sampleSphere.setPosition(0, 0, 0);
 sampleSphere.addToView(scene, world);
 

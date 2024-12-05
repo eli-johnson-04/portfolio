@@ -33,12 +33,12 @@ const SphereModal = ({ isOpen, onRequestClose, label, content }) => {
             onRequestClose={onRequestClose}
             style={customStyling}
         >
-            <div className="sticky top-0 z-10 flex items-center w-full pb-4">
-                <span className="absolute left-1/2 transform -translate-x-1/2 font-gentilis font-medium text-3xl text-neutral-900 text-center pt-2 pb-2">
+            <div className="flex items-center justify-between w-full pb-4">
+                <span className="flex-grow text-center font-gentilis font-medium text-3xl text-neutral-900 pt-2 pb-2 truncate">
                     {label}
                 </span>
                 <button 
-                    className="ml-auto font-gentilis font-medium text-neutral-900 text-2xl px-4 py-2 rounded-md shadow-xl bg-[#c5c5c5]
+                    className="ml-4 font-gentilis font-medium text-neutral-900 text-2xl px-4 py-2 rounded-md shadow-xl bg-[#c5c5c5]
                             hover:bg-neutral-500 hover:text-neutral-800 hover:shadow-md hover:scale-[1.05] transition-all duration-100 ease-in-out
                             active:bg-neutral-600 active:shadow-inner active:scale-95"
                     onClick={onRequestClose}
@@ -46,7 +46,7 @@ const SphereModal = ({ isOpen, onRequestClose, label, content }) => {
                     Close
                 </button>
             </div>
-            <div className="overflow-y-auto p-0 flex-grow">{content}</div>
+            <div className="p-0 flex-grow">{content}</div>
         </Modal>
     );
 };
