@@ -110,7 +110,7 @@ export default class Sphere {
             text.translate(-centerX, -centerY, -centerZ);
 
             // Adjust the vertical position of the text
-            /* This works for now, I probably won't have huge amounts of text on the spheres, so 
+            /* TODO: This works for now, I probably won't have huge amounts of text on the spheres, so 
             this should work for a few words, but if I want bigger text or more text, I will need to
             make changes. 
             The title-esque centering with only one word doesn't look TOO bad... */ 
