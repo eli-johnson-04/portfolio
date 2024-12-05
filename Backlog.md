@@ -18,6 +18,8 @@
 - [ ] Spheres are attached to the center sphere with lines (either rigid or wavy)
 - [ ] Modal open animation
 - [ ] Push around the spheres with the mouse (not super far), but they gravitate back to their original spot
+- [ ] Hide the scrollbar in modals or make the right-hand side still curved as intended
+- [ ] More responsive sphere hover ease
 
 ## Background Cards
 - [ ] Create little background cards for every markdown file

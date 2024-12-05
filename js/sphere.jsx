@@ -3,6 +3,7 @@ import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import * as CANNON from 'cannon-es';
 import { gsap } from 'gsap';
+import CustomEase from 'gsap/customEase';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Modal from 'react-modal';
@@ -13,6 +14,10 @@ const DEFAULT_SPHERE_COLOR = 0xffffff
 const DEFAULT_SPHERE_MASS = 1
 const TEXT_SIZE = 0.5
 const RADIUS_OFFSET = 0.01
+
+// Create the custom swell ease. 
+gsap.registerPlugin(CustomEase);
+CustomEase.create("swell", "M0,0 C0,0 0.039,-0.121 0.096,-0.121 0.236,-0.121 0.279,0.504 0.319,0.634 0.333,0.681 0.376,0.8 0.46,0.833 0.671,0.914 0.686,1.1 0.686,1.1 0.686,1.006 1,1 1,1 "),
 
 Modal.setAppElement('#root');
 
@@ -218,8 +223,9 @@ export default class Sphere {
             x: 1.3,
             y: 1.3,
             z: 1.3,
-            duration: 0.35,
-            ease: "back.inOut",
+            duration: 0.3,
+            //ease: "back.inOut",
+            ease: "swell",
             overwrite: "auto"
         });
 
@@ -227,15 +233,17 @@ export default class Sphere {
         gsap.to(this.mesh.material,{
             opacity: 0.87,
             duration: 0.35,
-            ease: "back.inOut",
+            //ease: "back.inOut",
+            ease: "swell",
             overwrite: "auto"
         });
 
         // Hide title on swell
         gsap.to(this.labelMesh.material, {
             opacity: 0,
-            duration: 0.25,
-            ease: "back.inOut",
+            duration: 0.19,
+            //ease: "back.inOut",
+            ease: "swell",
             overwrite: "auto",
         });
 
@@ -243,7 +251,8 @@ export default class Sphere {
         gsap.to(this.hoverTextMesh.material, {
             opacity: 1,
             duration: 0.35,
-            ease: "back.inOut",
+            //ease: "back.inOut",
+            ease: "swell",
             overwrite: "auto",
         });
     }
@@ -279,7 +288,7 @@ export default class Sphere {
         // Hide text on shrink
         gsap.to(this.hoverTextMesh.material, {
             opacity: 0,
-            duration: 0.15,
+            duration: 0.12,
             ease: "bounce.out",
             overwrite: "auto",
         });

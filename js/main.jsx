@@ -28,6 +28,7 @@ document.body.appendChild(renderer.domElement);
 
 // OrbitControls
 const controls = new OrbitControls(camera, renderer.domElement);
+//controls.enabled = false;
 controls.enableDamping = true;
 controls.dampingFactor = 0.25;
 controls.enablePan = false;
