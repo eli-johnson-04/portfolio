@@ -5,7 +5,7 @@ import '../css/output.css';
 // Set the modal's app element
 Modal.setAppElement('#root');
 
-const SphereModal = ({ isOpen, onRequestClose, label }) => {
+const SphereModal = ({ isOpen, onRequestClose, label, content }) => {
     const customStyling = {
         overlay: {
             backgroundColor: 'rgba(0, 0, 0, 0.2)', // Darker overlay for visibility
@@ -31,6 +31,8 @@ const SphereModal = ({ isOpen, onRequestClose, label }) => {
             onRequestClose={onRequestClose}
             style={customStyling}
         >
+            <h1>{label}</h1>
+            <div>{content}</div>
             <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded border-2 border-blue-700 shadow-lg text-2xl" onClick={onRequestClose}>CLOSE BUTTON YAY</button>
         </Modal>
     );

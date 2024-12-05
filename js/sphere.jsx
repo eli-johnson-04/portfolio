@@ -7,6 +7,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Modal from 'react-modal';
 import SphereModal from './sphereModal.jsx';
+import ActivityFeed from './activityFeed.jsx';
 
 const DEFAULT_SPHERE_RADIUS = 3
 const DEFAULT_SPHERE_COLOR = 0xffffff
@@ -331,6 +332,8 @@ export default class Sphere {
             <SphereModal
                 isOpen={this.isModalOpen}
                 onRequestClose={() => this.closeModal()}
+                label={this.label}
+                content={<ActivityFeed/>}
             />
         );
 

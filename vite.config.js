@@ -8,4 +8,5 @@ export default defineConfig({
   server: {
     open: true, // Open the browser when the server starts
   },
+  assetsInclude: ['**/*.md']
 });
