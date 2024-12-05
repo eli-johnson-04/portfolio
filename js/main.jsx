@@ -4,6 +4,7 @@ import * as CANNON from 'cannon-es';
 import Sphere from './sphere.jsx';
 import ContentFeed from './contentFeed.jsx';
 import React from 'react';
+import gsap from 'gsap';
 
 const ACTIVITY_PATH = 'activity';
 const PORTFOLIO_PATH = 'pf';
@@ -134,7 +135,7 @@ function checkHover() {
                     modalOpen = true;
                     return;
                 }
-            })
+            });
 
             // Only enable hovering if no modal is open. 
             if (!modalOpen) {obj.userData.instance.handleMouseHover(true); }
@@ -173,12 +174,31 @@ function onClick(event) {
 
 // Core rendering loop. 
 function render() {
+    // Make all the spheres face the camera!
+    const cameraPos = camera.getWorldPosition(new THREE.Vector3());
+    spheres.forEach((sphere) => {
+        const targetRotation = new THREE.Quaternion();
+
+        // Calculate the direction to the camera.
+        sphere._mesh.lookAt(cameraPos); // This updates the mesh to look at the camera
+        targetRotation.copy(sphere._mesh.quaternion);
+
+        // Use GSAP to smoothly interpolate the sphere's quaternion rotation to the target rotation.
+        gsap.to(sphere._mesh.quaternion, {
+            x: targetRotation.x,
+            y: targetRotation.y,
+            z: targetRotation.z,
+            w: targetRotation.w,
+            duration: 1, // Smoothness
+            ease: "expo-in", 
+            overwrite: "auto" 
+        });
+    });
+
     requestAnimationFrame(render);
 
     checkHover();
-
     controls.update();
-    
     renderer.render(scene, camera);
 }
 
