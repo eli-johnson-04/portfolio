@@ -139,6 +139,13 @@ function checkHover() {
 
             // Only enable hovering if no modal is open. 
             if (!modalOpen) {obj.userData.instance.handleMouseHover(true); }
+
+            // Cancel the hover of any other hovered spheres. 
+            spheres.forEach((sphere) => {
+                if (!(sphere === obj.userData.instance)) {
+                    sphere.handleMouseHover(false);
+                }
+            })
         }
     } else {
         // If not hovered, tell the spheres.
