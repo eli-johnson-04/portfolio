@@ -10,7 +10,7 @@ import Modal from 'react-modal';
 import SphereModal from './sphereModal.jsx';
 
 const DEFAULT_SPHERE_RADIUS = 3
-const DEFAULT_SPHERE_COLOR = 0xffffff
+const DEFAULT_SPHERE_COLOR = 0xe8e8f0
 const DEFAULT_SPHERE_MASS = 1
 const TEXT_SIZE = 0.5
 const RADIUS_OFFSET = 0.01
@@ -44,9 +44,9 @@ export default class Sphere {
         this._material = new THREE.MeshPhysicalMaterial({ 
             color: color, 
             wireframe: wireframe, 
-            transparent: true,
+            transparent: false,
             opacity: 0.6,
-            roughness: 0.2, 
+            roughness: 0.35, 
             metalness: 0.1,
             clearcoat: 0.3,
             clearcoatRoughness: 0.8
