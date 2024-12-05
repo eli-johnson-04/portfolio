@@ -7,7 +7,6 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Modal from 'react-modal';
 import SphereModal from './sphereModal.jsx';
-import ActivityFeed from './activityFeed.jsx';
 
 const DEFAULT_SPHERE_RADIUS = 3
 const DEFAULT_SPHERE_COLOR = 0xffffff
@@ -25,9 +24,11 @@ export default class Sphere {
             radius = DEFAULT_SPHERE_RADIUS, 
             segments = 128, 
             color = DEFAULT_SPHERE_COLOR, 
-            wireframe = false 
+            wireframe = false ,
+            content = null
             } = {}) {
 
+        this.content = content;
         this.label = label;
         
         // ---------------------THREE.JS OBJECT SETUP---------------------
@@ -333,7 +334,7 @@ export default class Sphere {
                 isOpen={this.isModalOpen}
                 onRequestClose={() => this.closeModal()}
                 label={this.label}
-                content={<ActivityFeed/>}
+                content={this.content}
             />
         );
 

@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as CANNON from 'cannon-es';
 import Sphere from './sphere.jsx';
+import ContentFeed from './contentFeed.jsx';
+import React from 'react';
 //import { GUI } from 'dat.gui';
 
 // Cannon world
@@ -45,8 +47,32 @@ scene.add(directionalLight);
 // const axesHelper = new THREE.AxesHelper( 5 );
 // scene.add(axesHelper); 
 
+// Import all markdown content.
+const allContent = import.meta.glob('/*/*.md', { query: '?raw', import: 'default' });
+
+// Helper function that gets a specific set of markdown content. 
+async function makeFeed(folder) {
+    // Filter out the specified content. 
+    const entries = Object.entries(allContent)
+        .filter(([path]) => path.includes(`/${folder}/`))
+        .map(([path, entry]) => {
+            const id = path.split(`/${folder}/`)[1].replace('.md', '');
+            return { path, id }; 
+        });
+
+    // Resolve the content of all markdown files. 
+    const contentPromises = entries.map(async (entry) => {
+        const md = await allContent[entry.path](); // Resolves the markdown content
+        return { ...entry, md }; // Merge the content with the other data
+    });
+
+    // Wait for all the content to be loaded. 
+    const resolvedContent = await Promise.all(contentPromises);
+    return <ContentFeed data={resolvedContent}/>;
+}
+
 // Sample spheres
-const sampleSphere = new Sphere({ label: 'squid sphere'});
+const sampleSphere = new Sphere({ label: 'squid sphere', content: await makeFeed('activity') }); // this sphere uses a feed!!
 sampleSphere.setPosition(0, 0, 0);
 sampleSphere.addToView(scene, world);
 
