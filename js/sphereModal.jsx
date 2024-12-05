@@ -31,7 +31,7 @@ const SphereModal = ({ isOpen, onRequestClose, label, content }) => {
             onRequestClose={onRequestClose}
             style={customStyling}
         >
-            <h1 className="sticky top-0 z-10">{label}</h1>
+            <h1 className="sticky top-0 z-10 font-gentilis">{label}</h1>
             <div>{content}</div>
             <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded border-2 border-blue-700 shadow-lg text-2xl" onClick={onRequestClose}>CLOSE BUTTON YAY</button>
         </Modal>
