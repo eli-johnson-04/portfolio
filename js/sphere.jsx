@@ -63,7 +63,7 @@ export default class Sphere {
         // Define max width of text
         const maxWidth = 4;
 
-        // Helper function to split the text into lines based on the max width
+        // Helper function to split the text into lines based on the max width.
         function truncateText(title, font, maxWidth) {
             const words = title.split(' ');
             let truncatedTitle = '';
@@ -95,7 +95,7 @@ export default class Sphere {
             return truncatedTitle.trim();
         }
 
-        // Helper function for centering then spherically wrapping text geometry
+        // Helper function for centering then spherically wrapping text geometry.
         function centerAndWrapToSphere(text) {
             // Find the bounding box of the text geometry to center the geometry on the sphere. 
             text.computeBoundingBox();
@@ -139,7 +139,7 @@ export default class Sphere {
             positionAttribute.needsUpdate = true;
         }
 
-        // Based on font loading example from Three.JS docs
+        // Based on font loading example from Three.JS docs.
         const loader = new FontLoader();
 
         loader.load('fonts/gentilis_regular.typeface.json', (font) => {
@@ -213,13 +213,13 @@ export default class Sphere {
         this._mesh.position.set(x, y, z); // may need to tinker with z-pos when content cards are behind circles
     }
 
-    // Add the sphere to the Three scene and the Cannon world
+    // Add the sphere to the Three scene and the Cannon world.
     addToView(scene, world) {
         scene.add(this._mesh);
         world.addBody(this._cannonBody);
     }
 
-    // Swell animation for size and opacity
+    // Swell animation for size and opacity.
     swell() {
         // Make sphere bigger on swell
         gsap.to(this._mesh.scale, {
@@ -260,7 +260,7 @@ export default class Sphere {
         });
     }
     
-    // Size and opacity reset animation
+    // Size and opacity reset animation.
     shrink() {
         // Shrink sphere to normal size
         gsap.to(this._mesh.scale, {
@@ -297,13 +297,7 @@ export default class Sphere {
         });
     }
 
-    // get _isModalOpen() {
-    //     return this._isModalOpen;
-    // }
-
-    // Hover behavior
-    // TODO: this may need some tweaking when multiple spheres are in the picture...
-    // Update: i was right.
+    // Handle hover behavior. 
     handleMouseHover(mouseHover) {
         // Only proceed if the modal is closed.
         if (!this._isModalOpen) {
@@ -321,12 +315,12 @@ export default class Sphere {
         }
     }
 
-    // Click behavior
+    // Handle click behavior/ 
     handleClick() {
         if (!this._isModalOpen && this._mouseHovered) { this.openModal(); }
     }
 
-    // Modal Behavior
+    // Handle modal opens and closes. 
     // I might be re-rendering the modal every open and close but i will worry about this later....
     openModal() {
         // The mouse can no longer be considered as hovering over the sphere. 
@@ -343,7 +337,7 @@ export default class Sphere {
         this.renderModal();
     }
 
-    // Render the modal onto the screen
+    // Render the modal onto the screen.
     renderModal() {
         const ModalContent = () => (
             <SphereModal
@@ -357,7 +351,7 @@ export default class Sphere {
         this._root.render(<ModalContent />);
     }
 
-    // Clean up method to remove the modal root when the sphere is destroyed
+    // Clean up method to remove the modal root when the sphere is destroyed.
     destroy() {
         this._root.unmount();
         document.body.removeChild(this._modalRoot);

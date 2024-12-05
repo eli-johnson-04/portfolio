@@ -154,7 +154,6 @@ function onWindowResize() {
     controls.update();
 }
 
-
 // Handle click events.
 function onClick(event) {
     mouseMove(event);
@@ -172,6 +171,7 @@ function onClick(event) {
     }
 }
 
+// Core rendering loop. 
 function render() {
     requestAnimationFrame(render);
 
