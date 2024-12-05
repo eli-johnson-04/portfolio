@@ -6,7 +6,11 @@ module.exports = {
     "./css/*.css",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        gentilis: ['Gentilis', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 };
