@@ -10,6 +10,7 @@
 - [x] Expand into _modal?_ when clicked
 - [ ] Spheres can be customized for different modal content, either via attribute or hard-coded (using an attribute is ideal...)
 - [ ] Modal holds information related to sphere customization
+- [x] Multiple spheres work indpendently of each other
 - [x] Markdown viewer library for modal
 - [x] Grab content from respective folders
 
