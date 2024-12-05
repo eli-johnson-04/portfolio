@@ -21,7 +21,7 @@ const SphereModal = ({ isOpen, onRequestClose, label, content }) => {
             borderRadius: '10px',
             width: '60%',
             height: '75%',
-            backgroundColor: 'rgba(224, 224, 224, 0.8)',
+            backgroundColor: 'rgba(224, 224, 224, 0.85)',
         },
     };
 
@@ -33,7 +33,14 @@ const SphereModal = ({ isOpen, onRequestClose, label, content }) => {
         >
             <h1 className="sticky top-0 z-10 font-gentilis">{label}</h1>
             <div>{content}</div>
-            <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded border-2 border-blue-700 shadow-lg text-2xl" onClick={onRequestClose}>CLOSE BUTTON YAY</button>
+            <button 
+                className="font-gentilis font-medium mt-4 bg-[#c5c5c5] text-neutral-900 px-4 py-2 rounded-md shadow-lg text-2xl 
+                        hover:bg-neutral-500 hover:text-neutral-800 hover:shadow-md transition-all duration-100 ease-in-out
+                        active:bg-neutral-600 active:shadow-inner active:scale-95"
+                onClick={onRequestClose}
+            >
+                Close
+            </button>
         </Modal>
     );
 };
