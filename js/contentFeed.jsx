@@ -19,6 +19,13 @@ const ContentFeed = ({ data }) => {
                 {...props}
             />
         ),
+        h3: ({ node, ...props }) => (
+            <h3
+                className="text-xl font-semibold text-gray-700 mt-3 mb-2"
+                style={{ fontFamily: 'Gentilis' }}
+                {...props}
+            />
+        ),
         ul: ({ node, ...props }) => (
             <ul
                 className="list-disc list-inside pl-5 mb-4 space-y-2 text-gray-800"
@@ -80,6 +87,7 @@ const ContentFeed = ({ data }) => {
                 {...props}
             />
         ),
+        //TODO: will need to add image styling here for sure. links too most likely. 
     };
 
     // Return a set of HTML generated from markdown using ReactMarkdown. 
