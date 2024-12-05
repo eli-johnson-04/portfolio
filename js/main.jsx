@@ -9,13 +9,11 @@ const ACTIVITY_PATH = 'activity';
 const PORTFOLIO_PATH = 'pf';
 //import { GUI } from 'dat.gui';
 
-
-
-// Cannon world
+// Set up Cannon world. 
 const world = new CANNON.World();
 world.gravity.set(0, 0, 0); // TODO: update gravity and add some functions to sphere for gravity/hover/physics
 
-// Scene and Camera
+// Set up scene and camera.
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 20;
@@ -26,7 +24,7 @@ renderer.setClearColor( 0xefefef, 1);
 renderer.shadowMap.enabled = true;
 document.body.appendChild(renderer.domElement);
 
-// OrbitControls
+// OrbitControls setup. 
 const controls = new OrbitControls(camera, renderer.domElement);
 //controls.enabled = false;
 controls.enableDamping = true;
@@ -34,11 +32,11 @@ controls.dampingFactor = 0.25;
 controls.enablePan = false;
 controls.enableZoom = false;
 
-// Lock orbital controls to not go past XY plane
+// Lock orbital controls to not go past XY plane.
 controls.minAzimuthAngle = -Math.PI / 2;
 controls.maxAzimuthAngle = Math.PI / 2;
 
-// Lighting
+// Set up lighting. 
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 scene.add(ambientLight);
 
@@ -77,10 +75,17 @@ async function makeFeed(folder) {
     return <ContentFeed data={resolvedContent}/>;
 }
 
+
 // Sample spheres
 const sampleSphere = new Sphere({ label: 'squid sphere', content: await makeFeed(ACTIVITY_PATH) }); // this sphere uses a feed!!
 sampleSphere.setPosition(0, 0, 0);
 sampleSphere.addToView(scene, world);
+
+const sampleSphere2 = new Sphere({ label: '2 sphear', content: await makeFeed(PORTFOLIO_PATH) }); // this sphere uses a feed!!
+sampleSphere2.setPosition(10, 0, 0);
+sampleSphere2.addToView(scene, world);
+
+const spheres = [sampleSphere, sampleSphere2];
 
 // dat GUI
 // const gui = new GUI();
@@ -95,7 +100,7 @@ sampleSphere.addToView(scene, world);
 //sphere2.setPosition(5, 0, 0);
 //sphere2.addToView(scene, world);
 
-// Set up raycaster, mouse location, intersected objects, and reference to hovered obj
+// Set up raycaster, mouse location, intersected objects, and reference to hovered object.
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
 var intersects = [];
@@ -104,36 +109,43 @@ var intersects = [];
 mouse.x = -1000;
 mouse.y = -1000;
 
-// Detect mouse movement, change mouse position
+// Detect mouse movement, change mouse position.
 function mouseMove(event) {
     mouse.x = ( event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = - ( event.clientY / window.innerHeight) * 2 + 1;
 }
 
-// Handle hover behavior
+// Handle hover behavior.
 function checkHover() {
-    // Update the raycaster with camera and cursor positions
+    // Update the raycaster with camera and cursor positions.
     raycaster.setFromCamera(mouse, camera);
     intersects = raycaster.intersectObjects(scene.children);
 
-    // If an object is detected to be hovered over
+    // If an object is detected to be hovered over.
     if (intersects.length > 0) {
         let obj = intersects[0].object;
 
-        // Check if hovered object is a sphere, then tell it to handle hover
+        // Check if hovered object is a sphere, then tell it to handle the hover.
         if (obj.userData.instance instanceof Sphere) {
-            obj.userData.instance.handleMouseHover(true);
+            // If there is a modal open, no spheres should be hoverable. 
+            let modalOpen = false;
+            spheres.forEach((sphere) => {
+                if (sphere._isModalOpen) {
+                    modalOpen = true;
+                    return;
+                }
+            })
+
+            // Only enable hovering if no modal is open. 
+            if (!modalOpen) {obj.userData.instance.handleMouseHover(true); }
         }
     } else {
-        // If not hovered, tell the sphere
-        // TODO: currently only works for one sphere. I hate this. I don't want to do it for each sphere, 
-        // I would prefer to store all spheres in an array and iterate through them maybe?????
-        sampleSphere.handleMouseHover(false);
-        //sphere2.handleMouseHover(false);
+        // If not hovered, tell the spheres.
+        spheres.forEach((sphere) => {sphere.handleMouseHover(false)});
     }
 }
 
-// Handle window resize
+// Handle window resize.
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -143,11 +155,11 @@ function onWindowResize() {
 }
 
 
-// Handle click event
+// Handle click events.
 function onClick(event) {
     mouseMove(event);
 
-    // Upodate the ray with camera and cursor positions
+    // Upodate the ray with camera and cursor positions.
     raycaster.setFromCamera(mouse, camera);
     intersects = raycaster.intersectObjects(scene.children);
 
@@ -156,7 +168,7 @@ function onClick(event) {
         let obj = intersects[0].object;
 
         // Check if a sphere was clicked, and handle the click
-        if (obj.userData.instance instanceof Sphere) { obj.userData.instance.handleClick(); }
+        if (obj.userData.instance instanceof Sphere) {obj.userData.instance.handleClick(); }
     }
 }
 

@@ -36,12 +36,12 @@ export default class Sphere {
             content = null
             } = {}) {
 
-        this.content = content;
-        this.label = label;
+        this._content = content;
+        this._label = label;
         
         // ---------------------THREE.JS OBJECT SETUP---------------------
-        this.geometry = new THREE.SphereGeometry(radius, segments);
-        this.material = new THREE.MeshPhysicalMaterial({ 
+        this._geometry = new THREE.SphereGeometry(radius, segments);
+        this._material = new THREE.MeshPhysicalMaterial({ 
             color: color, 
             wireframe: wireframe, 
             transparent: true,
@@ -51,9 +51,9 @@ export default class Sphere {
             clearcoat: 0.3,
             clearcoatRoughness: 0.8
             });
-        this.mesh = new THREE.Mesh(this.geometry, this.material);
-        this.mesh.userData = { instance: this };
-        this.mesh.receiveShadow = true;
+        this._mesh = new THREE.Mesh(this._geometry, this._material);
+        this._mesh.userData = { instance: this };
+        this._mesh.receiveShadow = true;
 
         /* I could add a more pronounced up-down hover effect with slight left-right rotation (gamecube analogy)
         for a pretty visual effect :D 
@@ -171,58 +171,58 @@ export default class Sphere {
             const hoverTextMesh = new THREE.Mesh(hoverTextGeometry, hoverTextMaterial);
 
             // Store access to the text meshes
-            this.labelMesh = labelMesh;
-            this.hoverTextMesh = hoverTextMesh;
+            this._labelMesh = labelMesh;
+            this._hoverTextMesh = hoverTextMesh;
 
             // Set title position and add to sphere mesh
             labelMesh.position.set(0, 0, radius + (2 *RADIUS_OFFSET)); // 2x to prevent clipping between title and text
             hoverTextMesh.position.set(0, 0, radius + RADIUS_OFFSET);
             
-            this.mesh.add(labelMesh);
-            this.mesh.add(hoverTextMesh);
+            this._mesh.add(labelMesh);
+            this._mesh.add(hoverTextMesh);
         });
 
         // ---------------------CANNON.JS OBJECT SETUP---------------------
-        this.cannonSphere = new CANNON.Sphere(radius);
-        this.cannonBody = new CANNON.Body({ mass: DEFAULT_SPHERE_MASS, shape: this.cannonSphere });
+        this._cannonSphere = new CANNON.Sphere(radius);
+        this._cannonBody = new CANNON.Body({ mass: DEFAULT_SPHERE_MASS, shape: this._cannonSphere });
 
         // Track hover state
-        this.mouseHovered = false;
+        this._mouseHovered = false;
 
         // ---------------------MODAL SETUP---------------------
 
         // Create a div for the modal
-        this.modalRoot = document.createElement('div');
-        this.modalRoot.id = `modal-root-${this.id}`;
-        document.body.appendChild(this.modalRoot);
+        this._modalRoot = document.createElement('div');
+        this._modalRoot.id = `modal-root-${this.id}`;
+        document.body.appendChild(this._modalRoot);
 
         // Initialize modal's state to false
-        this.isModalOpen = false;
+        this._isModalOpen = false;
 
         // Bind the openModal method to the sphere
-        this.mesh.userData.openModal = this.openModal.bind(this);
+        this._mesh.userData.openModal = this.openModal.bind(this);
 
         // Create the root for this sphere's modal
-        this.root = createRoot(this.modalRoot);
+        this._root = createRoot(this._modalRoot);
         
         // Only render the modal once
         this.renderModal();
     }
 
     setPosition(x = 0, y = 0, z = 0) {
-        this.mesh.position.set(x, y, z); // may need to tinker with z-pos when content cards are behind circles
+        this._mesh.position.set(x, y, z); // may need to tinker with z-pos when content cards are behind circles
     }
 
     // Add the sphere to the Three scene and the Cannon world
     addToView(scene, world) {
-        scene.add(this.mesh);
-        world.addBody(this.cannonBody);
+        scene.add(this._mesh);
+        world.addBody(this._cannonBody);
     }
 
     // Swell animation for size and opacity
     swell() {
         // Make sphere bigger on swell
-        gsap.to(this.mesh.scale, {
+        gsap.to(this._mesh.scale, {
             x: 1.3,
             y: 1.3,
             z: 1.3,
@@ -233,7 +233,7 @@ export default class Sphere {
         });
 
         // Make sphere more opaque on swell
-        gsap.to(this.mesh.material,{
+        gsap.to(this._mesh.material,{
             opacity: 0.87,
             duration: 0.35,
             //ease: "back.inOut",
@@ -242,7 +242,7 @@ export default class Sphere {
         });
 
         // Hide title on swell
-        gsap.to(this.labelMesh.material, {
+        gsap.to(this._labelMesh.material, {
             opacity: 0,
             duration: 0.19,
             //ease: "back.inOut",
@@ -251,7 +251,7 @@ export default class Sphere {
         });
 
         // Show text on swell
-        gsap.to(this.hoverTextMesh.material, {
+        gsap.to(this._hoverTextMesh.material, {
             opacity: 1,
             duration: 0.35,
             //ease: "back.inOut",
@@ -263,7 +263,7 @@ export default class Sphere {
     // Size and opacity reset animation
     shrink() {
         // Shrink sphere to normal size
-        gsap.to(this.mesh.scale, {
+        gsap.to(this._mesh.scale, {
             x: 1, 
             y: 1, 
             z: 1, 
@@ -273,7 +273,7 @@ export default class Sphere {
         });
 
         // Make sphere less opaque on shrink
-        gsap.to(this.mesh.material,{
+        gsap.to(this._mesh.material,{
             opacity: 0.6,
             duration: 0.3,
             ease: "bounce.out",
@@ -281,7 +281,7 @@ export default class Sphere {
         });
 
         // Show title on shrink
-        gsap.to(this.labelMesh.material, {
+        gsap.to(this._labelMesh.material, {
             opacity: 1,
             duration: 0.3,
             ease: "bounce.out",
@@ -289,7 +289,7 @@ export default class Sphere {
         });
 
         // Hide text on shrink
-        gsap.to(this.hoverTextMesh.material, {
+        gsap.to(this._hoverTextMesh.material, {
             opacity: 0,
             duration: 0.12,
             ease: "bounce.out",
@@ -297,21 +297,25 @@ export default class Sphere {
         });
     }
 
+    // get _isModalOpen() {
+    //     return this._isModalOpen;
+    // }
+
     // Hover behavior
     // TODO: this may need some tweaking when multiple spheres are in the picture...
     // Update: i was right.
     handleMouseHover(mouseHover) {
         // Only proceed if the modal is closed.
-        if (!this.isModalOpen) {
+        if (!this._isModalOpen) {
 
             // If mouse is hovering and sphere is not hovered, hover sphere and swell.
-            if (mouseHover && !this.mouseHovered) {
+            if (mouseHover && !this._mouseHovered) {
                 this.swell();
-                this.mouseHovered = true;
+                this._mouseHovered = true;
 
             // If mouse is not hovering and sphere is hovered, sphere is no longer hovered and should shrink. 
-            } else if (!mouseHover && this.mouseHovered) {
-                this.mouseHovered = false;
+            } else if (!mouseHover && this._mouseHovered) {
+                this._mouseHovered = false;
                 this.shrink();
             }
         }
@@ -319,23 +323,23 @@ export default class Sphere {
 
     // Click behavior
     handleClick() {
-        if (!this.isModalOpen && this.mouseHovered) { this.openModal(); }
+        if (!this._isModalOpen && this._mouseHovered) { this.openModal(); }
     }
 
     // Modal Behavior
     // I might be re-rendering the modal every open and close but i will worry about this later....
     openModal() {
         // The mouse can no longer be considered as hovering over the sphere. 
-        this.mouseHovered = false;
+        this._mouseHovered = false;
         this.shrink();
 
         // Show the modal
-        this.isModalOpen = true;
+        this._isModalOpen = true;
         this.renderModal();
     }
 
     closeModal() {
-        this.isModalOpen = false;
+        this._isModalOpen = false;
         this.renderModal();
     }
 
@@ -343,20 +347,19 @@ export default class Sphere {
     renderModal() {
         const ModalContent = () => (
             <SphereModal
-                isOpen={this.isModalOpen}
+                isOpen={this._isModalOpen}
                 onRequestClose={() => this.closeModal()}
-                label={this.label}
-                content={this.content}
+                label={this._label}
+                content={this._content}
             />
         );
 
-        this.root.render(<ModalContent />);
+        this._root.render(<ModalContent />);
     }
 
     // Clean up method to remove the modal root when the sphere is destroyed
     destroy() {
-        this.root.unmount();
-        document.body.removeChild(this.modalRoot);
+        this._root.unmount();
+        document.body.removeChild(this._modalRoot);
     }
-
 }
