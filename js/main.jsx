@@ -4,7 +4,12 @@ import * as CANNON from 'cannon-es';
 import Sphere from './sphere.jsx';
 import ContentFeed from './contentFeed.jsx';
 import React from 'react';
+
+const ACTIVITY_PATH = 'activity';
+const PORTFOLIO_PATH = 'pf';
 //import { GUI } from 'dat.gui';
+
+
 
 // Cannon world
 const world = new CANNON.World();
@@ -72,7 +77,7 @@ async function makeFeed(folder) {
 }
 
 // Sample spheres
-const sampleSphere = new Sphere({ label: 'squid sphere', content: await makeFeed('activity') }); // this sphere uses a feed!!
+const sampleSphere = new Sphere({ label: 'squid sphere', content: await makeFeed(ACTIVITY_PATH) }); // this sphere uses a feed!!
 sampleSphere.setPosition(0, 0, 0);
 sampleSphere.addToView(scene, world);
 
