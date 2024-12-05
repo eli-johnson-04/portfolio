@@ -60,7 +60,7 @@ export default class Sphere {
         
         I will definitely need to implement left-right boundaries on the text to make it stay in view */
         
-        // Define max width of text
+        // Define max width of text.
         const maxWidth = 4;
 
         // Helper function to split the text into lines based on the max width.
@@ -78,11 +78,11 @@ export default class Sphere {
                     curveSegments: 12
                 });
                 
-                // Calculate the width of the next word
+                // Calculate the width of the next word.
                 wordGeometry.computeBoundingBox();
                 const wordWidth = wordGeometry.boundingBox.max.x - wordGeometry.boundingBox.min.x;
 
-                // If the current width + the next word is too big, add a newline
+                // If the current width + the next word is too big, add a newline.
                 if (currentWidth + wordWidth > maxWidth) { 
                     truncatedTitle += '\n';
                     currentWidth = 0;
@@ -101,20 +101,20 @@ export default class Sphere {
             text.computeBoundingBox();
             let boundingBox = text.boundingBox;
 
-            // Calculate the center of the bounding box
+            // Calculate the height of the bounding box. 
+            var height = boundingBox.max.y - boundingBox.min.y;
+
+            // Calculate the center of the bounding box.
             const centerX = (boundingBox.max.x - boundingBox.min.x) / 2;
             const centerY = (boundingBox.max.y - boundingBox.min.y) / 2;
             const centerZ = (boundingBox.max.z - boundingBox.min.z) / 2;
 
-            // Center the text geometry
+            // Center the text geometry.
             text.translate(-centerX, -centerY, -centerZ);
 
-            // Adjust the vertical position of the text
-            /* TODO: This works for now, I probably won't have huge amounts of text on the spheres, so 
-            this should work for a few words, but if I want bigger text or more text, I will need to
-            make changes. 
-            The title-esque centering with only one word doesn't look TOO bad... */ 
-            text.translate(0, (boundingBox.max.y - boundingBox.min.y) / 2, 0);
+            // Adjust the vertical position of the text. This solution sucks but currently it looks kinda okay?
+            if (height > 1) {height = height * 1.5; }
+            text.translate(0, height / 2, 0);
 
             // Bend the text geometry to wrap around the sphere
             const radiusOffset = radius + RADIUS_OFFSET;
@@ -123,19 +123,19 @@ export default class Sphere {
             for (let i = 0; i < positionAttribute.count; i++) {
                 vertex.fromBufferAttribute(positionAttribute, i);
 
-                // Calculate the angle based on the x position
+                // Calculate the angle based on the x position.
                 const angle = vertex.x / radiusOffset;
 
-                // Calculate the new position
+                // Calculate the new position.
                 const newX = radiusOffset * Math.sin(angle);
                 const newZ = radiusOffset * Math.cos(angle) - radiusOffset;
 
-                // Update vertex position
+                // Update vertex position.
                 vertex.set(newX, vertex.y, newZ);
                 positionAttribute.setXYZ(i, vertex.x, vertex.y, vertex.z);
             }
 
-            // Update position attribute
+            // Update position attribute.
             positionAttribute.needsUpdate = true;
         }
 
@@ -143,7 +143,7 @@ export default class Sphere {
         const loader = new FontLoader();
 
         loader.load('fonts/gentilis_regular.typeface.json', (font) => {
-            // Create geometries for sphere texts
+            // Create geometries for sphere texts.
             const labelText = new TextGeometry(label, {
                 font: font,
                 curveSegments: 12,
@@ -159,23 +159,23 @@ export default class Sphere {
                 depth: 0.01
             });
 
-            // Center and wrap the text geometry
+            // Center and wrap the text geometry.
             centerAndWrapToSphere(hoverTextGeometry);
             centerAndWrapToSphere(labelText);
 
-            // Construct the text to be drawn onto the sphere
-            const labelMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 1 });
+            // Construct the text to be drawn onto the sphere.
+            const labelMaterial = new THREE.MeshBasicMaterial({ color: 0x292929, transparent: true, opacity: 1 });
             const labelMesh = new THREE.Mesh(labelText, labelMaterial);
             
-            const hoverTextMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0 });
+            const hoverTextMaterial = new THREE.MeshBasicMaterial({ color: 0x292929, transparent: true, opacity: 0 });
             const hoverTextMesh = new THREE.Mesh(hoverTextGeometry, hoverTextMaterial);
 
-            // Store access to the text meshes
+            // Add the meshes as properties of the object. 
             this._labelMesh = labelMesh;
             this._hoverTextMesh = hoverTextMesh;
 
-            // Set title position and add to sphere mesh
-            labelMesh.position.set(0, 0, radius + (2 *RADIUS_OFFSET)); // 2x to prevent clipping between title and text
+            // Set title position and add to sphere mesh.
+            labelMesh.position.set(0, 0, radius + (2 * RADIUS_OFFSET)); // 2x to prevent clipping between title and text
             hoverTextMesh.position.set(0, 0, radius + RADIUS_OFFSET);
             
             this._mesh.add(labelMesh);
@@ -186,26 +186,26 @@ export default class Sphere {
         this._cannonSphere = new CANNON.Sphere(radius);
         this._cannonBody = new CANNON.Body({ mass: DEFAULT_SPHERE_MASS, shape: this._cannonSphere });
 
-        // Track hover state
+        // Track hover state.
         this._mouseHovered = false;
 
         // ---------------------MODAL SETUP---------------------
 
-        // Create a div for the modal
+        // Create a div for the modal.
         this._modalRoot = document.createElement('div');
         this._modalRoot.id = `modal-root-${this.id}`;
         document.body.appendChild(this._modalRoot);
 
-        // Initialize modal's state to false
+        // Initialize modal's state to false.
         this._isModalOpen = false;
 
-        // Bind the openModal method to the sphere
+        // Bind the openModal method to the sphere.
         this._mesh.userData.openModal = this.openModal.bind(this);
 
-        // Create the root for this sphere's modal
+        // Create the root for this sphere's modal.
         this._root = createRoot(this._modalRoot);
         
-        // Only render the modal once
+        // Only render the modal once.
         this.renderModal();
     }
 
