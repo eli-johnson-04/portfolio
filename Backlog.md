@@ -8,11 +8,14 @@
 - [x] Spheres swell when hover
 - [x] Show info on hover
 - [x] Expand into _modal?_ when clicked
-- [ ] Spheres can be customized for different modal content, either via attribute or hard-coded (using an attribute is ideal...)
+- [x] Spheres can be customized for different modal content, either via attribute or hard-coded (using an attribute is ideal...)
 - [ ] Modal holds information related to sphere customization
 - [x] Multiple spheres work indpendently of each other
 - [x] Markdown viewer library for modal
 - [x] Grab content from respective folders
+- [ ] Profile page
+- [ ] Activity feed
+- [ ] Portfolio page
 
 ## Beautification
 - [ ] Spheres have hover physics (Cannon)
@@ -24,3 +27,6 @@
 
 ## Background Cards
 - [ ] Create little background cards for every markdown file
+- [ ] Give background cards color (washed out, muted, kinda blurry) (i may be able to make these one-dimensional and have them face the camera but that could be cheap)
+- [ ] Make them fly into their respective sphere when that sphere is hovered
+- [ ] Glassy appearance effect?
