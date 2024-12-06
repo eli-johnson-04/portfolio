@@ -190,6 +190,15 @@ export default class Sphere {
         this._mouseHovered = false;
 
         // ---------------------MODAL SETUP---------------------
+        // I hate JavaScript. 
+        this._modal = () => (
+            <SphereModal
+                isOpen={this._isModalOpen}
+                onRequestClose={() => this.closeModal()}
+                label={this._label}
+                content={this._content}
+            />
+        );
 
         // Create a div for the modal.
         this._modalRoot = document.createElement('div');
@@ -321,7 +330,6 @@ export default class Sphere {
     }
 
     // Handle modal opens and closes. 
-    // I might be re-rendering the modal every open and close but i will worry about this later....
     openModal() {
         // The mouse can no longer be considered as hovering over the sphere. 
         this._mouseHovered = false;
@@ -337,18 +345,9 @@ export default class Sphere {
         this.renderModal();
     }
 
-    // Render the modal onto the screen.
+    // Render the modal onto the screen. This is horrifying and I hate that it just works. JavaScript???????
     renderModal() {
-        const ModalContent = () => (
-            <SphereModal
-                isOpen={this._isModalOpen}
-                onRequestClose={() => this.closeModal()}
-                label={this._label}
-                content={this._content}
-            />
-        );
-
-        this._root.render(<ModalContent />);
+        this._root.render(<this._modal />);
     }
 
     // Clean up method to remove the modal root when the sphere is destroyed.

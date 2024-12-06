@@ -4,11 +4,11 @@ import * as CANNON from 'cannon-es';
 import Sphere from './sphere.jsx';
 import ContentFeed from './contentFeed.jsx';
 import React from 'react';
-import gsap from 'gsap';
+import { gsap } from 'gsap';
+//import { GUI } from 'dat.gui';
 
 const ACTIVITY_PATH = 'activity';
 const PORTFOLIO_PATH = 'pf';
-//import { GUI } from 'dat.gui';
 
 // Set up Cannon world. 
 const world = new CANNON.World();
@@ -17,7 +17,7 @@ world.gravity.set(0, 0, 0); // TODO: update gravity and add some functions to sp
 // Set up scene and camera.
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 20;
+camera.position.z = 15;
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -30,8 +30,11 @@ const controls = new OrbitControls(camera, renderer.domElement);
 //controls.enabled = false;
 controls.enableDamping = true;
 controls.dampingFactor = 0.25;
-controls.enablePan = false;
+ 
+controls.keyPanSpeed = 15;
+controls.listenToKeyEvents(window);
 controls.enableZoom = false;
+
 
 // Lock orbital controls to not go past XY plane.
 controls.minAzimuthAngle = -Math.PI / 2;
@@ -78,11 +81,11 @@ async function makeFeed(folder) {
 
 // Sample spheres
 const sampleSphere = new Sphere({ label: 'Activity', hoverText: 'Recent Work and Projects', content: await makeFeed(ACTIVITY_PATH) }); // this sphere uses a feed!!
-sampleSphere.setPosition(0, 0, 0);
+sampleSphere.setPosition(-5, 0, 0);
 sampleSphere.addToView(scene, world);
 
 const sampleSphere2 = new Sphere({ label: '2 sphear', content: await makeFeed(PORTFOLIO_PATH) }); // this sphere uses a feed!!
-sampleSphere2.setPosition(10, 0, 0);
+sampleSphere2.setPosition(5, 0, 0);
 sampleSphere2.addToView(scene, world);
 
 const spheres = [sampleSphere, sampleSphere2];
