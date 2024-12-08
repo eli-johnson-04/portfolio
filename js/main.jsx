@@ -5,6 +5,7 @@ import Sphere from './sphere.jsx';
 import ContentFeed from './contentFeed.jsx';
 import React from 'react';
 import { gsap } from 'gsap';
+import { showPopup, hidePopup } from './popup.js';
 //import { GUI } from 'dat.gui';
 
 const ACTIVITY_PATH = 'activity';
@@ -172,7 +173,11 @@ async function setupScene(scene, world, sphereList) {
     console.log("Scene setup complete.");
 
     await hideLoadingScreen();
+    await new Promise(r => setTimeout(r, 1000));
+    showPopup();
 }
+
+
 
 
 // Detect mouse movement, change mouse position.
@@ -273,7 +278,6 @@ function render() {
     controls.update();
     renderer.render(scene, camera);
 }
-
 
 setupScene(scene, world, spheres);
 
