@@ -26,6 +26,7 @@
     "gsap": "^3.12.5",
     "postcss": "^8.4.47",
     "react": "^18.3.1",
+    "react-devtools": "^6.0.1",
     "react-dom": "^18.3.1",
     "react-modal": "^3.16.1",
     "three": "^0.168.0",

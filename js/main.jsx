@@ -30,7 +30,6 @@ const controls = new OrbitControls(camera, renderer.domElement);
 //controls.enabled = false;
 controls.enableDamping = true;
 controls.dampingFactor = 0.25;
- 
 controls.keyPanSpeed = 15;
 controls.listenToKeyEvents(window);
 controls.enableZoom = false;
@@ -55,8 +54,27 @@ scene.add(directionalLight);
 // const axesHelper = new THREE.AxesHelper( 5 );
 // scene.add(axesHelper); 
 
+// dat GUI
+// const gui = new GUI();
+// const sphereFolder = gui.addFolder('Sphere');
+// sphereFolder.add(sampleSphere.mesh.material, 'opacity', 0, 1);
+// sphereFolder.open();
+// const cameraFolder = gui.addFolder('Camera');
+// cameraFolder.add(camera.position, 'z', 0, 10);
+// cameraFolder.open();
+
+// Set up raycaster, mouse location, intersected objects, and reference to hovered object.
+var raycaster = new THREE.Raycaster();
+var mouse = new THREE.Vector2();
+var intersects = [];
+
+// Initial Mouse Position
+mouse.x = -1000;
+mouse.y = -1000;
+
 // Import all markdown content.
 const allContent = import.meta.glob('/*/*.md', { query: '?raw', import: 'default' });
+console.log("Markdown files successfully imported.")
 
 // Helper function that gets a specific set of markdown content. 
 async function makeFeed(folder) {
@@ -73,44 +91,46 @@ async function makeFeed(folder) {
         const md = await allContent[entry.path](); // Resolves the markdown content
         return { ...entry, md }; // Merge the content with the other data
     });
-
+    
     // Wait for all the content to be loaded. 
     const resolvedContent = await Promise.all(contentPromises);
     return <ContentFeed data={resolvedContent}/>;
 }
 
-// Sample spheres
-const sampleSphere = new Sphere({ label: 'Activity', hoverText: 'Recent Work and Projects', content: await makeFeed(ACTIVITY_PATH) }); // this sphere uses a feed!!
-sampleSphere.setPosition(-5, 0, 0);
-sampleSphere.addToView(scene, world);
+// Instantiate all relevant objects. 
+let spheres = []; // created spheres are stored in an array
+async function setupScene(scene, world, sphereList) {
+    console.log("Setting up the scene...")
 
-const sampleSphere2 = new Sphere({ label: '2 sphear', content: await makeFeed(PORTFOLIO_PATH) }); // this sphere uses a feed!!
-sampleSphere2.setPosition(5, 0, 0);
-sampleSphere2.addToView(scene, world);
+    // TODO: insert some kind of function here to show a loading screen
+    
+    // Pre-load all sphere content. 
+    const sphereData = await Promise.all([
+        makeFeed(ACTIVITY_PATH),
+        makeFeed(PORTFOLIO_PATH)
+    ]);
 
-const spheres = [sampleSphere, sampleSphere2];
+    // Create spheres with the loaded content. 
+    sphereList.push(new Sphere({
+        label: 'Activity',
+        hoverText: 'Recent Work and Projects',
+        content: sphereData[0]
+    }));
+    sphereList.push(new Sphere({
+        label: 'Portfolio',
+        content: sphereData[1]
+    }));
 
-// dat GUI
-// const gui = new GUI();
-// const sphereFolder = gui.addFolder('Sphere');
-// sphereFolder.add(sampleSphere.mesh.material, 'opacity', 0, 1);
-// sphereFolder.open();
-// const cameraFolder = gui.addFolder('Camera');
-// cameraFolder.add(camera.position, 'z', 0, 10);
-// cameraFolder.open();
+    // Set sphere positions and add them to the scene. 
+    sphereList[0].setPosition(-5, 0, 0);
+    sphereList[1].setPosition(5, 0, 0);
 
-//const sphere2 = new Sphere();
-//sphere2.setPosition(5, 0, 0);
-//sphere2.addToView(scene, world);
+    sphereList.forEach((sphere) => sphere.addToView(scene, world));
 
-// Set up raycaster, mouse location, intersected objects, and reference to hovered object.
-var raycaster = new THREE.Raycaster();
-var mouse = new THREE.Vector2();
-var intersects = [];
+    console.log("Scene setup complete.");
+    // todo: call function to hide loading screen after setup. 
+}
 
-// Initial Mouse Position
-mouse.x = -1000;
-mouse.y = -1000;
 
 // Detect mouse movement, change mouse position.
 function mouseMove(event) {
@@ -210,6 +230,9 @@ function render() {
     controls.update();
     renderer.render(scene, camera);
 }
+
+
+setupScene(scene, world, spheres);
 
 window.addEventListener('resize', onWindowResize, false);
 window.addEventListener('mousemove', mouseMove);

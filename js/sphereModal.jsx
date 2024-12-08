@@ -68,7 +68,7 @@ const SphereModal = ({ isOpen, onRequestClose, label, content }) => {
             style={customStyling}
         >
             <div className="flex items-center w-full pb-2">
-                <span className="ml-4 flex-grow font-gentilis font-medium text-5xl text-neutral-900 pb-1 truncate">
+                <span className="ml-4 mt-2 flex-grow font-gentilis font-medium text-5xl text-neutral-900 pb-1 truncate">
                     {label}
                 </span>
                 <button 
