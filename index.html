@@ -19,8 +19,39 @@
   </style>
 </head>
 <body>
+  <div id="loading-screen" 
+       class="select-none flex flex-col justify-center items-center text-white bg-black fixed w-full h-full 
+            transition-opacity duration-500 ease-in-out opacity-0 pointer-events-auto z-20"
+      >
+    <h1 class="text-6xl font-gentilis font-semibold mb-4">
+      Loading...
+    </h1>
+    <div class="spinner w-10 h-10 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
+  </div>
+  <style>
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 255, 255, 0.3);
+      border-top: 5px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    /* Keyframes for spinning animation */
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+
   <script src="http://localhost:8097"></script>
   <div id="root"></div>
-  <script src="js/main.jsx" type="module"></script>
+  <script class="z-10" src="js/main.jsx" type="module"></script>
 </body>
 </html>

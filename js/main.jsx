@@ -72,9 +72,15 @@ var intersects = [];
 mouse.x = -1000;
 mouse.y = -1000;
 
+
+let ready = false;
+async function waitForApproval() {
+    while (!ready) {}
+}
+
 // Import all markdown content.
 const allContent = import.meta.glob('/*/*.md', { query: '?raw', import: 'default' });
-console.log("Markdown files successfully imported.")
+console.log("Finished importing markdown files.")
 
 // Helper function that gets a specific set of markdown content. 
 async function makeFeed(folder) {
@@ -97,12 +103,47 @@ async function makeFeed(folder) {
     return <ContentFeed data={resolvedContent}/>;
 }
 
-// Instantiate all relevant objects. 
-let spheres = []; // created spheres are stored in an array
-async function setupScene(scene, world, sphereList) {
+// Get the loading screen and make it visible, then change the fade-out time. 
+async function showLoadingScreen() {
+    const screen = document.getElementById('loading-screen');
+
+    // Start fade-in transition. 
+    screen.classList.remove('opacity-0');
+    screen.classList.add('opacity-100');
+    
+    // Wait for fade-in to complete. 
+    await new Promise(r => setTimeout(r, 500));
+
+    // Extend fade-out transition length. 
+    screen.classList.remove('duration-500');
+    screen.classList.add('duration-[1500ms]');
+}
+
+// Get the loading screen and hide it, but make it clickable through it. Then remove the screen. 
+async function hideLoadingScreen() {
+    const screen = document.getElementById('loading-screen');
+
+    // Allow user to click behind loading screen before animation finishes. 
+    screen.classList.remove('pointer-events-auto');
+    screen.classList.add('pointer-events-none');
+
+    // Start fade-out transition. 
+    screen.classList.remove('opacity-100');
+    screen.classList.add('opacity-0');
+
+    // Wait for fade-out to complete and delete the screen. 
+    await new Promise(r => setTimeout(r, 1500));
+    screen.parentNode.removeChild(screen);
+}
+
+// Created spheres are stored in an array. 
+var spheres = [];
+
+// Import data and set up all visible objects. 
+async function setupScene(scene, world, sphereList) {    
     console.log("Setting up the scene...")
 
-    // TODO: insert some kind of function here to show a loading screen
+    await showLoadingScreen();
     
     // Pre-load all sphere content. 
     const sphereData = await Promise.all([
@@ -126,9 +167,11 @@ async function setupScene(scene, world, sphereList) {
     sphereList[1].setPosition(5, 0, 0);
 
     sphereList.forEach((sphere) => sphere.addToView(scene, world));
+    await new Promise(r => setTimeout(r, 1000));
 
     console.log("Scene setup complete.");
-    // todo: call function to hide loading screen after setup. 
+
+    await hideLoadingScreen();
 }
 
 
