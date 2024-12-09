@@ -246,7 +246,7 @@ function onClick(event) {
 
         // Check if a sphere was clicked, and handle the click
         if (obj.userData.instance instanceof Sphere) {
-            // The sphere's scale will be set to slightly more than the distance between the camera and the sphere. 
+            // The sphere's scale will be set to the distance between the camera and the sphere. 
             const cameraPos = new THREE.Vector3();
             camera.getWorldPosition(cameraPos);
 
