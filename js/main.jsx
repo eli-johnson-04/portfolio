@@ -173,7 +173,7 @@ async function setupScene(scene, world, sphereList) {
     console.log("Scene setup complete.");
 
     await hideLoadingScreen();
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, 150));
     showPopup();
 }
 
@@ -245,7 +245,17 @@ function onClick(event) {
         let obj = intersects[0].object;
 
         // Check if a sphere was clicked, and handle the click
-        if (obj.userData.instance instanceof Sphere) {obj.userData.instance.handleClick(); }
+        if (obj.userData.instance instanceof Sphere) {
+            // The sphere's scale will be set to slightly more than the distance between the camera and the sphere. 
+            const cameraPos = new THREE.Vector3();
+            camera.getWorldPosition(cameraPos);
+
+            const spherePos = new THREE.Vector3();
+            obj.userData.instance._mesh.getWorldPosition(spherePos);
+
+            const cameraDist = cameraPos.distanceTo(spherePos);
+            obj.userData.instance.handleClick(cameraDist); 
+        }
     }
 }
 

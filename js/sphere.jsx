@@ -308,12 +308,12 @@ export default class Sphere {
     }
 
     // Animation for opening modal.
-    explode() {
-        // Explode the sphere.
+    explode(cameraDistance) {
+        // Explode the sphere up to the distance between the sphere and the camera. 
         gsap.to(this._mesh.scale, {
-            x: 10, 
-            y: 10, 
-            z: 10, 
+            x: cameraDistance, 
+            y: cameraDistance, 
+            z: cameraDistance, 
             duration: 0.4,
             ease: "bounce.out",
             overwrite: "auto"
@@ -355,15 +355,17 @@ export default class Sphere {
     }
 
     // Handle click behavior.
-    handleClick() {
-        if (!this._isModalOpen && this._mouseHovered) { this.openModal(); }
+    handleClick(cameraDistance) {
+        if (!this._isModalOpen && this._mouseHovered) { 
+            this.explode(cameraDistance);
+            this.openModal(); 
+        }
     }
 
     // Handle modal opens and closes. 
     openModal() {
         // The mouse can no longer be considered as hovering over the sphere. 
         this._mouseHovered = false;
-        this.explode();
 
         // Show the modal
         this._isModalOpen = true;
