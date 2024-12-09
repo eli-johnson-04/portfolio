@@ -15,13 +15,14 @@ const DEFAULT_SPHERE_MASS = 1
 const TEXT_SIZE = 0.5
 const RADIUS_OFFSET = 0.01
 
+const DEFAULT_SPHERE_OPACITY = 0.6
+
 // Create the custom swell ease. 
 gsap.registerPlugin(CustomEase);
 CustomEase.create(
     "swell", 
     "M0,0 C0,0 0.039,-0.121 0.096,-0.121 0.236,-0.121 0.279,0.504 0.319,0.634 0.333,0.681 0.376,0.8 0.46,0.833 0.671,0.914 0.686,1.1 0.686,1.1 0.686,1.006 1,1 1,1 "
 );
-
 Modal.setAppElement('#root');
 
 export default class Sphere {
@@ -45,7 +46,7 @@ export default class Sphere {
             color: color, 
             wireframe: wireframe, 
             transparent: false,
-            opacity: 0.6,
+            opacity: DEFAULT_SPHERE_OPACITY,
             roughness: 0.35, 
             metalness: 0.1,
             clearcoat: 0.3,
@@ -283,7 +284,7 @@ export default class Sphere {
 
         // Make sphere less opaque on shrink
         gsap.to(this._mesh.material,{
-            opacity: 0.6,
+            opacity: DEFAULT_SPHERE_OPACITY,
             duration: 0.3,
             ease: "bounce.out",
             overwrite: "auto"
@@ -306,6 +307,35 @@ export default class Sphere {
         });
     }
 
+    // Animation for opening modal.
+    explode() {
+        // Explode the sphere.
+        gsap.to(this._mesh.scale, {
+            x: 10, 
+            y: 10, 
+            z: 10, 
+            duration: 0.4,
+            ease: "bounce.out",
+            overwrite: "auto"
+        });
+
+        // Make the sphere invisible.
+        gsap.to(this._mesh.material, {
+            opacity: 0,
+            duration: 0.2,
+            ease: "bounce.out",
+            overwrite: "auto"
+        });
+
+        // Hide the hover text.
+        gsap.to(this._hoverTextMesh.material, {
+            opacity: 0,
+            duration: 0.1,
+            ease: "bounce.out",
+            overwrite: "auto"
+        });
+    }
+
     // Handle hover behavior. 
     handleMouseHover(mouseHover) {
         // Only proceed if the modal is closed.
@@ -324,7 +354,7 @@ export default class Sphere {
         }
     }
 
-    // Handle click behavior/ 
+    // Handle click behavior.
     handleClick() {
         if (!this._isModalOpen && this._mouseHovered) { this.openModal(); }
     }
@@ -333,7 +363,7 @@ export default class Sphere {
     openModal() {
         // The mouse can no longer be considered as hovering over the sphere. 
         this._mouseHovered = false;
-        this.shrink();
+        this.explode();
 
         // Show the modal
         this._isModalOpen = true;
@@ -343,6 +373,7 @@ export default class Sphere {
     closeModal() {
         this._isModalOpen = false;
         this.renderModal();
+        this.shrink();
     }
 
     // Render the modal onto the screen. This is horrifying and I hate that it just works. JavaScript???????
