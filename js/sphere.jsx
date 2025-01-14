@@ -98,6 +98,7 @@ export default class Sphere {
 
         // Helper function for centering then spherically wrapping text geometry.
         // TODO: need to center JUSTIFY the text!!!!!
+        // TODO: less spacing between lines
         function centerAndWrapToSphere(text) {
             // Find the bounding box of the text geometry to center the geometry on the sphere. 
             text.computeBoundingBox();
