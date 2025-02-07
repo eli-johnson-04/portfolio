@@ -22,8 +22,8 @@ export function showPopup() {
     popup.classList.add(...classes);
     popup.innerHTML = `
         <div class="w-full">
-            <h1 class="text-xl font-semibold mb-3">Welcome!</h1>
-            <p class="mb-4">You can use the mouse and arrow keys to interact with this world.</p>
+            <h1 class="text-xl font-semibold mb-3 select-none">Welcome!</h1>
+            <p class="mb-4 select-none">You can use the mouse and arrow keys to interact with this world.</p>
             <button 
                     class="close-btn text-xl"
             >
