@@ -6,6 +6,7 @@ import ContentFeed from './contentFeed.jsx';
 import React from 'react';
 import { gsap } from 'gsap';
 import { showPopup, hidePopup } from './popup.js';
+import ProfileContent from './profileContent.jsx';
 //import { GUI } from 'dat.gui';
 
 const ACTIVITY_PATH = 'activity';
@@ -163,10 +164,16 @@ async function setupScene(scene, world, sphereList) {
         hoverText: 'View Completed Projects',
         content: sphereData[1]
     }));
+    sphereList.push(new Sphere({
+        label: 'Profile',
+        hoverText: 'About Me',
+        content: <ProfileContent/>
+    }))
 
     // Set sphere positions and add them to the scene. 
-    sphereList[0].setPosition(-5, 0, 0);
-    sphereList[1].setPosition(5, 0, 0);
+    sphereList[0].setPosition(-5, -2, 0);
+    sphereList[1].setPosition(5, -2, 0);
+    sphereList[2].setPosition(0, 3, 2);
 
     sphereList.forEach((sphere) => sphere.addToView(scene, world));
     await new Promise(r => setTimeout(r, 1000));
