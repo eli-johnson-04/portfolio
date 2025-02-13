@@ -24,9 +24,12 @@ const SphereModal = ({ isOpen, onRequestClose, label, content }) => {
             padding: '20px',
             borderRadius: '10px',
             width: '60%',
-            height: '75%',
+            maxHeight: '90vh',
             backgroundColor: 'rgba(224, 224, 224, 0.95)',
             opacity: 0,
+            overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
         },
     };
 
@@ -93,7 +96,7 @@ const SphereModal = ({ isOpen, onRequestClose, label, content }) => {
                     Close
                 </button>
             </div>
-            <div className="p-0 flex-grow">{content}</div>
+            <div className="rounded-lg p-0 flex-grow overflow-none">{content}</div>
         </Modal>
     );
 };
