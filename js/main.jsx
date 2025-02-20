@@ -286,28 +286,23 @@ function render() {
     spheres.forEach((sphere) => {
         // Calculate the direction to the camera.
         // TODO: make the text stay horizontal, certain plane always faces user???
-        const spherePos = sphere._mesh.getWorldPosition(new THREE.Vector3());
+        const targetRotation = new THREE.Quaternion();
 
-        // Define a fixed "up" vector to keep the text horizontal.
-        const up = new THREE.Vector3(0, 1, 0);
+        // Calculate the direction to the camera.
+        sphere._mesh.lookAt(cameraPos);
+        targetRotation.copy(sphere._mesh.quaternion);
 
-        // Create a matrix to orient the sphere toward the camera while maintaining "up".
-        const lookAtMatrix = new THREE.Matrix4();
-        lookAtMatrix.lookAt(cameraPos, spherePos, up);
-
-        // Extract the quaternion from the matrix.
-        const targetQuaternion = new THREE.Quaternion().setFromRotationMatrix(lookAtMatrix);
-
-        // Use GSAP to smoothly interpolate the sphere's quaternion rotation to the target rotation.
+        // Use GSAP to smoothly interpolate the sphere's quaternion rotation to the targetRotation.
         gsap.to(sphere._mesh.quaternion, {
-            x: targetQuaternion.x,
-            y: targetQuaternion.y,
-            z: targetQuaternion.z,
-            w: targetQuaternion.w,
-            duration: 0.08, // Smoothness
-            ease: "expo-in", 
-            overwrite: "auto" 
+            x: targetRotation.x,
+            y: targetRotation.y, 
+            z: targetRotation.z,
+            w: targetRotation.w,
+            duration: 1, // Smoothness
+            ease: "expo-in",
+            overwrite: "auto"
         });
+
 
         // Update the hovering effects of each sphere.
         const time = performance.now() / 1000;
