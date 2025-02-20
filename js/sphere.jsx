@@ -8,6 +8,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Modal from 'react-modal';
 import SphereModal from './sphereModal.jsx';
+import { createNoise3D } from 'simplex-noise';
 
 const DEFAULT_SPHERE_RADIUS = 3
 const DEFAULT_SPHERE_COLOR = 0xe8e8f0
@@ -24,6 +25,9 @@ CustomEase.create(
     "M0,0 C0,0 0.039,-0.121 0.096,-0.121 0.236,-0.121 0.279,0.504 0.319,0.634 0.333,0.681 0.376,0.8 0.46,0.833 0.671,0.914 0.686,1.1 0.686,1.1 0.686,1.006 1,1 1,1 "
 );
 Modal.setAppElement('#root');
+
+// Initialize SimplexNoise instance.
+const simplex3D = createNoise3D(Math.random);
 
 export default class Sphere {
     constructor({
@@ -55,6 +59,10 @@ export default class Sphere {
         this._mesh = new THREE.Mesh(this._geometry, this._material);
         this._mesh.userData = { instance: this };
         this._mesh.receiveShadow = true;
+
+        // Store the current position of the sphere. 
+        this._mesh.position.set(0, 0, 0);
+        this._position = this._mesh.position;
 
         /* I could add a more pronounced up-down hover effect with slight left-right rotation (gamecube analogy)
         for a pretty visual effect :D 
@@ -188,6 +196,17 @@ export default class Sphere {
         // ---------------------CANNON.JS OBJECT SETUP---------------------
         this._cannonSphere = new CANNON.Sphere(radius);
         this._cannonBody = new CANNON.Body({ mass: DEFAULT_SPHERE_MASS, shape: this._cannonSphere });
+        this._cannonBody.type = CANNON.Body.KINEMATIC;
+
+        // Random offsets for noise generation. This will be used in the sphere's hovering effect.
+        this._noiseOffsets = {
+            x: Math.random() * 1000,
+            y: Math.random() * 1000,
+            z: Math.random() * 1000
+        };
+
+        this._noiseScale = 0.003; // Controls the intensity of sphere movement
+        this._noiseSpeed = 0.5; // Controls the speed of sphere movement
 
         // Track hover state.
         this._mouseHovered = false;
@@ -223,6 +242,21 @@ export default class Sphere {
 
     setPosition(x = 0, y = 0, z = 0) {
         this._mesh.position.set(x, y, z); // may need to tinker with z-pos when content cards are behind circles
+        this._position = this._mesh.position;
+    }
+
+    updateHover(time) {
+        // Use Perlin noise for smooth oscillations.
+        const xOffset = simplex3D(this._noiseOffsets.x + this._noiseSpeed * time, 0, 0) * this._noiseScale;
+        const yOffset = simplex3D(0, this._noiseOffsets.y + this._noiseSpeed * time, 0) * this._noiseScale;
+        const zOffset = simplex3D(0, 0, this._noiseOffsets.z + this._noiseSpeed * time) * this._noiseScale;
+
+        // Apply the new position while keeping the sphere near its initial position.
+        this._mesh.position.set(
+            this._position.x + xOffset,
+            this._position.y + yOffset,
+            this._position.z + zOffset
+        );
     }
 
     // Add the sphere to the Three scene and the Cannon world.

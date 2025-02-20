@@ -21,11 +21,11 @@
 - [x] Favicon
 
 ## Beautification
-- [ ] Spheres have hover physics (Cannon)
+- [x] Spheres have hover physics
 - [ ] Spheres are attached to the center sphere with lines (either rigid or wavy)
 - [x] Modal ~~open~~ fade-in animation
 - [x] Modal **explosion** animation
-- [ ] Push around the spheres with the mouse (not super far), but they gravitate back to their original spot
+- [ ] Push around the spheres with the mouse (not super far), but they gravitate back to their original spot (rubber band)
 - [X] Hide the scrollbar in modals or make the right-hand side still curved as intended
 - [ ] More responsive sphere hover ease
 

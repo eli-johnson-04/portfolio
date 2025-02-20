@@ -36,10 +36,24 @@ controls.keyPanSpeed = 15;
 controls.listenToKeyEvents(window);
 controls.enableZoom = false;
 
-
 // Lock orbital controls to not go past XY plane.
 controls.minAzimuthAngle = -Math.PI / 2;
 controls.maxAzimuthAngle = Math.PI / 2;
+
+// Add a slight camera tilt for immersion. 
+// document.addEventListener("mousemove", (event) => {
+//     const mouseX = (event.clientX / window.innerWidth) * 2 - 1; // Normalize to range [-1,1]
+//     const mouseY = (event.clientY / window.innerHeight) * 2 - 1;
+
+//     const tiltAmount = 0.05;
+
+//     gsap.to(camera.rotation, {
+//         x: mouseY * tiltAmount,
+//         y: mouseX * tiltAmount,
+//         duration: 0.5,
+//         ease: "power2.out"
+//     });
+// });
 
 // Set up lighting. 
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -186,8 +200,6 @@ async function setupScene(scene, world, sphereList) {
 }
 
 
-
-
 // Detect mouse movement, change mouse position.
 function mouseMove(event) {
     mouse.x = ( event.clientX / window.innerWidth) * 2 - 1;
@@ -296,6 +308,10 @@ function render() {
             ease: "expo-in", 
             overwrite: "auto" 
         });
+
+        // Update the hovering effects of each sphere.
+        const time = performance.now() / 1000;
+        sphere.updateHover(time);
     });
 
     requestAnimationFrame(render);
