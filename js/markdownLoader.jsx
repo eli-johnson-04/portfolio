@@ -28,9 +28,9 @@ export default class markdownLoader {
             return { ...entry, md }; // Merge the content with the other data
         });
         
-        // Wait for all the content to be loaded. 
-        const resolvedContent = await Promise.all(contentPromises);
-        console.log(resolvedContent);
+        // Wait for all the content to be loaded and sort it in reverse chronological order.
+        const resolvedContent = (await Promise.all(contentPromises));
+        resolvedContent.sort((a, b) => b.id.localeCompare(a.id));
         return <ContentFeed data={resolvedContent}/>;
     }
 }
