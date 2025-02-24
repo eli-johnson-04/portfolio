@@ -2,11 +2,11 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as CANNON from 'cannon-es';
 import Sphere from './sphere.jsx';
-import ContentFeed from './contentFeed.jsx';
 import React from 'react';
 import { gsap } from 'gsap';
 import { showPopup, hidePopup } from './popup.js';
 import ProfileContent from './profileContent.jsx';
+import markdownLoader from './markdownLoader.jsx';
 //import { GUI } from 'dat.gui';
 
 const ACTIVITY_PATH = 'activity';
@@ -88,37 +88,6 @@ var intersects = [];
 mouse.x = -1000;
 mouse.y = -1000;
 
-
-let ready = false;
-async function waitForApproval() {
-    while (!ready) {}
-}
-
-// Import all markdown content.
-const allContent = import.meta.glob('/*/*.md', { query: '?raw', import: 'default' });
-console.log("Finished importing markdown files.")
-
-// Helper function that gets a specific set of markdown content. 
-async function makeFeed(folder) {
-    // Filter out the specified content. 
-    const entries = Object.entries(allContent)
-        .filter(([path]) => path.includes(`/${folder}/`))
-        .map(([path, entry]) => {
-            const id = path.split(`/${folder}/`)[1].replace('.md', '');
-            return { path, id }; 
-        });
-
-    // Resolve the content of all markdown files. 
-    const contentPromises = entries.map(async (entry) => {
-        const md = await allContent[entry.path](); // Resolves the markdown content
-        return { ...entry, md }; // Merge the content with the other data
-    });
-    
-    // Wait for all the content to be loaded. 
-    const resolvedContent = await Promise.all(contentPromises);
-    return <ContentFeed data={resolvedContent}/>;
-}
-
 // Get the loading screen and make it visible, then change the fade-out time. 
 async function showLoadingScreen() {
     const screen = document.getElementById('loading-screen');
@@ -152,19 +121,16 @@ async function hideLoadingScreen() {
     screen.parentNode.removeChild(screen);
 }
 
-// Created spheres are stored in an array. 
-var spheres = [];
-
 // Import data and set up all visible objects. 
-async function setupScene(scene, world, sphereList) {    
+async function setupScene(scene, world, sphereList, mdLoader) {    
     console.log("Setting up the scene...")
 
     await showLoadingScreen();
     
     // Pre-load all sphere content. 
     const sphereData = await Promise.all([
-        makeFeed(ACTIVITY_PATH),
-        makeFeed(PORTFOLIO_PATH)
+        mdLoader.makeFeed(ACTIVITY_PATH),
+        mdLoader.makeFeed(PORTFOLIO_PATH)
     ]);
 
     // Create spheres with the loaded content. 
@@ -198,7 +164,6 @@ async function setupScene(scene, world, sphereList) {
     await new Promise(r => setTimeout(r, 150));
     showPopup();
 }
-
 
 // Detect mouse movement, change mouse position.
 function mouseMove(event) {
@@ -316,7 +281,13 @@ function render() {
     renderer.render(scene, camera);
 }
 
-setupScene(scene, world, spheres);
+
+// Import data and set up the scene. 
+var mdl = new markdownLoader();
+mdl.importAllMarkdown();
+var spheres = []; // Created spheres are stored in an array.
+setupScene(scene, world, spheres, mdl);
+
 
 window.addEventListener('resize', onWindowResize, false);
 window.addEventListener('mousemove', mouseMove);
