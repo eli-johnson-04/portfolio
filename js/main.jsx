@@ -288,7 +288,6 @@ mdl.importAllMarkdown();
 var spheres = []; // Created spheres are stored in an array.
 setupScene(scene, world, spheres, mdl);
 
-
 window.addEventListener('resize', onWindowResize, false);
 window.addEventListener('mousemove', mouseMove);
 window.addEventListener('click', onClick, false);

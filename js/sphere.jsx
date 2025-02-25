@@ -54,7 +54,7 @@ export default class Sphere {
             roughness: 0.35, 
             metalness: 0.1,
             clearcoat: 0.3,
-            clearcoatRoughness: 0.8
+            clearcoatRoughness: 0.8,
             });
         this._mesh = new THREE.Mesh(this._geometry, this._material);
         this._mesh.userData = { instance: this };
