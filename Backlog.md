@@ -19,7 +19,8 @@
 - [ ] SPLASH/LOADING PAGE BEFORE SPHERES ARE READY
     - Once I figure out how users will interact, provide that information on this page! I can also put a small notification guy in the bottom left corner or something as a reminder with a button to close the popup
 - [x] Favicon
-- [ ] COLLAPSIBLE ENTRIES
+- [x] COLLAPSIBLE ENTRIES
+- [ ] Smooth when collapsing an entry
 
 ## Beautification
 - [x] Spheres have hover physics
