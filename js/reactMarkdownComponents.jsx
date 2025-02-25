@@ -4,21 +4,21 @@ import React, { useState, useEffect } from "react";
 const MarkdownToHTMLComponentStyles = {
     h1: ({ node, ...props }) => (
         <h1
-            className="text-3xl font-bold text-gray-800 mb-5 pb-2 border-b border-gray-300"
+            className="text-2xl font-semibold text-gray-800 mt-5 mb-3"
             style={{ fontFamily: 'Gentilis' }}
             {...props}
         />
     ),
     h2: ({ node, ...props }) => (
         <h2
-            className="text-2xl font-semibold text-gray-700 mt-5 mb-3"
+            className="text-xl font-semibold text-gray-800 mt-3 mb-2"
             style={{ fontFamily: 'Gentilis' }}
             {...props}
         />
     ),
     h3: ({ node, ...props }) => (
         <h3
-            className="text-xl font-semibold text-gray-700 mt-3 mb-2"
+            className="text-lg font-medium text-gray-800"
             style={{ fontFamily: 'Gentilis' }}
             {...props}
         />
@@ -77,10 +77,11 @@ const MarkdownToHTMLComponentStyles = {
             {...props}
         />
     ),
+    // TODO: need to center justify images!!!
     img: ({ node, ...props }) => (
         <div className="justify-center my-4 ">
             <img
-                className="w-full h-full object-cover rounded-lg shadow-md max-w-full border-gray-300"
+                className="w-auto h-auto object-cover rounded-lg shadow-md max-w-full border-gray-300"
                 style={{
                     fontFamily: 'Gentilis',
                     border: '1px solid #d1d5db',

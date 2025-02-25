@@ -1,4 +1,3 @@
-# Linux Operating System Modifications
 ## Custom Boot Message and Syscalls
 ### Boot Message
 For the first part of this project, I worked with a modified version of Android Linux to add a custom boot message. By adding the following line in the Linux boot routine *init/main.c*, I was able to print a message before the kernel finished booting (after recompiling and reinstalling the entire kernel multiple times through the learning process).
