@@ -10,6 +10,16 @@ module.exports = {
       fontFamily: {
         gentilis: ['Gentilis', 'sans-serif'],
       },
+      scale: {
+        '102': '1.02',
+      },
+    },
+  },
+  variants: {
+    extend: {
+      boxShadow: ['hover'],
+      backgroundColor: ['hover'],
+      scale: ['hover'],
     },
   },
   plugins: [

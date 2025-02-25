@@ -1,12 +1,12 @@
-## Custom Boot Message and Syscalls
-### Boot Message
+# Custom Boot Message and Syscalls
+## Boot Message
 For the first part of this project, I worked with a modified version of Android Linux to add a custom boot message. By adding the following line in the Linux boot routine *init/main.c*, I was able to print a message before the kernel finished booting (after recompiling and reinstalling the entire kernel multiple times through the learning process).
 
 `pr_err("\n##### Elijah Johnson - I found the boot routine! #####\n");`
 
 In my operating systems course, this was a fundamental step in learning how to navigate the complex architecture of a kernel.
 
-### Syscalls
+## Syscalls
 The second part of the project was far more involved. I added a system-wide and globally-tracked process log level, which determined a "filter" for which processes could log to the ring buffer. It sits atop the Linux logging system, and follows the same 0-7 level constraint. The Linux levels and corresponding custom **process log levels** are as follows: 
 
 0. KERN_EMERG   - PROC_OVERRIDE
@@ -23,7 +23,7 @@ After adding the syscalls to the 64-bit syscall table for x86 architectures, I d
 ![Syscall Tests](/images/pf/syscall-tests.png)
 *A screenshot of the ring buffer after running my test suite.*
 
-## Memory Manager
+# Memory Manager
 Part 2 involved the design and creation of a static memory management library. I obtained a large initial space from the OS, then maintained used and free spaces with a variety of allocation strategies while handing out blocks to other processes. Key operations included:
 - Initialization with a specified word size and # of words
 - Securing a space from the OS to be "rented out"
@@ -37,7 +37,7 @@ This project was brutal, but it fostered a real enjoyment of manual memory manag
 
 Smart pointers are cool. 
 
-## Doom .WAD Filesystem Library
+# Doom .WAD Filesystem Library
 By far the coolest project of the three, I implemented a system that reads a custom .WAD file and interprets the inner structure as a filesystem. The header data of the .WAD contains the number and location of the file descriptors, where the descriptor list was at the end of the file and lump data was in the middle. 
 
 My libWad filesystem uses a stack-based traversal of the nested file structure to create descriptor objects of varying types represented in both a hierarchical tree and a rapid-access map. The library features operations that enable a FUSE daemon to get information about each file and directory and be mounted directly to Linux! I was able to interface with the now-antiquated Doom map file as a valid filesystem. FUSE was interesting as well, I never considered that custom filesystems could be necessary until I started looking online about how to use the thing. 

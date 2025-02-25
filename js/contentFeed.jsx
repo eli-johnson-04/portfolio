@@ -18,22 +18,29 @@ const ContentFeed = ({ data }) => {
     // Return a set of HTML generated from markdown using ReactMarkdown. 
     return (
         <div className="my-4 mx-2 max-h-[60vh] overflow-y-auto overscroll-auto scrollbar-thin scrollbar-webkit">
-            {data.map((entry) => (
-                <div key={entry.id} className="m-4 pb-4 rounded-xl border-2 border-gray-600 px-2 pt-2">
-                    <div className="cursor-pointer"
-                    onClick={() => toggleVisibility(entry.id)}
+            {data.map((entry) => {
+                const isCollapsed = !visibleEntryIds[entry.id];
+                return (
+                    <div 
+                        key={entry.id} 
+                        onClick={() => toggleVisibility(entry.id)}
+                        className={`m-4 pb-4 rounded-xl px-2 pt-2 transition-transform duration-100 ease-in-out ${
+                            isCollapsed ? 'hover:shadow-lg hover:bg-gray-100 hover:scale-[1.02]' : 'border-2 border-gray-600'
+                        }`}
                     >
-                        <h1 className="text-3xl font-bold text-gray-800">{extractName(entry.id)}</h1>
-                        <h1 className="text-sm font-semibold text-gray-800">{extractDate(entry.id)}</h1>
-                    </div>
-                    {visibleEntryIds[entry.id] && (
                         <div>
-                            <div className="pb-2 border-b border-gray-300"/>
-                            <ReactMarkdown components={MarkdownToHTMLComponentStyles}>{entry.md}</ReactMarkdown>
+                            <h1 className="text-3xl font-bold text-gray-800">{extractName(entry.id)}</h1>
+                            <h1 className="text-sm font-semibold text-gray-800">{extractDate(entry.id)}</h1>
                         </div>
-                    )}
-                </div>
-            ))}
+                        {!isCollapsed && (
+                            <div>
+                                <div className="pb-2 border-b border-gray-300"/>
+                                <ReactMarkdown components={MarkdownToHTMLComponentStyles}>{entry.md}</ReactMarkdown>
+                            </div>
+                        )}
+                    </div>
+                );
+            })}
         </div>
     );
 };
