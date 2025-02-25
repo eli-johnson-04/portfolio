@@ -25,7 +25,7 @@ After adding the syscalls to the 64-bit syscall table for x86 architectures, I d
 *A screenshot of the ring buffer after running my test suite.*
 
 ## Memory Manager
-Part 2 involved the design and creation of a static memory management library. I obtained an initial large space from the OS, then maintained used and free spaces with a variety of allocation strategies while handing out blocks to other processes. Key operations included:
+Part 2 involved the design and creation of a static memory management library. I obtained a large initial space from the OS, then maintained used and free spaces with a variety of allocation strategies while handing out blocks to other processes. Key operations included:
 - Initialization with a specified word size and # of words
 - Securing a space from the OS to be "rented out"
 - Creating a pointer to "rented" blocks for requesting process to use
@@ -41,7 +41,7 @@ Smart pointers are cool.
 ## Doom .WAD Filesystem Library
 By far the coolest project of the three, I implemented a system that reads a custom .WAD file and interprets the inner structure as a filesystem. The header data of the .WAD contains the number and location of the file descriptors, where the descriptor list was at the end of the file and lump data was in the middle. 
 
-My libWad filesystem would use a stack-based traversal of the nested file structure to create descriptor objects of varying types represented in both a hierarchical tree and a rapid-access map. The library featured operations that would enable a FUSE daemon to get information about each file and directory and be mounted directly to Linux! I was able to interface with the now-antiquated Doom map file as a valid filesystem. FUSE was interesting as well, I never considered that custom filesystems could be necessary until I started looking online about how to use the thing. 
+My libWad filesystem uses a stack-based traversal of the nested file structure to create descriptor objects of varying types represented in both a hierarchical tree and a rapid-access map. The library features operations that enable a FUSE daemon to get information about each file and directory and be mounted directly to Linux! I was able to interface with the now-antiquated Doom map file as a valid filesystem. FUSE was interesting as well, I never considered that custom filesystems could be necessary until I started looking online about how to use the thing. 
 
 Nonetheless I was able to permit common file operations (touch, mkdir, rm, cp, etc) and copying in/out large files, a staunchly empowering success after many hours behind the screen. If I didn't learn *anything* from writing a C++ memory manager, I definitely did here. Reading and writing and rewriting to byte offsets was tedious to keep up with and required of me an attention to detail and incredible amount of whiteboard time I had not previously encountered in my study. I loved it. 
 
