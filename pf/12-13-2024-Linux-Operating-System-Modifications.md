@@ -54,4 +54,4 @@ Nonetheless I was able to permit common file operations (touch, mkdir, rm, cp, e
 > 
 > -Me
 
-Keywords: syscalls, boot messages, Linux kernel, dmesg, ring buffer, Valgrind, memory management, pointers, alloc/free, allocation strategies, static library, filesystems, FUSE, mounting
+*Keywords: syscalls, boot messages, Linux kernel, dmesg, ring buffer, Valgrind, memory management, pointers, alloc/free, allocation strategies, static library, filesystems, FUSE, mounting*
