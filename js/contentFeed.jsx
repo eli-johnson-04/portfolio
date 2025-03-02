@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from 'rehype-raw'; // Handles raw HTML rendering
 import MarkdownToHTMLComponentStyles from "./reactMarkdownComponents";
 
 // Creates a feed out of markdown entries. 
@@ -35,7 +36,7 @@ const ContentFeed = ({ data }) => {
                         {!isCollapsed && (
                             <div>
                                 <div className="pb-2 border-b border-gray-300"/>
-                                <ReactMarkdown components={MarkdownToHTMLComponentStyles}>{entry.md}</ReactMarkdown>
+                                <ReactMarkdown components={MarkdownToHTMLComponentStyles} rehypePlugins={[rehypeRaw]}>{entry.md}</ReactMarkdown>
                             </div>
                         )}
                     </div>

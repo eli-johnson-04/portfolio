@@ -79,7 +79,7 @@ const MarkdownToHTMLComponentStyles = {
     ),
     // TODO: need to center justify images!!!
     img: ({ node, ...props }) => (
-        <div className="justify-center my-4 ">
+        <div className="flex justify-center my-4 ">
             <img
                 className="w-auto h-auto object-cover rounded-lg shadow-md max-w-full border-gray-300"
                 style={{
@@ -104,6 +104,19 @@ const MarkdownToHTMLComponentStyles = {
             rel="noopener noreferrer"
             {...props}
         />
+    ),
+    iframe: ({ node, ...props }) => (
+        <div className="flex justify-center my-4">
+            <iframe
+                className="w-full max-w-4xl h-[500px] border-0 rounded-lg shadow-md"
+                style={{
+                    fontFamily: 'Gentilis',
+                }}
+                {...props}
+                width="100%"  // Override width
+                height="500px"  // Override height
+            ></iframe>
+        </div>
     ),
 };
 
