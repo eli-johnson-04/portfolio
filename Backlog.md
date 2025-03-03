@@ -34,9 +34,10 @@
 - [ ] More responsive sphere hover ease
 - [ ] Add a spring for sphere random movement and responsiveness to mouse!
 - [ ] fix the powerpoint embed stealing focus
+- [x] Add starry background
 
 
-## Background Cards
+## Background Cards - maybe now background STARS?????
 - [ ] Create little background cards for every markdown file
 - [ ] Give background cards color (washed out, muted, kinda blurry) (i may be able to make these one-dimensional and have them face the camera but that could be cheap)
 - [ ] Make them fly into their respective sphere when that sphere is hovered
