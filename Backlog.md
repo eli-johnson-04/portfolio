@@ -33,6 +33,7 @@
 - [X] Hide the scrollbar in modals or make the right-hand side still curved as intended
 - [ ] More responsive sphere hover ease
 - [ ] Add a spring for sphere random movement and responsiveness to mouse!
+- [ ] fix the powerpoint embed stealing focus
 
 
 ## Background Cards
