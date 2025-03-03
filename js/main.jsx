@@ -7,7 +7,11 @@ import { gsap } from 'gsap';
 import { showPopup, hidePopup } from './popup.js';
 import ProfileContent from './profileContent.jsx';
 import markdownLoader from './markdownLoader.jsx';
+import SkyDome from './SkyDome.js';
 //import { GUI } from 'dat.gui';
+
+const SCENE_LAYER = 0;
+const SKYDOME_LAYER = 1;
 
 const ACTIVITY_PATH = 'activity';
 const PORTFOLIO_PATH = 'pf';
@@ -19,6 +23,7 @@ world.gravity.set(0, 0, 0); // TODO: update gravity and add some functions to sp
 // Set up scene and camera.
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.layers.enable(SKYDOME_LAYER);
 camera.position.z = 15;
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -63,6 +68,11 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
 directionalLight.position.set(-6, 3.5, 8);
 scene.add(directionalLight);
 
+// Add the skydome to the scene. 
+var skydomeInstance = SkyDome.getInstance();
+skydomeInstance.skyDomeMesh.layers.set(SKYDOME_LAYER);
+scene.add(skydomeInstance.skyDomeMesh);
+
 // Axes helper
 /* X is red
    Y is green
@@ -87,6 +97,7 @@ var intersects = [];
 // Initial Mouse Position
 mouse.x = -1000;
 mouse.y = -1000;
+
 
 // Get the loading screen and make it visible, then change the fade-out time. 
 async function showLoadingScreen() {
@@ -137,17 +148,20 @@ async function setupScene(scene, world, sphereList, mdLoader) {
     sphereList.push(new Sphere({
         label: 'Activity',
         hoverText: 'Recent Work and Projects',
-        content: sphereData[0]
+        content: sphereData[0],
+        layer: SCENE_LAYER
     }));
     sphereList.push(new Sphere({
         label: 'Portfolio',
         hoverText: 'View Completed Projects',
-        content: sphereData[1]
+        content: sphereData[1],
+        layer: SCENE_LAYER
     }));
     sphereList.push(new Sphere({
         label: 'Profile',
         hoverText: 'About Me',
-        content: <ProfileContent/>
+        content: <ProfileContent/>,
+        layer: SCENE_LAYER
     }))
 
     // Set sphere positions and add them to the scene. 
@@ -174,8 +188,9 @@ function mouseMove(event) {
 // Handle hover behavior.
 function checkHover() {
     // Update the raycaster with camera and cursor positions.
+    raycaster.layers.set(SCENE_LAYER);
     raycaster.setFromCamera(mouse, camera);
-    intersects = raycaster.intersectObjects(scene.children);
+    intersects = raycaster.intersectObjects(scene.children, true);
 
     // If an object is detected to be hovered over.
     if (intersects.length > 0) {
@@ -278,6 +293,7 @@ function render() {
 
     checkHover();
     controls.update();
+    SkyDome.updateClock();
     renderer.render(scene, camera);
 }
 

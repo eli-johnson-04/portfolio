@@ -38,7 +38,8 @@ export default class Sphere {
             segments = 128, 
             color = DEFAULT_SPHERE_COLOR, 
             wireframe = false ,
-            content = null
+            content = null,
+            layer = null,
             } = {}) {
 
         this._content = content;
@@ -59,6 +60,7 @@ export default class Sphere {
         this._mesh = new THREE.Mesh(this._geometry, this._material);
         this._mesh.userData = { instance: this };
         this._mesh.receiveShadow = true;
+        if (layer) this._mesh.layers.set(layer);
 
         // Store the current position of the sphere. 
         this._mesh.position.set(0, 0, 0);
