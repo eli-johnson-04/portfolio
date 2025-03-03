@@ -21,6 +21,8 @@
 - [x] Favicon
 - [x] COLLAPSIBLE ENTRIES
 - [ ] Smooth when collapsing an entry
+- [x] Add styling and support for embeds
+- [ ] add a hover popup on portfolio entries for keywords
 
 ## Beautification
 - [x] Spheres have hover physics
