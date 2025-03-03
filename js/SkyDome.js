@@ -16,7 +16,7 @@ const SkyDome = (() => {
                 env_c2: { value: new THREE.Color("#0f8682") },
                 noiseOffset: { value: new THREE.Vector3(100.01, 100.01, 100.01) },
                 starSize: { value: 0.01 },
-                starDensity: { value: 0.09 },
+                starDensity: { value: 0.15 },
                 clusterStrength: { value: 0.2 },
                 clusterSize: { value: 0.2 },
                 time: { value: 0 }
