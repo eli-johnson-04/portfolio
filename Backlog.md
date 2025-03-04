@@ -28,6 +28,7 @@
 - [ ] fix portfolio activity entry styling
     - [ ] Smooth when collapsing an entry in activity or portfolio
     - [ ] add a hover popup on portfolio entries for keywords
+        - have markdownLoader class add a property for a string of keywords and extract the keywords from the end of the "md" property and put them here, then contentFeed can create a tooltip using the keywords property of each entry
 - [ ] SPLASH/LOADING PAGE BEFORE SPHERES ARE READY
     - Once I figure out how users will interact, provide that information on this page! I can also put a small notification guy in the bottom left corner or something as a reminder with a button to close the popup
         - popup auto-close timer (with notification?)
