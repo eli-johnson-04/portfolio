@@ -5,6 +5,9 @@
     - Maybe I can place all markdown folders into a larger markdown folder? This way all the content will be grabbed for the cards but I can still have it organized
     - I'm doing both :D
 
+## Code-based changes
+- [ ] large-scale refactoring, mostly in Sphere.jsx
+- [ ] convert pngs to jpgs to save space
 
 ## Necessary Functionality
 - [x] Spheres swell when hover
