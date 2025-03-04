@@ -11,7 +11,8 @@ There were several major components of my time travelling through the country:
 - Producing technology to solve problems for local organizations
 - Project pitches, update presentations, and a final showcase
 - Concurrently taking courses on applications of software engineering and user experience design
-- Concentrating on SDLC, Agile methods, and comprehensive documentation of current knowledge, assessments and plans, and future goals
+- Concentrating on the software development life cycle and Agile methods
+- Heavy focus on composing comprehensive project and handoff documentation of current knowledge, assessments and plans, and future goals
 - Learning about UXD through the lens of the African perspective
 - Serving as a consultant to four other software teams
 - Instruction on incorporating AI into my workflow while avoiding parasitism
@@ -56,7 +57,7 @@ We succeeded.
 
 They were thrilled with all our designs - our results were simple and functional, yet responsive and inviting. We conducted think-aloud sessions and our most successful one was with the least tech-literate member on the Ark team. She had only two minor errors that was solely due to a verbose section of text in a Noah tutorial. 
 
-I had just completed my software engineering course and was able to directly employ the software development life cycle and Agile methods, I exercised leadership and project direction with a vision for a better online presence, and got my hands dirty teaching myself a variety of design techniques, web development systems, JavaScript and CSS, and I was blessed to do work with other incredibly talented individuals. Further, my teammates and I served as consultants for designs, programmatic and software engineering questions, SDLC flow issues, and presentation components for four other teams solving technology problems with other companies in Accra. 
+I practiced a variety of hard and soft skills while in the Asante Region. I had just completed my software engineering course and was able to directly employ the software development life cycle and Agile methods. I exercised leadership and project direction with a vision for a better online presence. I got my hands dirty teaching myself a variety of design techniques, web development systems, JavaScript and CSS. Finally, I was blessed to do work with other incredibly talented individuals. On top of all this, my teammates and I served as consultants for designs, programmatic and software engineering questions, SDLC flow issues, and presentation components for four other teams solving technology problems with other companies in Accra. 
 
 I arrived in Ghana with no expectations and I was floored at almost every turn with the richness of culture, of food, of nature, and the kindness of those I worked with and met. I was fortunate to have done, seen, tasted, or experienced just about everything worth visiting the country for, and I would love to go back. 
 
