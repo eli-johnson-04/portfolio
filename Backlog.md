@@ -14,34 +14,37 @@
 - [x] Show info on hover
 - [x] Expand into modal when clicked
 - [x] Spheres can be customized for different modal content, either via attribute or hard-coded (using an attribute is ideal...)
-- [ ] Modal holds information related to sphere customization
+- [ ] Modal holds information related to sphere customization (i have no idea what i meant here)
 - [x] Multiple spheres work indpendently of each other
 - [x] Markdown viewer library for modal
 - [x] Grab content from respective folders
-- [ ] Complete Profile page
-- [ ] Complete Activity feed (up to date)
-- [ ] Complete Portfolio page with grid for content (somehow make responsive and dynam ic??) ((completeness derermined by an entry for each master resume project))
-- [ ] SPLASH/LOADING PAGE BEFORE SPHERES ARE READY
-    - Once I figure out how users will interact, provide that information on this page! I can also put a small notification guy in the bottom left corner or something as a reminder with a button to close the popup
 - [x] Favicon
 - [x] COLLAPSIBLE ENTRIES
-- [ ] Smooth when collapsing an entry
 - [x] Add styling and support for embeds
-- [ ] add a hover popup on portfolio entries for keywords
+- [ ] Complete Profile page
+    - [ ] fix visibility of text and make appearance consistent across varying screen sizes
+- [ ] Complete Activity feed (up to date)
+- [ ] Complete Portfolio page with grid for content (somehow make responsive and dynam ic??) ((completeness determined by an entry for each master resume project))
+- [ ] fix portfolio activity entry styling
+    - [ ] Smooth when collapsing an entry in activity or portfolio
+    - [ ] add a hover popup on portfolio entries for keywords
+- [ ] SPLASH/LOADING PAGE BEFORE SPHERES ARE READY
+    - Once I figure out how users will interact, provide that information on this page! I can also put a small notification guy in the bottom left corner or something as a reminder with a button to close the popup
+        - popup auto-close timer (with notification?)
 - [ ] fix any weird issues related to sphere-mouse interaction after the text rotation refactor
 
 ## Beautification
 - [x] Spheres have hover physics
-- [ ] Spheres are attached to the center sphere with lines (either rigid or wavy)
 - [x] Modal ~~open~~ fade-in animation
 - [x] Modal **explosion** animation
 - [X] Hide the scrollbar in modals or make the right-hand side still curved as intended
+- [x] Add starry background
+- [x] Text rotates independently of the parent sphere
+- [ ] Spheres are attached to the center sphere with lines (either rigid or wavy)
 - [ ] More responsive sphere hover ease
 - [ ] Add a spring for sphere random movement and responsiveness to mouse!
 - [ ] Push around the spheres with the mouse (not super far), but they gravitate back to their original spot (rubber band)
 - [ ] fix the powerpoint embed stealing focus
-- [x] Add starry background
-- [x] Text rotates independently of the parent sphere
 
 
 ## Background Cards - maybe now background STARS?????
