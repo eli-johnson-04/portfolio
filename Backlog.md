@@ -45,6 +45,7 @@
 - [ ] Add a spring for sphere random movement and responsiveness to mouse!
 - [ ] Push around the spheres with the mouse (not super far), but they gravitate back to their original spot (rubber band)
 - [ ] fix the powerpoint embed stealing focus
+- [ ] explore normal and bump maps and other kinds of maps for a "realistic" planet
 
 
 ## Background Cards - maybe now background STARS?????
