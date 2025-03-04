@@ -264,24 +264,36 @@ function render() {
     // Make all the spheres face the camera!
     const cameraPos = camera.getWorldPosition(new THREE.Vector3());
     spheres.forEach((sphere) => {
-        // Calculate the direction to the camera.
         // TODO: make the text stay horizontal, certain plane always faces user???
-        const targetRotation = new THREE.Quaternion();
+        if (sphere._labelMesh && sphere._hoverTextMesh) {
+            // Calculate the direction to the camera.
+            const targetRotation = new THREE.Quaternion();
 
-        // Calculate the direction to the camera.
-        sphere._mesh.lookAt(cameraPos);
-        targetRotation.copy(sphere._mesh.quaternion);
+            // Calculate the direction to the camera.
+            sphere._labelMesh.lookAt(cameraPos);
+            sphere._hoverTextMesh.lookAt(cameraPos);
+            targetRotation.copy(sphere._labelMesh.quaternion);
 
-        // Use GSAP to smoothly interpolate the sphere's quaternion rotation to the targetRotation.
-        gsap.to(sphere._mesh.quaternion, {
-            x: targetRotation.x,
-            y: targetRotation.y, 
-            z: targetRotation.z,
-            w: targetRotation.w,
-            duration: 1, // Smoothness
-            ease: "expo-in",
-            overwrite: "auto"
-        });
+            // Use GSAP to smoothly interpolate the sphere's quaternion rotation to the targetRotation.
+            gsap.to(sphere._labelMesh.quaternion, {
+                x: targetRotation.x,
+                y: targetRotation.y, 
+                z: targetRotation.z,
+                w: targetRotation.w,
+                duration: 1, // Smoothness
+                ease: "expo-in",
+                overwrite: "auto"
+            });
+            gsap.to(sphere._hoverTextMesh.quaternion, {
+                x: targetRotation.x,
+                y: targetRotation.y, 
+                z: targetRotation.z,
+                w: targetRotation.w,
+                duration: 1, // Smoothness
+                ease: "expo-in",
+                overwrite: "auto"
+            });
+        }
 
 
         // Update the hovering effects of each sphere.
