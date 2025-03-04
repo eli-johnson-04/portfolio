@@ -3,6 +3,8 @@
 ## Decisions
 - Need to decide if I want to have markdown folders _or_ if I want to have a naming scheme instead (this would potentially make it easier to display all the files as background cards)
     - Maybe I can place all markdown folders into a larger markdown folder? This way all the content will be grabbed for the cards but I can still have it organized
+    - I'm doing both :D
+
 
 ## Necessary Functionality
 - [x] Spheres swell when hover
@@ -13,9 +15,9 @@
 - [x] Multiple spheres work indpendently of each other
 - [x] Markdown viewer library for modal
 - [x] Grab content from respective folders
-- [ ] Profile page
-- [ ] Activity feed
-- [ ] Portfolio page with grid for content (somehow make responsive and dynam ic??)
+- [ ] Complete Profile page
+- [ ] Complete Activity feed (up to date)
+- [ ] Complete Portfolio page with grid for content (somehow make responsive and dynam ic??) ((completeness derermined by an entry for each master resume project))
 - [ ] SPLASH/LOADING PAGE BEFORE SPHERES ARE READY
     - Once I figure out how users will interact, provide that information on this page! I can also put a small notification guy in the bottom left corner or something as a reminder with a button to close the popup
 - [x] Favicon
@@ -23,22 +25,24 @@
 - [ ] Smooth when collapsing an entry
 - [x] Add styling and support for embeds
 - [ ] add a hover popup on portfolio entries for keywords
+- [ ] fix any weird issues related to sphere-mouse interaction after the text rotation refactor
 
 ## Beautification
 - [x] Spheres have hover physics
 - [ ] Spheres are attached to the center sphere with lines (either rigid or wavy)
 - [x] Modal ~~open~~ fade-in animation
 - [x] Modal **explosion** animation
-- [ ] Push around the spheres with the mouse (not super far), but they gravitate back to their original spot (rubber band)
 - [X] Hide the scrollbar in modals or make the right-hand side still curved as intended
 - [ ] More responsive sphere hover ease
 - [ ] Add a spring for sphere random movement and responsiveness to mouse!
+- [ ] Push around the spheres with the mouse (not super far), but they gravitate back to their original spot (rubber band)
 - [ ] fix the powerpoint embed stealing focus
 - [x] Add starry background
+- [x] Text rotates independently of the parent sphere
 
 
 ## Background Cards - maybe now background STARS?????
-- [ ] Create little background cards for every markdown file
+- [ ] Create little background cards (or STARS????) for every markdown file
 - [ ] Give background cards color (washed out, muted, kinda blurry) (i may be able to make these one-dimensional and have them face the camera but that could be cheap)
 - [ ] Make them fly into their respective sphere when that sphere is hovered
 - [ ] Glassy appearance effect?
