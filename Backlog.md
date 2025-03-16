@@ -32,7 +32,7 @@
 - [ ] SPLASH/LOADING PAGE BEFORE SPHERES ARE READY
     - Once I figure out how users will interact, provide that information on this page! I can also put a small notification guy in the bottom left corner or something as a reminder with a button to close the popup
         - popup auto-close timer (with notification?)
-- [ ] fix any weird issues related to sphere-mouse interaction after the text rotation refactor
+- [ ] fix weird issues where clicking text does not register as clicking the sphere
 
 ## Beautification
 - [x] Spheres have hover physics
