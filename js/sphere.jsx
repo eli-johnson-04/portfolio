@@ -18,6 +18,7 @@ const RADIUS_OFFSET = 0.01;
 const TEXT_OFFSET = 0.05;
 
 const DEFAULT_SPHERE_OPACITY = 0.6;
+const TEXT_LAYER = 2;
 
 // Create the custom swell ease. 
 gsap.registerPlugin(CustomEase);
@@ -164,6 +165,9 @@ export default class Sphere {
         // Add the label and hovertext meshes to this sphere. 
         this._labelMesh.add(labelTextMesh);
         this._hoverTextMesh.add(hoverTextMesh);
+
+        this._labelMesh.layers.set(TEXT_LAYER);
+        this._hoverTextMesh.layers.set(TEXT_LAYER);
 
         this._labelMesh.name = "labelMeshContainerMesh";
         this._hoverTextMesh.name = "hoverTextMeshContainerMesh";
