@@ -23,7 +23,8 @@
 - [x] COLLAPSIBLE ENTRIES
 - [x] Add styling and support for embeds
 - [ ] Complete Profile page
-    - [ ] fix visibility of text and make appearance consistent across varying screen sizes
+    - [ ] fix visibility of text 
+    - [ ] MAKE APPEARANCE CONSISTENT ACROSS VARYING SCREEN SIZES
 - [ ] Complete Activity feed (up to date)
 - [ ] Complete Portfolio page with grid for content (somehow make responsive and dynam ic??) ((completeness determined by an entry for each master resume project))
 - [ ] fix portfolio activity entry styling
