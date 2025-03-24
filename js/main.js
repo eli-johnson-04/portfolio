@@ -160,7 +160,7 @@ async function setupScene(scene, world, sphereList, mdLoader) {
     sphereList.push(new Sphere({
         label: 'Profile',
         hoverText: 'About Me',
-        content: <ProfileContent/>,
+        //content: <ProfileContent/>,
         layer: SCENE_LAYER
     }))
 
