@@ -10,9 +10,9 @@ export default defineConfig({
     assetsInlineLimit: 0, // Ensure assets like fonts are not inlined
   },
   resolve: {
-    extensions: ['.js', '.jsx'], // Ensure .jsx files are resolved
+    extensions: ['.jsx', '.js'], // Ensure .jsx files are resolved
   },
-  base: '/portfolio/dist', // Use relative paths for assets
+  base: '/portfolio/', // Use relative paths for assets
   root: './', // Set the root to the current directory
   server: {
     open: true, // Open the browser when the server starts
