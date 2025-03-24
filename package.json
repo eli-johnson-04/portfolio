@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run build:css && vite build",
     "serve": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:css": "npx tailwindcss -i ./css/styles.css -o ./css/output.css --watch"
+    "build:css": "npx tailwindcss -i ./css/styles.css -o ./css/output.css"
   },
   "keywords": [],
   "author": "",
