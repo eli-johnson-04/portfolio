@@ -28,4 +28,4 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }} # Use the default GitHub Pages token
-        publish_dir: ./build
+        publish_dir: ./dist
