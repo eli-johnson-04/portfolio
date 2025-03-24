@@ -3,7 +3,7 @@ import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import * as CANNON from 'cannon-es';
 import { gsap } from 'gsap';
-import CustomEase from 'gsap/customEase';
+import CustomEase from 'gsap/CustomEase';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Modal from 'react-modal';
