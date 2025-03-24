@@ -3,7 +3,7 @@ name: Deploy Portfolio to GitHub Pages
 on:
   push:
     branches:
-      - dev # TEMPORARILY RUN ON DEV BRANCH WHILE WORKING OUT THE KINKS
+      - dev
 
 jobs:
   build:
@@ -16,16 +16,16 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '20'  # Specify the Node.js version you need
+        node-version: '20'
 
     - name: Install dependencies
       run: npm install
 
     - name: Build the project
-      run: npm run build  # This will run both the CSS build and the Vite build
+      run: npm run build
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-        publish_dir: ./build  # Ensure this matches your Vite build output directory
+        github_token: ${{ secrets.GITHUB_TOKEN }} # Use the default GitHub Pages token
+        publish_dir: ./build

@@ -74,7 +74,7 @@ export default class Sphere {
         // ----------------------FONT LOADING----------------------------
         // Based on font loading example from Three.JS docs.
         const loader = new FontLoader();
-        loader.load('fonts/gentilis_regular.typeface.json', this.onFontLoaded.bind(this));
+        loader.load('./fonts/gentilis_regular.typeface.json', this.onFontLoaded.bind(this));
 
         // ---------------------CANNON.JS OBJECT SETUP---------------------
         this._cannonSphere = new CANNON.Sphere(radius);
