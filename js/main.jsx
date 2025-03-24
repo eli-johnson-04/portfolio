@@ -243,7 +243,7 @@ function onClick(event) {
     // If something is clicked
     if (intersects.length > 0) {
         let obj = intersects[0].object;
-        console.log(obj);
+        //console.log(obj);
 
         // Check if a sphere was clicked, and handle the click
         // TODO: find a way to make any child meshes that are clicked cause the major mesh to be considered clicked!

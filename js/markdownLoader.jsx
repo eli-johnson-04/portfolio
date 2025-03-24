@@ -10,6 +10,7 @@ export default class markdownLoader {
     importAllMarkdown() {
         this.allContent = import.meta.glob('/*/*.md', { query: '?raw', import: 'default' });
         console.log("Finished importing markdown files.");
+        //console.log(this.allContent);
     }
 
     // Helper function that gets a specific set of markdown content. 
