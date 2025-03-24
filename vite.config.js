@@ -6,6 +6,12 @@ export default defineConfig({
   root: './', // Set the root to the current directory
   build: {
     outDir: 'build', // Output directory for the build
+    rollupOptions: {
+      input: {
+        main: './index.html'
+      },
+      external: []
+    }
   },
   base: '',
   server: {
