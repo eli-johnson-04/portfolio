@@ -8,12 +8,13 @@ export default defineConfig({
       input: './index.html',
     },
     assetsInlineLimit: 0, // Ensure assets like fonts are not inlined
+    sourcemap: true, 
   },
   resolve: {
     extensions: ['.jsx', '.js'], // Ensure .jsx files are resolved
   },
   base: '/portfolio/', // Use relative paths for assets
-  root: './', // Set the root to the current directory
+  root: '', // Set the root to the current directory
   server: {
     open: true, // Open the browser when the server starts
   },
