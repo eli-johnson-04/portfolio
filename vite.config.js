@@ -9,10 +9,13 @@ export default defineConfig({
       input: './index.html',
     },
   },
-  base: '',
+  resolve: {
+    extensions: ['.js', '.jsx'], // Ensure .jsx files are resolved
+  },
+  base: '', // Ensure relative paths for assets
   root: './', // Set the root to the current directory
   server: {
     open: true, // Open the browser when the server starts
   },
-  assetsInclude: ['**/*.md']
+  assetsInclude: ['**/*.md'],
 });
