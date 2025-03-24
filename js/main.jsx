@@ -238,11 +238,12 @@ function onClick(event) {
 
     // Upodate the ray with camera and cursor positions.
     raycaster.setFromCamera(mouse, camera);
-    intersects = raycaster.intersectObjects(scene.children);
+    intersects = raycaster.intersectObjects(scene.children, true);
 
     // If something is clicked
     if (intersects.length > 0) {
         let obj = intersects[0].object;
+        console.log(obj);
 
         // Check if a sphere was clicked, and handle the click
         // TODO: find a way to make any child meshes that are clicked cause the major mesh to be considered clicked!
