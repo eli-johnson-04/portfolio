@@ -7,6 +7,11 @@ export default defineConfig({
     outDir: 'build', // Output directory for the build
     rollupOptions: {
       input: './index.html',
+      output: {
+        entryFileNames: `assets/[name].js`, // structure defining how output files are named
+        chunkFileNames: `assets/[name].js`,
+        assetFileNames: `assets/[name].[ext]`
+      },
     },
   },
   resolve: {
