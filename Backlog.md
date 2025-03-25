@@ -35,8 +35,10 @@
     - Once I figure out how users will interact, provide that information on this page! I can also put a small notification guy in the bottom left corner or something as a reminder with a button to close the popup
         - popup auto-close timer (with notification?)
 - [ ] fix weird issues where clicking text does not register as clicking the sphere
+- [ ] prevent spheres from getting too close to each other
 
 ## Beautification
+- [ ] functionality for mobile (touch screens)!!!!
 - [x] Spheres have hover physics
 - [x] Modal ~~open~~ fade-in animation
 - [x] Modal **explosion** animation
