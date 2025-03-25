@@ -30,7 +30,7 @@ module.exports = {
           scrollbarColor: "rgb(185, 185, 185) rgb(222, 222, 222)"
         },
         ".scrollbar-webkit": {
-          "$::-webkit-scrollbar": {
+          "&::-webkit-scrollbar": {
             width: "12px", // Thin scrollbar
             height: "0" // Hide the arrows if needed
           },
