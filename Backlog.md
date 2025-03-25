@@ -34,7 +34,7 @@
 - [ ] SPLASH/LOADING PAGE BEFORE SPHERES ARE READY
     - Once I figure out how users will interact, provide that information on this page! I can also put a small notification guy in the bottom left corner or something as a reminder with a button to close the popup
         - popup auto-close timer (with notification?)
-- [ ] fix weird issues where clicking text does not register as clicking the sphere
+- [x] fix weird issues where clicking text does not register as clicking the sphere
 - [ ] prevent spheres from getting too close to each other
 
 ## Beautification
