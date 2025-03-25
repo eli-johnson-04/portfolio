@@ -24,6 +24,9 @@ jobs:
     - name: Build the project
       run: npm run build  # This will run both the CSS build and the Vite build
 
+    - name: List output files
+      run: ls -R build/  # Print out the files in the build directory to ensure the build was successful
+
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
