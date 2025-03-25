@@ -3,7 +3,7 @@ name: Deploy Portfolio to GitHub Pages
 on:
   push:
     branches:
-      - dev # TEMPORARILY RUN ON DEV BRANCH WHILE WORKING OUT THE KINKS
+      - main
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '20'  # Specify the Node.js version you need
+        node-version: '20' 
 
     - name: Install dependencies
       run: npm install
@@ -34,4 +34,4 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: dist  # Ensure this matches your Vite build output directory
+        publish_dir: dist 
