@@ -35,7 +35,7 @@
     - Once I figure out how users will interact, provide that information on this page! I can also put a small notification guy in the bottom left corner or something as a reminder with a button to close the popup
         - popup auto-close timer (with notification?)
 - [x] fix weird issues where clicking text does not register as clicking the sphere
-- [ ] prevent spheres from getting too close to each other
+- [x] prevent spheres from getting too close to each other (temporarily fixed, i do not yet have an elkegant solution other than reducing motion intensity)
 
 ## Beautification
 - [ ] functionality for mobile (touch screens)!!!!
