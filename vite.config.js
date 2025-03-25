@@ -4,13 +4,13 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: 'build', // Output directory for the build
+    outDir: 'dist', // Output directory for the build
     rollupOptions: {
       input: './index.html',
       output: {
-        entryFileNames: `assets/[name].js`, // structure defining how output files are named
-        chunkFileNames: `assets/[name].js`,
-        assetFileNames: `assets/[name].[ext]`
+        entryFileNames: `assets/[name].[hash].js`, // structure defining how output files are named
+        chunkFileNames: `assets/[name].[hash].js`,
+        assetFileNames: `assets/[name].[hash].[ext]`
       },
     },
   },
