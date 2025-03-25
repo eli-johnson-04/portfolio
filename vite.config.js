@@ -17,7 +17,7 @@ export default defineConfig({
   resolve: {
     extensions: ['.js', '.jsx'], // Ensure .jsx files are resolved
   },
-  base: '', // Ensure relative paths for assets
+  base: './', // Ensure relative paths for assets
   root: './', // Set the root to the current directory
   server: {
     open: true, // Open the browser when the server starts
