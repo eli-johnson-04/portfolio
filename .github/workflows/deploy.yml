@@ -3,7 +3,7 @@ name: Deploy Portfolio to GitHub Pages
 on:
   push:
     branches:
-      - dev
+      - main
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: 20
+        node-version: '20' 
 
     - name: Install dependencies
       run: npm install
@@ -24,8 +24,14 @@ jobs:
     - name: Build the project
       run: npm run build
 
+    - name: List output files
+      run: ls -R dist/  # Print out the files in the build directory to ensure the build was successful
+
+    - name: Create .nojekyll file
+      run: touch dist/.nojekyll  # Create a .nojekyll file to prevent GitHub Pages from ignoring files starting with an underscore
+
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }} # Use the default GitHub Pages token
-        publish_dir: ./dist
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: dist 
