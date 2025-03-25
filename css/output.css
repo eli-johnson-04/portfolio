@@ -763,6 +763,10 @@ video {
   height: 8rem;
 }
 
+.h-\[500px\] {
+  height: 500px;
+}
+
 .h-auto {
   height: auto;
 }
@@ -793,6 +797,10 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.max-w-4xl {
+  max-width: 56rem;
 }
 
 .max-w-full {
@@ -929,6 +937,10 @@ video {
 
 .border {
   border-width: 1px;
+}
+
+.border-0 {
+  border-width: 0px;
 }
 
 .border-2 {
@@ -1274,7 +1286,7 @@ video {
   scrollbar-color: rgb(185, 185, 185) rgb(222, 222, 222);
 }
 
-.scrollbar-webkit $::-webkit-scrollbar {
+.scrollbar-webkit::-webkit-scrollbar {
   width: 12px;
   height: 0;
 }
