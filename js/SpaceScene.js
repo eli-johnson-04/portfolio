@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import Sphere from './sphere.jsx';
 import SkyDome from './SkyDome.js';
 
 export default class SpaceScene {
@@ -106,15 +107,31 @@ export default class SpaceScene {
         this.raycaster.setFromCamera(this.mouse, this.camera);
         const intersects = this.raycaster.intersectObjects(this.scene.children, true);
 
+        // If an object is detected to be hovered over.
         if (intersects.length > 0) {
             const obj = intersects[0].object;
-            if (obj.userData.instance) {
-                const sphere = obj.userData.instance;
-                this.spheres.forEach(s => s.handleMouseHover(s === sphere));
-            }
 
-        } else
+            if (obj.userData.instance instanceof Sphere) {
+                // If there is a modal open, no spheres should be hoverable. 
+                this.spheres.forEach(s => {
+                    if (s._isModalOpen)
+                        return;
+                })
+    
+                // Only enable hovering if no modal is open.
+                obj.userData.instance.handleMouseHover(true);
+    
+                // Cancel the hover of any other hovered spheres.
+                this.spheres.forEach(s => {
+                    if (!(s === obj.userData.instance)) {
+                        s.handleMouseHover(false);
+                    }
+                });
+            }
+        } else {
+            // If not hovered, tell the spheres
             this.spheres.forEach(s => s.handleMouseHover(false));
+        }
     }
 
     onWindowResize() {

@@ -32,6 +32,9 @@ Modal.setAppElement('#root');
 const simplex3D = createNoise3D(Math.random);
 
 export default class Sphere {
+    // Static members to improve performance. 
+    static #font = null;
+
     constructor({
             label = 'Default Sphere',
             hoverText = 'Default Hover Text', 
@@ -58,9 +61,9 @@ export default class Sphere {
             metalness: 0.1,
             clearcoat: 0.3,
             clearcoatRoughness: 0.8,
-            map: new THREE.TextureLoader().load(
-                'textures/2k_eris_fictional.jpg'
-                )
+            // map: new THREE.TextureLoader().load(
+            //     'textures/2k_eris_fictional.jpg'
+            //     )
             });
         this._mesh = new THREE.Mesh(this._geometry, this._material);
         this._mesh.userData = { instance: this };
@@ -72,9 +75,15 @@ export default class Sphere {
         this._position = this._mesh.position;      
 
         // ----------------------FONT LOADING----------------------------
-        // Based on font loading example from Three.JS docs.
-        const loader = new FontLoader();
-        loader.load('./fonts/gentilis_regular.typeface.json', this.onFontLoaded.bind(this));
+        // Only load the font if it has not been loaded yet. 
+        if (!Sphere.#font) {
+            const loader = new FontLoader();
+            loader.load('./fonts/gentilis_regular.typeface.json', (font) => {
+                Sphere.#font = font;
+                this.onFontLoaded(font);
+            });
+        }
+        else this.onFontLoaded(Sphere.#font);
 
         // ---------------------CANNON.JS OBJECT SETUP---------------------
         this._cannonSphere = new CANNON.Sphere(radius);
