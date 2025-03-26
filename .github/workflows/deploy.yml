@@ -22,7 +22,7 @@ jobs:
       run: npm install
 
     - name: Build the project
-      run: npm run build  # This will run both the CSS build and the Vite build
+      run: npm run build
 
     - name: List output files
       run: ls -R dist/  # Print out the files in the build directory to ensure the build was successful

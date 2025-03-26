@@ -74,7 +74,7 @@ export default class Sphere {
         // ----------------------FONT LOADING----------------------------
         // Based on font loading example from Three.JS docs.
         const loader = new FontLoader();
-        loader.load('fonts/gentilis_regular.typeface.json', this.onFontLoaded.bind(this));
+        loader.load('./fonts/gentilis_regular.typeface.json', this.onFontLoaded.bind(this));
 
         // ---------------------CANNON.JS OBJECT SETUP---------------------
         this._cannonSphere = new CANNON.Sphere(radius);
@@ -88,7 +88,7 @@ export default class Sphere {
             z: Math.random() * 1000
         };
 
-        this._noiseScale = 0.003; // Controls the intensity of sphere movement
+        this._noiseScale = 0.002; // Controls the intensity of sphere movement
         this._noiseSpeed = 0.5; // Controls the speed of sphere movement
 
         // Track hover state.
