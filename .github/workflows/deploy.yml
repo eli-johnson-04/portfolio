@@ -3,7 +3,8 @@ name: Deploy Portfolio to GitHub Pages
 on:
   push:
     branches:
-      - main
+      #- main
+      - dev # FOR TESTING
 
 jobs:
   build:
