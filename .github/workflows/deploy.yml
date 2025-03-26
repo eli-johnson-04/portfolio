@@ -46,7 +46,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
         compression-level: 6
-        overwrite: false
+        overwrite: true
         include-hidden-files: false
 
   deploy: 
