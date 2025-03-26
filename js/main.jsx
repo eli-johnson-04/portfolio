@@ -27,19 +27,22 @@ async function setupScene(spaceWorld) {
             label: 'Activity',
             hoverText: 'Recent Work and Projects',
             content: sphereData[0],
-            layer: SpaceScene.SCENE_LAYER
+            layer: SpaceScene.SCENE_LAYER,
+            texturePath: 'textures/Pluto.webp',
         }),
         new Sphere({
             label: 'Portfolio',
             hoverText: 'View Completed Projects',
             content: sphereData[1],
-            layer: SpaceScene.SCENE_LAYER
+            layer: SpaceScene.SCENE_LAYER,
+            texturePath: 'textures/Callisto-0.webp',
         }),
         new Sphere({
             label: 'Profile',
             hoverText: 'About Me',
             content: <ProfileContent />,
-            layer: SpaceScene.SCENE_LAYER
+            layer: SpaceScene.SCENE_LAYER,
+            texturePath: 'textures/Eris.webp',
         })
     ];
 

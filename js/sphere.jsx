@@ -44,6 +44,7 @@ export default class Sphere {
             wireframe = false ,
             content = null,
             layer = null,
+            texturePath = null,
             } = {}) {
 
         this._content = content;
@@ -52,6 +53,7 @@ export default class Sphere {
         
         // ---------------------THREE.JS OBJECT SETUP---------------------
         this._geometry = new THREE.SphereGeometry(radius, segments);
+        const loader = new THREE.TextureLoader();
         this._material = new THREE.MeshPhysicalMaterial({ 
             color: color, 
             wireframe: wireframe, 
@@ -61,9 +63,8 @@ export default class Sphere {
             metalness: 0.1,
             clearcoat: 0.3,
             clearcoatRoughness: 0.8,
-            // map: new THREE.TextureLoader().load(
-            //     'textures/2k_eris_fictional.jpg'
-            //     )
+            map: (texturePath) ? loader.load(texturePath) : null,
+            normalMap: (texturePath) ? loader.load(texturePath) : null,
             });
         this._mesh = new THREE.Mesh(this._geometry, this._material);
         this._mesh.userData = { instance: this };
