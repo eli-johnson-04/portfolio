@@ -243,14 +243,10 @@ function onClick(event) {
     // If something is clicked
     if (intersects.length > 0) {
         let obj = intersects[0].object;
+        //console.log(obj);
 
-        // Check if the clicked object is not a child of a sphere, and get a reference to its parent. 
-        if (obj.isMesh) {
-            while (obj.parent && !(obj.parent instanceof THREE.Scene))
-                obj = obj.parent;
-        }
-
-        // Check if a sphere was clicked, and handle the click.
+        // Check if a sphere was clicked, and handle the click
+        // TODO: find a way to make any child meshes that are clicked cause the major mesh to be considered clicked!
         if (obj.userData.instance instanceof Sphere) {
             // The sphere's scale will be set to the distance between the camera and the sphere. 
             const cameraPos = new THREE.Vector3();

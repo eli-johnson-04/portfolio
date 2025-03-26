@@ -9,7 +9,7 @@ export default defineConfig({
   },
   base: './', // Ensure relative paths for assets
   resolve: {
-    extensions: ['.jsx', '.js'], // Ensure .jsx files are resolved
+    extensions: ['.js', '.jsx'], // Ensure .jsx files are resolved
   },
   server: {
     open: true, // Open the browser when the server starts
