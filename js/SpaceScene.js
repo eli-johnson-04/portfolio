@@ -83,15 +83,20 @@ export default class SpaceScene {
         this.raycaster.setFromCamera(this.mouse, this.camera);
         const intersects = this.raycaster.intersectObjects(this.scene.children, true);
 
+        // If something is clicked
         if (intersects.length > 0) {
             let obj = intersects[0].object;
+
+            // Check if the clicked object a child of a sphere and get a reference to the parent sphere, a child of the scene. 
             while (obj.parent && !(obj.parent instanceof THREE.Scene)) obj = obj.parent;
 
-            if (obj.userData.instance) {
+            // Check if a sphere was clicked, and handle the click. 
+            if (obj.userData.instance instanceof Sphere) {
+                // The sphere's scale will be set to the distance between the camera and the sphere. 
                 const sphere = obj.userData.instance;
                 const cameraPos = new THREE.Vector3();
-
                 this.camera.getWorldPosition(cameraPos);
+
                 const spherePos = new THREE.Vector3();
                 sphere._mesh.getWorldPosition(spherePos);
 
@@ -113,13 +118,16 @@ export default class SpaceScene {
 
             if (obj.userData.instance instanceof Sphere) {
                 // If there is a modal open, no spheres should be hoverable. 
+                let modalOpen = false;
                 this.spheres.forEach(s => {
-                    if (s._isModalOpen)
+                    if (s._isModalOpen) {
+                        modalOpen = true;
                         return;
+                    }
                 })
     
                 // Only enable hovering if no modal is open.
-                obj.userData.instance.handleMouseHover(true);
+                if (!modalOpen) { obj.userData.instance.handleMouseHover(true); }
     
                 // Cancel the hover of any other hovered spheres.
                 this.spheres.forEach(s => {
