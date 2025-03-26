@@ -7,7 +7,7 @@ export default defineConfig({
     outDir: 'dist', // Output directory for the build
     emptyOutDir: true,
   },
-  base: './', // Ensure relative paths for assets
+  base: '/portfolio/',
   resolve: {
     extensions: ['.jsx', '.js'], // Ensure .jsx files are resolved
   },
