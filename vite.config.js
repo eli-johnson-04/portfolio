@@ -7,7 +7,7 @@ export default defineConfig({
     outDir: 'dist', // Output directory for the build
     emptyOutDir: true,
   },
-  base: '/portfolio/', // Ensure this matches your GitHub Pages repository name
+  base: './', // Ensure this matches your GitHub Pages repository name
   resolve: {
     extensions: ['.jsx', '.js'], // Ensure .jsx files are resolved
   },
