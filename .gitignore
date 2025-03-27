@@ -4,6 +4,7 @@ Portfolio Process.png
 Portfolio_Process.png
 
 dist/
+build/
 
 node_modules/
 
