@@ -1,3 +1,5 @@
+**TL;DR: Website is working after hours of toiling. More content and inclusion on applications soon!**
+
 # The website is up!
 Today I finally got this website available. I've been working, hard, for a while now, and I decided it was time to make it public after an internship opportunity fell through. I have some more things to add and content to include before including it as part of applications, but all I have to do is hand out the URL! 
 
@@ -10,5 +12,3 @@ It was resolved in 10 minutes and I picked up my head from my hands shortly afte
 
 ## Road to production
 Now I am going to prettify the spheres, keep them from colliding inadvertently, fix some click detection issue, and add more content! I want to ensure the profile stays consistent across varying screen sizes (I detest frontend work) but if I'm going to do this, I'm going to do it right. More updates soon!
-
-**TL;DR: Website is working after hours of toiling. More content and inclusion on applications soon!**
