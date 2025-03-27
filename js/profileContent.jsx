@@ -7,7 +7,7 @@ const ProfileContent = () => {
             <div className="grid grid-cols-[1fr_2fr] grid-rows-[auto,auto] gap-4 p-4 bg-gray-900 place-items-center text-white rounded-lg shadow-lg">
                 {/* Profile Picture (Top Left) */}
                 <img 
-                    src="images/pf/syscall-tests.png"
+                    src="images/headshot.webp"
                     alt="Profile"
                     className="place-self-start rounded-full object-cover"
                     
