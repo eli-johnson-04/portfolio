@@ -11,6 +11,7 @@ import SphereModal from './sphereModal.jsx';
 import { createNoise3D } from 'simplex-noise';
 
 const DEFAULT_SPHERE_RADIUS = 3;
+const DEFAULT_SPHERE_SEGMENTS = 32;
 const DEFAULT_SPHERE_COLOR = 0xe8e8f0;
 const DEFAULT_SPHERE_MASS = 1;
 const TEXT_SIZE = 0.5;
@@ -39,7 +40,7 @@ export default class Sphere {
             label = 'Default Sphere',
             hoverText = 'Default Hover Text', 
             radius = DEFAULT_SPHERE_RADIUS, 
-            segments = 128, 
+            segments = DEFAULT_SPHERE_SEGMENTS, 
             color = DEFAULT_SPHERE_COLOR, 
             wireframe = false ,
             content = null,
@@ -64,7 +65,7 @@ export default class Sphere {
             clearcoat: 0.3,
             clearcoatRoughness: 0.8,
             map: (texturePath) ? loader.load(texturePath) : null,
-            normalMap: (texturePath) ? loader.load(texturePath) : null,
+            //normalMap: (texturePath) ? loader.load(texturePath) : null,
             });
         this._mesh = new THREE.Mesh(this._geometry, this._material);
         this._mesh.userData = { instance: this };
@@ -156,7 +157,7 @@ export default class Sphere {
 
         // Make a new, completely invisible sphere to enable effective rotation of the text. 
         this._labelMesh = new THREE.Mesh(
-            new THREE.SphereGeometry(this._geometry.parameters.radius, 128),
+            new THREE.SphereGeometry(this._geometry.parameters.radius, 4),
             new THREE.MeshBasicMaterial({
                 transparent: true,
                 opacity: 0,
@@ -164,7 +165,7 @@ export default class Sphere {
             })
         );
         this._hoverTextMesh = new THREE.Mesh(
-            new THREE.SphereGeometry(this._geometry.parameters.radius, 128),
+            new THREE.SphereGeometry(this._geometry.parameters.radius, 4),
             new THREE.MeshBasicMaterial({
                 transparent: true,
                 opacity: 0,
@@ -189,7 +190,7 @@ export default class Sphere {
     createTextGeometry(text, font) {
         return new TextGeometry(text, {
             font: font,
-            curveSegments: 12,
+            curveSegments: 6,
             size: TEXT_SIZE,
             depth: 0.01
         });
