@@ -4,7 +4,7 @@
 
 @font-face {
     font-family: 'Gentilis';
-    src: url('/fonts/gentilis_regular.ttf') format('truetype');
+    src: url('./fonts/gentilis_regular.ttf') format('truetype');
 }
 
 body {
