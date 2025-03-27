@@ -14,6 +14,7 @@ const DEFAULT_SPHERE_RADIUS = 3;
 const DEFAULT_SPHERE_SEGMENTS = 32;
 const DEFAULT_SPHERE_COLOR = 0xe8e8f0;
 const DEFAULT_SPHERE_MASS = 1;
+const TEXT_COLOR = 0x97979c;
 const TEXT_SIZE = 0.5;
 const RADIUS_OFFSET = 0.01;
 const TEXT_OFFSET = 0.05;
@@ -100,7 +101,7 @@ export default class Sphere {
         };
 
         this._noiseScale = 0.002; // Controls the intensity of sphere movement
-        this._noiseSpeed = 0.5; // Controls the speed of sphere movement
+        this._noiseSpeed = 0.3; // Controls the speed of sphere movement
 
         // Track hover state.
         this._mouseHovered = false;
@@ -144,8 +145,8 @@ export default class Sphere {
         this.centerAndWrapToSphere(labelTextGeometry);
         
         // Construct the new text to be drawn onto the sphere.
-        const labelTextMaterial = new THREE.MeshBasicMaterial({ color: 0x292929, transparent: true, opacity: 1 });
-        const hoverTextMaterial = new THREE.MeshBasicMaterial({ color: 0x292929, transparent: true, opacity: 0 });
+        const labelTextMaterial = new THREE.MeshBasicMaterial({ color: TEXT_COLOR, transparent: true, opacity: 1 });
+        const hoverTextMaterial = new THREE.MeshBasicMaterial({ color: TEXT_COLOR, transparent: true, opacity: 0 });
 
         // Construct the text to be drawn onto the sphere.
         const labelTextMesh = new THREE.Mesh(labelTextGeometry, labelTextMaterial);
