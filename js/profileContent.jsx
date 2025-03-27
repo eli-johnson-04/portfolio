@@ -18,21 +18,21 @@ const ProfileContent = () => {
                     <h2 className="text-5xl font-bold">Elijah Johnson</h2>
                     <div className="text-xl text-gray-400">
                         <h3>
-                            Undergraduate, Third Year
+                            Undergraduate, Third Year | University of Florida
                         </h3>
                         <h3>
-                            B.S. in Computer Science, University of Florida
+                            B.S. in Computer Science, Astronomy Minor
                         </h3>
                         <hr/>
                         <div className="w-full">
                             <div>
-                                <h3 className="text-gray-600">Contact:</h3>
-                                <h4 className="text-lg text-gray-700">
+                                <h3 className="text-gray-500">Contact:</h3>
+                                <h4 className="text-lg text-gray-600">
                                     <a href="mailto:elijahdanjohnson@gmail.com">elijahdanjohnson@gmail.com</a>
                                 </h4>
                                 <br/>
-                                <h3 className="text-gray-600">GitHub:</h3>
-                                <h4 className="text-lg text-gray-700">
+                                <h3 className="text-gray-500">GitHub:</h3>
+                                <h4 className="text-lg text-gray-600">
                                     <a href="https://www.github.com/eli-johnson-04">eli-johnson-04</a>
                                 </h4>
                             </div>

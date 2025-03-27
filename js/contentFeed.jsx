@@ -82,7 +82,13 @@ function extractDate(id) {
     }
 
     const month = monthMap[match.groups.month] || match.groups.month;
-    return `${month} ${match.groups.day}, ${match.groups.year}`;
+    // Allow for improper day formatting to use just the month and year in the date.
+    let day = match.groups.day;
+    if (parseInt(day) > 31) { day = " "; }
+    else { day = " " + day + ", ";}
+
+    // Return the formatted date. 
+    return `${month}${day}${match.groups.year}`;
 }
 
 export default ContentFeed;

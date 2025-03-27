@@ -11,7 +11,7 @@
 - [ ] look into google indexing and crawling and how that works with markdown!
 
 ## Necessary Functionality
-- [ ] IMPROVE PERFORMANCE
+- [x] IMPROVE PERFORMANCE
 - [x] Spheres swell when hover
 - [x] Show info on hover
 - [x] Expand into modal when clicked
@@ -38,6 +38,7 @@
 - [x] fix weird issues where clicking text does not register as clicking the sphere
 - [x] prevent spheres from getting too close to each other (temporarily fixed, i do not yet have an elkegant solution other than reducing motion intensity)
 - [x] encapsulate space scene functionality
+- [ ] fix one-click closing for expanding activity/portfolio entries in contentfeed
 
 ## Beautification
 - [ ] functionality for mobile (touch screens)!!!!
