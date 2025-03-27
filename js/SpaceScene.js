@@ -30,7 +30,7 @@ export default class SpaceScene {
         // Camera setup
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         this.camera.layers.enable(SpaceScene.SKYDOME_LAYER);
-        this.camera.position.z = 15;
+        this.camera.position.z = 17;
 
         // Renderer setup
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
