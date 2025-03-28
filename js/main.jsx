@@ -102,6 +102,29 @@ async function hideLoadingScreen() {
 const container = document.body;
 const spaceWorld = new SpaceScene(container);
 
+// Add touch event listeners for touch interaction
+container.addEventListener('touchstart', (event) => {
+    const touch = event.touches[0];
+    const rect = container.getBoundingClientRect();
+    const x = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
+    const y = -((touch.clientY - rect.top) / rect.height) * 2 + 1;
+
+    spaceWorld.handleInteraction(x, y);
+});
+
+container.addEventListener('touchmove', (event) => {
+    const touch = event.touches[0];
+    const rect = container.getBoundingClientRect();
+    const x = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
+    const y = -((touch.clientY - rect.top) / rect.height) * 2 + 1;
+
+    spaceWorld.handleHover(x, y);
+});
+
+container.addEventListener('touchend', () => {
+    spaceWorld.handleInteractionEnd();
+});
+
 // Start rendering the scene immediately.
 spaceWorld.render();
 
