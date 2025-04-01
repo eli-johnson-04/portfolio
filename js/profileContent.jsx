@@ -42,16 +42,14 @@ const ProfileContent = () => {
 
 
                 {/* Additional Info (Bottom - Spans 2 Columns) */}
-                <div className="col-span-2 text-gray-300">
+                <div className="col-span-2 text-gray-300 break-words whitespace-normal">
                     <p>
-                        Hello, I'm Eli! I'm actively working to pursue a career in cybersecurity, systems-level engineering, or applications of ML and AI. Beyond the actual coding, 
-                        I want to transcend the programming and work in the abstract world of computing through the dynamic and ever-changing cybersecurity landscape, the importance and 
-                        conscientiousness of managing memory and high-performance systems engineering, and the constantly broadening horizon of AI applications. 
+                        Hello, I'm Eli! I'm actively working to pursue a career in a variety of fields of interest: virtual reality, cybersecurity, systems-level engineering, or applications of ML and AI. Beyond the actual coding, I want to transcend the programming and work in the abstract world of computing through the dynamic and ever-changing cybersecurity landscape, the importance and conscientiousness of managing memory and high-performance systems engineering, and the constantly broadening horizon of AI applications. 
                     </p>
                     <br/>
                     <p>
-                        Outside of work, I love cats, a vast array of music, journaling, and Wikipedia. I could never learn enough, with particular interests in astrophysics, virtual reality, 
-                        interior design, and psychology. 
+                        Outside of work, I love cats, a vast array of music, journaling, and Wikipedia. I could never learn enough, with particular interests in astrophysics, virtual reality 
+                        experiences and development, interior design, and psychology. 
                     </p>
                 </div>
             </div>
