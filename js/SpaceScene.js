@@ -30,7 +30,7 @@ export default class SpaceScene {
         // Camera setup
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         this.camera.layers.enable(SpaceScene.SKYDOME_LAYER);
-        this.camera.position.z = 17;
+        this.camera.position.z = 10;
 
         // Renderer setup
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -70,6 +70,13 @@ export default class SpaceScene {
     addSphere(sphere) {
         this.spheres.push(sphere);
         sphere.addToView(this.scene, this.world);
+        //this.addBoundary(sphere);
+    }
+
+    addBoundary(sphere) {
+        const boundary = sphere.createBoundaryVisualization();
+        boundary.layers.set(SpaceScene.SKYDOME_LAYER);
+        this.scene.add(boundary);
     }
 
     onMouseMove(event) {
@@ -166,11 +173,6 @@ export default class SpaceScene {
             const sphere = intersects[0].object;
             if (sphere.onHover) sphere.onHover(); // Custom hover logic
         }
-    }
-
-    handleInteractionEnd() {
-        // Handle the end of touch interaction
-        // Reset hover effects or perform cleanup if necessary
     }
 
     onWindowResize() {

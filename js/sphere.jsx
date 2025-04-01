@@ -10,7 +10,7 @@ import Modal from 'react-modal';
 import SphereModal from './sphereModal.jsx';
 import { createNoise3D } from 'simplex-noise';
 
-const DEFAULT_SPHERE_RADIUS = 3;
+const DEFAULT_SPHERE_RADIUS = 1.5;
 const DEFAULT_SPHERE_SEGMENTS = 32;
 const DEFAULT_SPHERE_COLOR = 0xe8e8f0;
 const DEFAULT_SPHERE_MASS = 1;
@@ -101,7 +101,7 @@ export default class Sphere {
         };
 
         this._noiseScale = 0.002; // Controls the intensity of sphere movement
-        this._noiseSpeed = 0.3; // Controls the speed of sphere movement
+        this._noiseSpeed = 0.2; // Controls the speed of sphere movement
 
         // Track hover state.
         this._mouseHovered = false;
@@ -277,18 +277,57 @@ export default class Sphere {
         this._position = this._mesh.position;
     }
 
-    updateHover(time) {
-        // Use Perlin noise for smooth oscillations.
-        const xOffset = simplex3D(this._noiseOffsets.x + this._noiseSpeed * time, 0, 0) * this._noiseScale;
-        const yOffset = simplex3D(0, this._noiseOffsets.y + this._noiseSpeed * time, 0) * this._noiseScale;
-        const zOffset = simplex3D(0, 0, this._noiseOffsets.z + this._noiseSpeed * time) * this._noiseScale;
+    createBoundaryVisualization() {
+        // For this simplex noise implementation, maximum amplitude is ~0.8.
+        const actualMaxNoiseValue = 0.8;
+        
+        // Calculate maximum displacement in any direction.
+        const maxDisplacementPerAxis = this._noiseScale * actualMaxNoiseValue;
+        
+        // Calculate the maximum 3D displacement.
+        const maxTotalDisplacement = maxDisplacementPerAxis * Math.sqrt(3);
 
-        // Apply the new position while keeping the sphere near its initial position.
-        this._mesh.position.set(
-            this._position.x + xOffset,
-            this._position.y + yOffset,
-            this._position.z + zOffset
+        const boundaryRadius = (2 * this._geometry.parameters.radius) + maxTotalDisplacement; // account forthe size of the sphere AND the geometry
+        
+        const boundaryGeometry = new THREE.SphereGeometry(boundaryRadius, 16, 16);
+        const boundaryMaterial = new THREE.MeshBasicMaterial({ 
+            color: 0xffffff, 
+            wireframe: true, 
+            opacity: 1, 
+            transparent: true,
+        });
+        
+        const boundaryMesh = new THREE.Mesh(boundaryGeometry, boundaryMaterial);
+        boundaryMesh.position.copy(this._position);
+        
+        return boundaryMesh;
+    }
+
+    updateHover(time) {
+        // Use Perlin noise to calculate the new position directly.
+        const newX = simplex3D(this._noiseOffsets.x + this._noiseSpeed * time, 0, 0) * this._noiseScale;
+        const newY = simplex3D(0, this._noiseOffsets.y + this._noiseSpeed * time, 0) * this._noiseScale;
+        const newZ = simplex3D(0, 0, this._noiseOffsets.z + this._noiseSpeed * time) * this._noiseScale;
+
+        // Calculate the new position relative to the initial position.
+        const targetPosition = new THREE.Vector3(
+            this._position.x + newX,
+            this._position.y + newY,
+            this._position.z + newZ
         );
+
+        // Calculate the distance from the initial position.
+        const distanceFromCenter = targetPosition.distanceTo(this._position);
+
+        // Clamp the position to the boundary sphere's radius.
+        const boundaryRadius = this._geometry.parameters.radius; // Adjust if needed
+        if (distanceFromCenter > boundaryRadius) {
+            // Scale the position back to the boundary sphere's surface.
+            targetPosition.sub(this._position).setLength(boundaryRadius).add(this._position);
+        }
+
+        // Apply the clamped position to the sphere.
+        this._mesh.position.copy(targetPosition);
     }
 
     // Add the sphere to the Three scene and the Cannon world.

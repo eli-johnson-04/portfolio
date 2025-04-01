@@ -47,9 +47,10 @@ async function setupScene(spaceWorld) {
     ];
 
     // Set sphere positions and add them to the scene.
-    spheres[0].setPosition(-5, -2, 0);
-    spheres[1].setPosition(5, -2, 0);
-    spheres[2].setPosition(0, 3, 2);
+    const scale = 0.87;
+    spheres[0].setPosition(-5 * scale, -2 * scale, 0);
+    spheres[1].setPosition(5 * scale, -2 * scale, 0);
+    spheres[2].setPosition(0, 3 * scale, 2 * scale);
 
     spheres.forEach(sphere => spaceWorld.addSphere(sphere));
 
