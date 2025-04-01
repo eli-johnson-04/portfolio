@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import * as CANNON from 'cannon-es';
 import { gsap } from 'gsap';
 import CustomEase from 'gsap/CustomEase';
@@ -15,9 +16,9 @@ const DEFAULT_SPHERE_SEGMENTS = 32;
 const DEFAULT_SPHERE_COLOR = 0xe8e8f0;
 const DEFAULT_SPHERE_MASS = 1;
 const TEXT_COLOR = 0x97979c;
-const TEXT_SIZE = 0.5;
+const TEXT_SIZE = 0.3;
 const RADIUS_OFFSET = 0.01;
-const TEXT_OFFSET = 0.05;
+const RADIAL_TEXT_OFFSET = 0.05;
 
 const DEFAULT_SPHERE_OPACITY = 0.6;
 const TEXT_LAYER = 2;
@@ -136,9 +137,10 @@ export default class Sphere {
     }
 
     onFontLoaded(font) {
-         // Create geometries for sphere texts.
-        const labelTextGeometry = this.createTextGeometry(this._label, font);
-        const hoverTextGeometry = this.createTextGeometry(this.truncateText(this._hoverText, font, 4), font);
+        // Create geometries for sphere texts.
+        const labelTextGeometry = this.createTextGeometry([this._label], font);
+        const hoverText = this.truncateText(this._hoverText, font, 4);
+        const hoverTextGeometry = this.createTextGeometry(hoverText, font);
 
         // Center and wrap the text geometry. 
         this.centerAndWrapToSphere(hoverTextGeometry);
@@ -153,8 +155,8 @@ export default class Sphere {
         const hoverTextMesh = new THREE.Mesh(hoverTextGeometry, hoverTextMaterial);
 
         // Set position to prevent clipping
-        labelTextMesh.position.set(0, 0, this._geometry.parameters.radius + (2 * RADIUS_OFFSET) + TEXT_OFFSET); // 2x to prevent clipping between title and text
-        hoverTextMesh.position.set(0, 0, this._geometry.parameters.radius + RADIUS_OFFSET + TEXT_OFFSET);
+        labelTextMesh.position.set(0, 0, this._geometry.parameters.radius + (2 * RADIUS_OFFSET) + RADIAL_TEXT_OFFSET); // 2x to prevent clipping between title and text
+        hoverTextMesh.position.set(0, 0, this._geometry.parameters.radius + RADIUS_OFFSET + RADIAL_TEXT_OFFSET);
 
         // Make a new, completely invisible sphere to enable effective rotation of the text. 
         this._labelMesh = new THREE.Mesh(
@@ -187,16 +189,7 @@ export default class Sphere {
         this._mesh.add(this._labelMesh);
         this._mesh.add(this._hoverTextMesh);
     }
-
-    createTextGeometry(text, font) {
-        return new TextGeometry(text, {
-            font: font,
-            curveSegments: 6,
-            size: TEXT_SIZE,
-            depth: 0.01
-        });
-    }
-
+    
     // Helper function to split the text into lines based on the max width.
     truncateText(text, font, maxWidth) {
         const words = text.split(' ');
@@ -205,7 +198,12 @@ export default class Sphere {
 
         for (let i = 0; i < words.length; i++) {
             const word = words[i];
-            const wordGeometry = this.createTextGeometry(word + ' ', font);
+            const wordGeometry = new TextGeometry(word + ' ', {
+                font: font,
+                curveSegments: 6,
+                size: TEXT_SIZE,
+                depth: 0.01,
+            });
 
             // Calculate the width of the next word.
             wordGeometry.computeBoundingBox();
@@ -216,20 +214,63 @@ export default class Sphere {
                 truncatedTitle += '\n';
                 currentWidth = 0;
             }
-
+            
             truncatedTitle += word + ' ';
             currentWidth += wordWidth;
         }
-
-        return truncatedTitle.trim();
+        
+        const lines = truncatedTitle.split('\n');
+        for (let i = 0; i < lines.length; i++)
+            lines[i] = lines[i].trim(); // Remove leading/trailing whitespace
+        return lines;
     }
+    
+    createTextGeometry(lines, font) {
+        const textGeometries = [];
+        let maxLineWidth = 0;
 
+        // Create a geometry for each line and calculate the maximum line width.
+        for (const line of lines) {
+            const lineGeometry = new TextGeometry(line, {
+                font: font,
+                curveSegments: 6,
+                size: TEXT_SIZE,
+                depth: 0.01,
+            });
+
+            lineGeometry.computeBoundingBox();
+            const lineWidth = lineGeometry.boundingBox.max.x - lineGeometry.boundingBox.min.x;
+            maxLineWidth = Math.max(maxLineWidth, lineWidth);
+
+            textGeometries.push({ geometry: lineGeometry, width: lineWidth });
+        }
+
+        // Combine all line geometries into one and center-align them.
+        const geometries = [];
+        let yOffset = 0;
+
+        for (const { geometry, width } of textGeometries) {
+            // Center-align the line by translating it horizontally.
+            const xOffset = (maxLineWidth - width) / 2;
+            geometry.translate(xOffset, yOffset, 0);
+
+            // Merge the line geometry into the combined geometry.
+            geometries.push(geometry);
+
+            // Calculate the height of the current line.
+            geometry.computeBoundingBox();
+            const lineHeight = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
+
+            // Move the next line down by the height of the text plus some spacing.
+            yOffset -= lineHeight * 1.2; // Adjust spacing multiplier as needed
+        }
+
+        // Merge all geometries into one.
+        const combinedGeometry = BufferGeometryUtils.mergeGeometries(geometries, false);
+        return combinedGeometry;
+    }
+    
     // Helper function for centering then spherically wrapping text geometry.
-    /* 
-    I will definitely need to implement left-right boundaries on the text to make it stay in view
-    * TODO: need to center JUSTIFY the text!!!!!
-    * TODO: less spacing between lines
-    */
     centerAndWrapToSphere(text) {
         // Find the bounding box of the text geometry to center the geometry on the sphere. 
         text.computeBoundingBox();
@@ -247,12 +288,13 @@ export default class Sphere {
         text.translate(-centerX, -centerY, -centerZ);
 
         // Adjust the vertical position of the text. This solution sucks but currently it looks kinda okay?
-        if (height > 1) { text.translate(0, height * 0.75, 0); }
+        if (height > 0.8) { text.translate(0, height * 0.4, 0); } // i hate these values i had to test for them manually smh
 
         // Bend the text geometry to wrap around the sphere
         const radiusOffset = this._geometry.parameters.radius + RADIUS_OFFSET;
         const positionAttribute = text.attributes.position;
         const vertex = new THREE.Vector3();
+
         for (let i = 0; i < positionAttribute.count; i++) {
             vertex.fromBufferAttribute(positionAttribute, i);
 
@@ -418,9 +460,9 @@ export default class Sphere {
     explode(cameraDistance) {
         // Explode the sphere up to the distance between the sphere and the camera. 
         gsap.to(this._mesh.scale, {
-            x: cameraDistance, 
-            y: cameraDistance, 
-            z: cameraDistance, 
+            x: cameraDistance + 1, 
+            y: cameraDistance + 1, 
+            z: cameraDistance + 1, 
             duration: 0.4,
             ease: "bounce.out",
             overwrite: "auto"
