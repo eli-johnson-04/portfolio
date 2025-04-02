@@ -13,7 +13,7 @@ I have *thoroughly* enjoyed the process of bringing this creative vision to life
 ## Somewhere out there...
 Today I sent out my resume for the first time with the URL on it. A little terrifying, but it's wild to think I had no idea what I was doing for the first 10-20 hours I worked on this, and now I can confidently say that I love actualizing a vision, even if the process is vicious. Like this code:
 
-![Ugly JavaScript React](images/activity/ugly-js.png)
+![Ugly JavaScript React](images/activity/ugly-js.webp)
 *Why does this work? This has no reason to work. JavaScript is ridiculous, this is ugly, and I'm just glad it's never given me problems.*
 
 I have learned so much about myself and what I will do when given free reign over a project. I've realized that, wow, maintaining your own code standards and style and remembering to use good programming practice is hard. However, without modularization, planning, and help, I would have failed a lot more, a lot sooner. I've refactored multiple times, broken my code, multiple times, and if I can do this, I can do anything. 
