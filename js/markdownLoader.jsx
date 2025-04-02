@@ -29,7 +29,16 @@ export default class markdownLoader {
         // Resolve the content of all markdown files. 
         const contentPromises = entries.map(async (entry) => {
             const md = await entry.loader(); // Resolves the markdown content
-            return { ...entry, md }; // Merge the content with the other data
+
+            // Extract TL;DR section (first line starting with "**TL;DR:**").
+            const tldrMatch = md.match(/\*\*TL;DR:.*?\*\*/);
+            const tldr = tldrMatch ? tldrMatch[0].replace(/\*\*/g, '').replace(/TL;DR: /, '').trim() : null;
+
+            // Extract Keywords section (first line starting with "*Keywords:*").
+            const keywordsMatch = md.match(/\*Keywords:.*?\*/);
+            const keywords = keywordsMatch ? keywordsMatch[0].replace(/\*/g, '').replace(/Keywords: /, '').trim() : null;
+
+            return { ...entry, md, tldr, keywords };
         });
         
         // Wait for all the content to be loaded and sort it in reverse chronological order.
