@@ -6,8 +6,8 @@
     - I'm doing both :D
 
 ## Code-based changes
-- [ ] large-scale refactoring, mostly in Sphere.jsx
-- [ ] convert pngs to jpgs to save space
+- [x] large-scale refactoring, mostly in Sphere.jsx
+- [x] convert all images to webp to save space
 - [ ] look into google indexing and crawling and how that works with markdown!
 
 ## Necessary Functionality
