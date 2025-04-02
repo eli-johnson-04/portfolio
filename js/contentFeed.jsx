@@ -1,7 +1,4 @@
 import React from "react";
-import ReactMarkdown from "react-markdown";
-import rehypeRaw from 'rehype-raw'; // Handles raw HTML rendering
-import MarkdownToHTMLComponentStyles from "./reactMarkdownComponents";
 import ContentFeedEntry from "./contentFeedEntry.jsx";
 
 // Creates a feed out of markdown entries. 

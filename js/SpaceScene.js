@@ -44,7 +44,7 @@ export default class SpaceScene {
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.25;
         this.controls.keyPanSpeed = 15;
-        this.controls.listenToKeyEvents(window);
+        //this.controls.listenToKeyEvents(window);
         this.controls.enableZoom = false;
         this.controls.minAzimuthAngle = -Math.PI / 2;
         this.controls.maxAzimuthAngle = Math.PI / 2;
