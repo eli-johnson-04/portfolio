@@ -15,7 +15,8 @@ const DEFAULT_SPHERE_RADIUS = 1.5;
 const DEFAULT_SPHERE_SEGMENTS = 32;
 const DEFAULT_SPHERE_COLOR = 0xe8e8f0;
 const DEFAULT_SPHERE_MASS = 1;
-const TEXT_COLOR = 0x97979c;
+//const TEXT_COLOR = 0x97979c;
+const TEXT_COLOR = 0xffffff;
 const TEXT_SIZE = 0.3;
 const RADIUS_OFFSET = 0.01;
 const RADIAL_TEXT_OFFSET = 0.05;
@@ -68,11 +69,10 @@ export default class Sphere {
             clearcoatRoughness: 0.8,
             map: (texturePath) ? loader.load(texturePath) : null,
             //normalMap: (texturePath) ? loader.load(texturePath) : null,
-            });
+        });
         this._mesh = new THREE.Mesh(this._geometry, this._material);
         this._mesh.userData = { instance: this };
-        this._mesh.receiveShadow = true;
-        if (layer) this._mesh.layers.set(layer);
+        this._mesh.receiveShadow = true; // Enable shadow receiving
 
         // Store the current position of the sphere. 
         this._mesh.position.set(0, 0, 0);
@@ -147,12 +147,24 @@ export default class Sphere {
         this.centerAndWrapToSphere(labelTextGeometry);
         
         // Construct the new text to be drawn onto the sphere.
-        const labelTextMaterial = new THREE.MeshBasicMaterial({ color: TEXT_COLOR, transparent: true, opacity: 1 });
-        const hoverTextMaterial = new THREE.MeshBasicMaterial({ color: TEXT_COLOR, transparent: true, opacity: 0 });
+        const labelTextMaterial = new THREE.MeshStandardMaterial({ 
+            color: TEXT_COLOR, 
+            transparent: true, 
+            opacity: 1 
+        });
+        const hoverTextMaterial = new THREE.MeshStandardMaterial({ 
+            color: TEXT_COLOR, 
+            transparent: true, 
+            opacity: 0 
+        });
 
         // Construct the text to be drawn onto the sphere.
         const labelTextMesh = new THREE.Mesh(labelTextGeometry, labelTextMaterial);
         const hoverTextMesh = new THREE.Mesh(hoverTextGeometry, hoverTextMaterial);
+
+        // Enable shadow casting for text meshes
+        labelTextMesh.castShadow = true;
+        //hoverTextMesh.castShadow = true; // start with this off
 
         // Set position to prevent clipping
         labelTextMesh.position.set(0, 0, this._geometry.parameters.radius + (2 * RADIUS_OFFSET) + RADIAL_TEXT_OFFSET); // 2x to prevent clipping between title and text
@@ -164,7 +176,8 @@ export default class Sphere {
             new THREE.MeshBasicMaterial({
                 transparent: true,
                 opacity: 0,
-                depthTest: false
+                depthTest: false,
+                
             })
         );
         this._hoverTextMesh = new THREE.Mesh(
@@ -386,16 +399,14 @@ export default class Sphere {
             y: 1.3,
             z: 1.3,
             duration: 0.3,
-            //ease: "back.inOut",
             ease: "swell",
             overwrite: "auto"
         });
 
         // Make sphere more opaque on swell
-        gsap.to(this._mesh.material,{
+        gsap.to(this._mesh.material, {
             opacity: 0.87,
             duration: 0.35,
-            //ease: "back.inOut",
             ease: "swell",
             overwrite: "auto"
         });
@@ -404,18 +415,25 @@ export default class Sphere {
         gsap.to(this._labelMesh.children[0].material, {
             opacity: 0,
             duration: 0.19,
-            //ease: "back.inOut",
             ease: "swell",
             overwrite: "auto",
+            onUpdate: () => {
+                this._labelMesh.children[0].castShadow = true; // Ensure shadow is still active during fade-out
+            },
+            onComplete: () => {
+                this._labelMesh.children[0].castShadow = false; // Disable shadow after fade-out
+            }
         });
 
         // Show text on swell
         gsap.to(this._hoverTextMesh.children[0].material, {
             opacity: 1,
             duration: 0.35,
-            //ease: "back.inOut",
             ease: "swell",
             overwrite: "auto",
+            onStart: () => {
+                this._hoverTextMesh.children[0].castShadow = true; // Enable shadow during fade-in
+            }
         });
     }
     
@@ -432,7 +450,7 @@ export default class Sphere {
         });
 
         // Make sphere less opaque on shrink
-        gsap.to(this._mesh.material,{
+        gsap.to(this._mesh.material, {
             opacity: DEFAULT_SPHERE_OPACITY,
             duration: 0.3,
             ease: "bounce.out",
@@ -445,6 +463,9 @@ export default class Sphere {
             duration: 0.3,
             ease: "bounce.out",
             overwrite: "auto",
+            onStart: () => {
+                this._labelMesh.children[0].castShadow = true; // Enable shadow during fade-in
+            }
         });
 
         // Hide text on shrink
@@ -453,6 +474,12 @@ export default class Sphere {
             duration: 0.12,
             ease: "bounce.out",
             overwrite: "auto",
+            onUpdate: () => {
+                this._hoverTextMesh.children[0].castShadow = true; // Ensure shadow is still active during fade-out
+            },
+            onComplete: () => {
+                this._hoverTextMesh.children[0].castShadow = false; // Disable shadow after fade-out
+            }
         });
     }
 

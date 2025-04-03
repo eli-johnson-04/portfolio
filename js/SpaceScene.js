@@ -36,7 +36,8 @@ export default class SpaceScene {
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setClearColor(0x000000);
-        this.renderer.shadowMap.enabled = true;
+        this.renderer.shadowMap.enabled = true; 
+        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Use soft shadows
         this.container.appendChild(this.renderer.domElement);
 
         // Controls setup
@@ -59,6 +60,11 @@ export default class SpaceScene {
 
         const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
         directionalLight.position.set(-6, 3.5, 8);
+        directionalLight.castShadow = true; // Enable shadow casting
+        directionalLight.shadow.mapSize.width = 1024; // Optional: Adjust shadow quality
+        directionalLight.shadow.mapSize.height = 1024;
+        directionalLight.shadow.camera.near = 0.5;
+        directionalLight.shadow.camera.far = 50;
         this.scene.add(directionalLight);
 
         // Event listeners
