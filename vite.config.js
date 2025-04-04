@@ -7,9 +7,9 @@ export default defineConfig({
     outDir: 'dist', // Output directory for the build
     emptyOutDir: true,
   },
-  base: './', // Ensure relative paths for assets
+  base: './', // Ensure this matches your GitHub Pages repository name
   resolve: {
-    extensions: ['.js', '.jsx'], // Ensure .jsx files are resolved
+    extensions: ['.jsx', '.js'], // Ensure .jsx files are resolved
   },
   server: {
     open: true, // Open the browser when the server starts

@@ -6,15 +6,15 @@ For most students, this was the first foray into actual software development bey
 
 We were presented with a challenge statement, then tasked with composing an actionable solution and pitch. We had to discuss features and functionality that would comprise the solution, and designed system models to illustrate our architecture. 
 
-![Architectural Pattern](images/pf/architectural-pattern.png)
+![Architectural Pattern](images/pf/architectural-pattern.webp)
 *An illustration we composed of our system architecture.*
 
 We chose a monolithic architecture due to our web-app's small size, a client-server pattern to provide users with personalized data stored in the cloud, and a relational database for the clear relationships between users and their recipes.
 
-![System Context Model](images/pf/system-context-model.png)
+![System Context Model](images/pf/system-context-model.webp)
 *Detailed system context model visualizing relationships between our software's components.*
 
-![Use Case Model](images/pf/use-case-model.png)
+![Use Case Model](images/pf/use-case-model.webp)
 *The range of uses for Recipe Drop.*
 
 To read more about *Recipe Drop*'s architecture and design, here is our [final documentation](https://drive.google.com/file/d/1Ohscthi8u2Ukv7uq9eaidySqs9uQD7sM/view?usp=sharing).
