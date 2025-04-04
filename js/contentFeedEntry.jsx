@@ -49,10 +49,10 @@ const ContentFeedEntry = ({ data }) => {
                 mouseLeaveDelay={0.1} // Delay before hiding the tooltip
             >
                 <div className="flex items-center">
-                    <div>
+                    <span>
                         <h1 className="text-3xl font-bold text-gray-800">{extractName(data.id) + (isPriority ? " ★" : "")}</h1>
                         <h1 className="text-sm font-semibold text-gray-800">{extractDate(data.id)}</h1>
-                    </div>
+                    </span>
                 </div>
             </Tooltip>
             {!isCollapsed && (
