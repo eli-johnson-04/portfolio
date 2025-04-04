@@ -1,9 +1,10 @@
 import React from 'react';
+import ReactDOM from 'react-dom/client'; // Add this import
 import Sphere from './sphere.jsx';
 import ProfileContent from './profileContent.jsx';
 import markdownLoader from './markdownLoader.jsx';
 import SpaceScene from './SpaceScene.js';
-import { showPopup, hidePopup } from './popup.js';
+import Popup from './Popup.jsx';
 
 const ACTIVITY_PATH = 'activity';
 const PORTFOLIO_PATH = 'pf';
@@ -57,7 +58,6 @@ async function setupScene(spaceWorld) {
     console.log("Scene setup complete.");
 
     await hideLoadingScreen();
-    showPopup();
 }
 
 async function showLoadingScreen() {
@@ -131,3 +131,8 @@ spaceWorld.render();
 
 // Show the loading screen and start setting up the scene.
 setupScene(spaceWorld);
+
+// Render the Popup component
+const root = document.createElement('div');
+document.body.appendChild(root);
+ReactDOM.createRoot(root).render(<Popup />);

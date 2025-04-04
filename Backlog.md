@@ -11,7 +11,7 @@
 - [ ] look into google indexing and crawling and how that works with markdown!
 
 ## Necessary Functionality
-- [x] IMPROVE PERFORMANCE
+- [ ] IMPROVE PERFORMANCE ?
 - [x] Spheres swell when hover
 - [x] Show info on hover
 - [x] Expand into modal when clicked
