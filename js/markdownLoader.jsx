@@ -48,9 +48,21 @@ export default class markdownLoader {
             return { ...entry, md, tooltipContent };
         });
         
-        // Wait for all the content to be loaded and sort it in reverse chronological order.
+        // Wait for all the content to be loaded and sort it with priority on "!" files.
         const resolvedContent = (await Promise.all(contentPromises));
-        resolvedContent.sort((a, b) => b.id.localeCompare(a.id));
+        resolvedContent.sort((a, b) => {
+            // Check if either filename starts with "!".
+            const aPriority = a.id.startsWith("!");
+            const bPriority = b.id.startsWith("!");
+            
+            // If priorities differ, prioritize the one with "!".
+            if (aPriority !== bPriority) {
+                return aPriority ? -1 : 1;
+            }
+            
+            // Otherwise, sort by date in reverse chronological order.
+            return b.id.localeCompare(a.id);
+        });
 
         return resolvedContent;
     }

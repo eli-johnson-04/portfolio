@@ -13,6 +13,9 @@ const ContentFeedEntry = ({ data }) => {
         setIsCollapsed(!isCollapsed);
     };
 
+    // Check if this is a priority post.
+    const isPriority = data.id.startsWith('!');
+
     return (
         <div 
             onClick={toggleVisibility}
@@ -45,9 +48,11 @@ const ContentFeedEntry = ({ data }) => {
                 mouseEnterDelay={0.2} // Delay before showing the tooltip
                 mouseLeaveDelay={0.1} // Delay before hiding the tooltip
             >
-                <div>
-                    <h1 className="text-3xl font-bold text-gray-800">{extractName(data.id)}</h1>
-                    <h1 className="text-sm font-semibold text-gray-800">{extractDate(data.id)}</h1>
+                <div className="flex items-center">
+                    <div>
+                        <h1 className="text-3xl font-bold text-gray-800">{extractName(data.id) + (isPriority ? " ★" : "")}</h1>
+                        <h1 className="text-sm font-semibold text-gray-800">{extractDate(data.id)}</h1>
+                    </div>
                 </div>
             </Tooltip>
             {!isCollapsed && (
@@ -62,7 +67,7 @@ const ContentFeedEntry = ({ data }) => {
 
 // Helper function to extract the name from a filename. 
 function extractName(id) {
-    const match = id.match(/^\d{2}-\d{2}-\d{4}-(.+)$/);
+    const match = id.match(/^(?:!)?\d{2}-\d{2}-\d{4}-(.+)$/);
     if (!match) {
         console.log("Unexpected filename format: ", id);
         return null;
@@ -74,7 +79,7 @@ function extractName(id) {
 
 // Helper function to extract the date from a filename.
 function extractDate(id) {
-    const match = id.match(/^(?<month>\d{2})-(?<day>\d{2})-(?<year>\d{4})/);
+    const match = id.match(/^(?:!)?(?<month>\d{2})-(?<day>\d{2})-(?<year>\d{4})/);
     if (!match) {
         console.log("Unexpected filename format: ", id + ".md");
         return null;
