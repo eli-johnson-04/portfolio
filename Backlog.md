@@ -42,6 +42,7 @@
 - [ ] fix one-click closing for expanding activity/portfolio entries in contentFeedEntry
 
 ## Beautification
+- [ ] add a big entry, probably pinned to the top of the portfolio entries (using my "out-of-bounds" numbering trick) about the website itself
 - [ ] functionality for mobile (touch screens)!!!!
 - [x] Spheres have hover physics
 - [x] Modal ~~open~~ fade-in animation
