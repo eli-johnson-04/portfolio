@@ -13,11 +13,11 @@ export default class markdownLoader {
             path, // Add the path property
             loader,
         }));
-        console.log("Finished importing markdown files.");
+        console.log("Finished importing markdown.");
     }
 
     // Helper function that gets a specific set of markdown content. 
-    async makeFeed(folder) {
+    async getContentFromFolder(folder) {
         // Filter out the specified content. 
         const entries = this.allContent
             .filter(({ path }) => path.includes(`/${folder}/`))
@@ -44,6 +44,7 @@ export default class markdownLoader {
         // Wait for all the content to be loaded and sort it in reverse chronological order.
         const resolvedContent = (await Promise.all(contentPromises));
         resolvedContent.sort((a, b) => b.id.localeCompare(a.id));
-        return <ContentFeed data={resolvedContent}/>;
+
+        return resolvedContent;
     }
 }

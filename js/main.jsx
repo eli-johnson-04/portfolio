@@ -1,10 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client'; // Add this import
+import ReactDOM from 'react-dom/client';
 import Sphere from './sphere.jsx';
 import ProfileContent from './profileContent.jsx';
 import markdownLoader from './markdownLoader.jsx';
 import SpaceScene from './SpaceScene.js';
 import Popup from './Popup.jsx';
+import ContentFeed from './contentFeed.jsx';
 
 const ACTIVITY_PATH = 'activity';
 const PORTFOLIO_PATH = 'pf';
@@ -18,8 +19,8 @@ async function setupScene(spaceWorld) {
     const mdLoader = new markdownLoader();
     mdLoader.importAllMarkdown();
     const sphereData = await Promise.all([
-        mdLoader.makeFeed(ACTIVITY_PATH),
-        mdLoader.makeFeed(PORTFOLIO_PATH)
+        mdLoader.getContentFromFolder(ACTIVITY_PATH),
+        mdLoader.getContentFromFolder(PORTFOLIO_PATH)
     ]);
 
     // Create spheres with the loaded content.
@@ -27,14 +28,14 @@ async function setupScene(spaceWorld) {
         new Sphere({
             label: 'Activity',
             hoverText: 'Recent Work and Projects',
-            content: sphereData[0],
+            content: <ContentFeed data={sphereData[0]} />,
             layer: SpaceScene.SCENE_LAYER,
             texturePath: 'textures/Pluto.webp',
         }),
         new Sphere({
             label: 'Portfolio',
             hoverText: 'View Completed Projects',
-            content: sphereData[1],
+            content: <ContentFeed data={sphereData[1]} />,
             layer: SpaceScene.SCENE_LAYER,
             texturePath: 'textures/Callisto-0.webp',
         }),
@@ -55,7 +56,7 @@ async function setupScene(spaceWorld) {
 
     spheres.forEach(sphere => spaceWorld.addSphere(sphere));
 
-    console.log("Scene setup complete.");
+    spaceWorld.initializeParticlesFromMarkdown(sphereData, spheres);
 
     await hideLoadingScreen();
 }
@@ -77,12 +78,7 @@ async function showLoadingScreen() {
 
 async function hideLoadingScreen() {
     const screen = document.getElementById('loading-screen');
-
-    // Ensure the loading screen exists before proceeding
-    if (!screen) {
-        console.warn('Loading screen element not found.');
-        return;
-    }
+    if (!screen) return;
 
     // Allow user to click behind loading screen before animation finishes.
     screen.classList.remove('pointer-events-auto');
@@ -132,7 +128,7 @@ spaceWorld.render();
 // Show the loading screen and start setting up the scene.
 setupScene(spaceWorld);
 
-// Render the Popup component
+// Render the Popup component.
 const root = document.createElement('div');
 document.body.appendChild(root);
 ReactDOM.createRoot(root).render(<Popup />);

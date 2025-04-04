@@ -3,6 +3,7 @@ import * as CANNON from 'cannon-es';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import Sphere from './sphere.jsx';
 import SkyDome from './SkyDome.js';
+import ParticleSystem from './ParticleSystem.js';
 
 export default class SpaceScene {
     static SCENE_LAYER = 0;
@@ -67,6 +68,9 @@ export default class SpaceScene {
         directionalLight.shadow.camera.far = 50;
         this.scene.add(directionalLight);
 
+        // Initialize the particle system
+        this.particleSystem = new ParticleSystem(this.scene);
+
         // Event listeners
         window.addEventListener('resize', this.onWindowResize.bind(this), false);
         window.addEventListener('mousemove', this.onMouseMove.bind(this));
@@ -83,6 +87,14 @@ export default class SpaceScene {
         const boundary = sphere.createBoundaryVisualization();
         boundary.layers.set(SpaceScene.SKYDOME_LAYER);
         this.scene.add(boundary);
+    }
+
+    initializeParticlesFromMarkdown(sphereData, spheres) {
+        this.particleSystem.initializeFromMarkdown(sphereData, spheres);
+    }
+
+    updateParticles() {
+        this.particleSystem.update();
     }
 
     onMouseMove(event) {
@@ -202,6 +214,7 @@ export default class SpaceScene {
         });
 
         this.checkHover();
+        this.updateParticles();
         this.controls.update();
         SkyDome.updateClock();
         this.renderer.render(this.scene, this.camera);
