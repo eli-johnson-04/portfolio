@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from 'rehype-raw'; // Handles raw HTML rendering
 import MarkdownToHTMLComponentStyles from "./reactMarkdownComponents";
+import Tooltip from "rc-tooltip";
+import "rc-tooltip/assets/bootstrap.css";
 
 // Stores a single entry in a content feed. Corresponds to a single markdown file.
 const ContentFeedEntry = ({ data }) => {
@@ -11,6 +13,9 @@ const ContentFeedEntry = ({ data }) => {
         setIsCollapsed(!isCollapsed);
     };
 
+    // Determine the tooltip content based on whether TL;DR or Keywords was matched in the markdown.
+    const tooltipContent = data.tldr || data.keywords || "Click to expand";
+
     return (
         <div 
             onClick={toggleVisibility}
@@ -18,10 +23,36 @@ const ContentFeedEntry = ({ data }) => {
                 isCollapsed ? 'hover:shadow-lg hover:bg-gray-100 hover:scale-[1.02]' : 'border-2 border-gray-600'
             }`}
         >
-            <div>
-                <h1 className="text-3xl font-bold text-gray-800">{extractName(data.id)}</h1>
-                <h1 className="text-sm font-semibold text-gray-800">{extractDate(data.id)}</h1>
-            </div>
+            <Tooltip
+                placement="top" // Tooltip appears above the title
+                motion={{ motionName: 'rc-tooltip-zoom' }}
+                trigger={['hover']}
+                styles={{
+                    root: {
+                        //opacity: 1,
+                        transition: 'opacity 0.1s ease-in-out',
+                        pointerEvents: 'none',
+                    },
+                    body: {
+                        backgroundColor: 'white',
+                        padding: 0,
+                        border: 'none',
+                        opacity: 1,
+                    },
+                }}
+                overlay={
+                    <div className="whitespace-pre-wrap text-center max-w-xs bg-white p-3 rounded-lg shadow-md text-gray-800 text-sm font-medium">
+                        {isCollapsed ? tooltipContent : "Click to collapse"}
+                    </div>
+                }
+                mouseEnterDelay={0.2} // Delay before showing the tooltip
+                mouseLeaveDelay={0.1} // Delay before hiding the tooltip
+            >
+                <div>
+                    <h1 className="text-3xl font-bold text-gray-800">{extractName(data.id)}</h1>
+                    <h1 className="text-sm font-semibold text-gray-800">{extractDate(data.id)}</h1>
+                </div>
+            </Tooltip>
             {!isCollapsed && (
                 <div>
                     <div className="pb-2 border-b border-gray-300"/>

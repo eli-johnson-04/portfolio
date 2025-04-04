@@ -28,17 +28,18 @@
     - [ ] MAKE APPEARANCE CONSISTENT ACROSS VARYING SCREEN SIZES
 - [ ] Complete Activity feed (up to date)
 - [ ] Complete Portfolio page with grid for content (somehow make responsive and dynam ic??) ((completeness determined by an entry for each master resume project))
-- [ ] fix portfolio activity entry styling
+- [ ] portfolio activity entry styling
     - [ ] Smooth when collapsing an entry in activity or portfolio
-    - [ ] add a hover popup on portfolio entries for keywords
+    - [x] add a hover popup on portfolio entries for keywords
+        -[ ] fix stutter on first open
         - have markdownLoader class add a property for a string of keywords and extract the keywords from the end of the "md" property and put them here, then contentFeed can create a tooltip using the keywords property of each entry
-- [ ] SPLASH/LOADING PAGE BEFORE SPHERES ARE READY
+- [x] SPLASH/LOADING PAGE BEFORE SPHERES ARE READY
     - Once I figure out how users will interact, provide that information on this page! I can also put a small notification guy in the bottom left corner or something as a reminder with a button to close the popup
         - popup auto-close timer (with notification?)
 - [x] fix weird issues where clicking text does not register as clicking the sphere
 - [x] prevent spheres from getting too close to each other
 - [x] encapsulate space scene functionality
-- [ ] fix one-click closing for expanding activity/portfolio entries in contentfeed
+- [ ] fix one-click closing for expanding activity/portfolio entries in contentFeedEntry
 
 ## Beautification
 - [ ] functionality for mobile (touch screens)!!!!
@@ -57,10 +58,10 @@
 
 
 ## Background Cards - maybe now background STARS?????
-- [ ] Create little background cards (or STARS????) for every markdown file
-- [ ] Give background cards color (washed out, muted, kinda blurry) (i may be able to make these one-dimensional and have them face the camera but that could be cheap)
-- [ ] Make them fly into their respective sphere when that sphere is hovered
-- [ ] Glassy appearance effect?
+- [x] Create little background cards (or STARS????) for every markdown file
+- [x] Give background cards color (washed out, muted, kinda blurry) (i may be able to make these one-dimensional and have them face the camera but that could be cheap)
+- [x] Make them fly into their respective sphere when that sphere is hovered
+- [x] Glassy appearance effect?
 
 ## Optional/Stretch Goals
-- [ ] Putting text on a flat visible card instead of wrapping it, still allowing it to face the user but being obviously on a card
+- [NO] Putting text on a flat visible card instead of wrapping it, still allowing it to face the user but being obviously on a card
