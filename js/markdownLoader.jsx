@@ -30,15 +30,22 @@ export default class markdownLoader {
         const contentPromises = entries.map(async (entry) => {
             const md = await entry.loader(); // Resolves the markdown content
 
-            // Extract TL;DR section (first line starting with "**TL;DR:**").
-            const tldrMatch = md.match(/\*\*TL;DR:.*?\*\*/);
-            const tldr = tldrMatch ? tldrMatch[0].replace(/\*\*/g, '').replace(/TL;DR: /, '').trim() : null;
+            // Attempt to extract TL;DR section (first line starting with "**TL;DR:**").
+            let tooltipMatch = md.match(/\*\*TL;DR:.*?\*\*/);
+            let tooltipContent;
+            if (tooltipMatch)
+                tooltipContent = tooltipMatch[0].replace(/\*\*/g, '').replace(/TL;DR: /, '').trim();
 
-            // Extract Keywords section (first line starting with "*Keywords:*").
-            const keywordsMatch = md.match(/\*Keywords:.*?\*/);
-            const keywords = keywordsMatch ? keywordsMatch[0].replace(/\*/g, '').replace(/Keywords: /, '').trim() : null;
+            // If no TL;DR section, attempt to match "Keywords:" section (first line starting with "*Keywords:*").
+            else {
+                tooltipMatch = md.match(/\*Keywords:.*?\*/);
+                if (tooltipMatch) 
+                    tooltipContent = tooltipMatch[0].replace(/\*/g, '').replace(/Keywords: /, '').trim();
+                else
+                    tooltipContent = "Click to expand";
+            }
 
-            return { ...entry, md, tldr, keywords };
+            return { ...entry, md, tooltipContent };
         });
         
         // Wait for all the content to be loaded and sort it in reverse chronological order.

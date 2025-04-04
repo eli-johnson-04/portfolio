@@ -13,9 +13,6 @@ const ContentFeedEntry = ({ data }) => {
         setIsCollapsed(!isCollapsed);
     };
 
-    // Determine the tooltip content based on whether TL;DR or Keywords was matched in the markdown.
-    const tooltipContent = data.tldr || data.keywords || "Click to expand";
-
     return (
         <div 
             onClick={toggleVisibility}
@@ -42,7 +39,7 @@ const ContentFeedEntry = ({ data }) => {
                 }}
                 overlay={
                     <div className="whitespace-pre-wrap text-center max-w-xs bg-white p-3 rounded-lg shadow-md text-gray-800 text-sm font-medium">
-                        {isCollapsed ? tooltipContent : "Click to collapse"}
+                        {isCollapsed ? data.tooltipContent : "Click to collapse"}
                     </div>
                 }
                 mouseEnterDelay={0.2} // Delay before showing the tooltip
