@@ -7,7 +7,7 @@ const Popup = () => {
     return (
         <div
             className={`fixed bottom-5 left-5 transition-all duration-700 ease-in-out ${
-                isMinimized ? 'w-20 h-20 flex items-center justify-center  rounded-full shadow-lg' : 'p-5 bg-white text-black rounded-lg'
+                isMinimized ? 'w-auto h-auto flex items-center justify-center rounded-full shadow-lg' : 'p-5 bg-white text-black rounded-lg'
             }`}
         >
             {isMinimized ? (
