@@ -67,7 +67,7 @@ const ContentFeedEntry = ({ data }) => {
 
 // Helper function to extract the name from a filename. 
 function extractName(id) {
-    const match = id.match(/^(?:!)?\d{2}-\d{2}-\d{4}-(.+)$/);
+    const match = id.match(/^(?:!)?\d{1,2}-\d{1,2}-\d{4}-(.+)$/);
     if (!match) {
         console.log("Unexpected filename format: ", id);
         return null;
@@ -79,7 +79,7 @@ function extractName(id) {
 
 // Helper function to extract the date from a filename.
 function extractDate(id) {
-    const match = id.match(/^(?:!)?(?<month>\d{2})-(?<day>\d{2})-(?<year>\d{4})/);
+    const match = id.match(/^(?:!)?(?<month>\d{1,2})-(?<day>\d{1,2})-(?<year>\d{4})/);
     if (!match) {
         console.log("Unexpected filename format: ", id + ".md");
         return null;
@@ -87,14 +87,32 @@ function extractDate(id) {
 
     const monthMap = {
         "01": "January",
+        "1": "January",
+
         "02": "February",
+        "2": "February",
+
         "03": "March",
+        "3": "March",
+
         "04": "April",
+        "4": "April",
+
         "05": "May",
+        "5": "May",
+
         "06": "June",
+        "6": "June",
+
         "07": "July",
+        "7": "July",
+
         "08": "August",
+        "8": "August",
+
         "09": "September",
+        "9": "September",
+        
         "10": "October",
         "11": "November",
         "12": "December"
