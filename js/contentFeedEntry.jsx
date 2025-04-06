@@ -49,7 +49,7 @@ const ContentFeedEntry = ({ data }) => {
             >
                 <div 
                     onClick={toggleVisibility}
-                    className={`px-2 rounded-xl flex items-center transition-transform duration-100 ease-in-out
+                    className={`rounded-xl flex items-center transition-transform duration-100 ease-in-out
                         ${isCollapsed ? '' : 'hover:scale-[1.01]'
                         }`}
                 >
