@@ -16,7 +16,6 @@
 - [x] Show info on hover
 - [x] Expand into modal when clicked
 - [x] Spheres can be customized for different modal content, either via attribute or hard-coded (using an attribute is ideal...)
-- [ ] Modal holds information related to sphere customization (i have no idea what i meant here)
 - [x] Multiple spheres work indpendently of each other
 - [x] Markdown viewer library for modal
 - [x] Grab content from respective folders
@@ -29,17 +28,15 @@
 - [ ] Complete Activity feed (up to date)
 - [ ] Complete Portfolio page with grid for content (somehow make responsive and dynam ic??) ((completeness determined by an entry for each master resume project))
 - [ ] portfolio activity entry styling
-    - [ ] Smooth when collapsing an entry in activity or portfolio
-    - [x] add a hover popup on portfolio entries for keywords
-        -[ ] fix stutter on first open
-        - have markdownLoader class add a property for a string of keywords and extract the keywords from the end of the "md" property and put them here, then contentFeed can create a tooltip using the keywords property of each entry
+    - [x] Smooth when collapsing an entry in activity or portfolio
+    - [x] add a hover tooltip on portfolio entries for keywords
+        -[ ] fix tooltip stutter on first open
 - [x] SPLASH/LOADING PAGE BEFORE SPHERES ARE READY
-    - Once I figure out how users will interact, provide that information on this page! I can also put a small notification guy in the bottom left corner or something as a reminder with a button to close the popup
-        - popup auto-close timer (with notification?)
 - [x] fix weird issues where clicking text does not register as clicking the sphere
 - [x] prevent spheres from getting too close to each other
 - [x] encapsulate space scene functionality
-- [ ] fix one-click closing for expanding activity/portfolio entries in contentFeedEntry
+- [x] fix one-click closing for expanding activity/portfolio entries in contentFeedEntry
+    - [x] add visual indactor that the entry can be closed by clicking its title
 
 ## Beautification
 - [ ] add a big entry, probably pinned to the top of the portfolio entries (using my "out-of-bounds" numbering trick) about the website itself
