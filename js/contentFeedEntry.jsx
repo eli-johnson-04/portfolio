@@ -18,7 +18,6 @@ const ContentFeedEntry = ({ data }) => {
 
     return (
         <div 
-            onClick={toggleVisibility}
             className={`m-4 pb-4 rounded-xl px-2 pt-2 transition-transform duration-100 ease-in-out ${
                 isCollapsed ? 'hover:shadow-lg hover:bg-gray-100 hover:scale-[1.02]' : 'border-2 border-gray-600'
             }`}
@@ -48,7 +47,12 @@ const ContentFeedEntry = ({ data }) => {
                 mouseEnterDelay={0.2} // Delay before showing the tooltip
                 mouseLeaveDelay={0.1} // Delay before hiding the tooltip
             >
-                <div className="flex items-center">
+                <div 
+                    onClick={toggleVisibility}
+                    className={`rounded-xl flex items-center transition-transform duration-100 ease-in-out
+                        ${isCollapsed ? '' : 'hover:scale-[1.01]'
+                        }`}
+                >
                     <span>
                         <h1 className="text-3xl font-bold text-gray-800">{extractName(data.id) + (isPriority ? " ★" : "")}</h1>
                         <h1 className="text-sm font-semibold text-gray-800">{extractDate(data.id)}</h1>
@@ -59,6 +63,9 @@ const ContentFeedEntry = ({ data }) => {
                 <div>
                     <div className="pb-2 border-b border-gray-300"/>
                     <ReactMarkdown components={MarkdownToHTMLComponentStyles} rehypePlugins={[rehypeRaw]}>{data.md}</ReactMarkdown>
+                    <div className="flex justify-center mt-2 w-full">
+                        <button className="close-btn text-lg" onClick={toggleVisibility}>Collapse</button>
+                    </div>
                 </div>
             )}
         </div>
