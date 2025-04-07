@@ -6,15 +6,16 @@ const ProfileContent = () => {
         <div className="my-4 mx-2 max-h-[60vh] scrollbar-thin scrollbar-webkit overflow-y-auto">
             <div className="grid grid-cols-[1fr_2fr] grid-rows-[auto,auto] gap-4 p-4 bg-gray-900 place-items-center text-white rounded-lg shadow-lg">
                 {/* Profile Picture (Top Left) */}
-                <img 
-                    src="images/headshot.webp"
-                    alt="Profile"
-                    className="place-self-start rounded-full object-cover"
-                    
-                />
+                <div className="h-full flex flex-col items-center justify-center">
+                    <img 
+                        src="images/headshot.webp"
+                        alt="Profile"
+                        className="w-full h-full rounded-full object-cover"
+                    />
+                </div>
 
                 {/* Name & Bio (Top Right) */}
-                <div className="flex flex-col justify-center">
+                <div className="flex flex-col justify-center h-full">
                     <h2 className="text-5xl font-bold">Elijah Johnson</h2>
                     <div className="text-xl text-gray-400">
                         <h3>
@@ -44,13 +45,15 @@ const ProfileContent = () => {
                 {/* Additional Info (Bottom - Spans 2 Columns) */}
                 <div className="col-span-2 text-gray-300 break-words whitespace-normal">
                     <p>
-                        Hello, I'm Eli! I'm actively working to pursue a career in a variety of fields of interest: virtual reality, cybersecurity, systems-level engineering, or applications of ML and AI. Beyond the actual coding, I want to transcend the programming and work in the abstract world of computing through the dynamic and ever-changing cybersecurity landscape, the importance and conscientiousness of managing memory and high-performance systems engineering, and the constantly broadening horizon of AI applications. 
+                        Hello, I'm Eli! I'm actively working in pursuit of working in a variety of fields: virtual reality, cybersecurity, systems-level engineering, or applications of ML and AI. While I thoroughly enjoy developing, I have loftier goals; I want to tell a story of superior security, of efficient systems, of immersive experiences, and of the future of technology. I want to be a part of the next generation of engineers and developers who are not only capable of creating, but of realizing the future.
                     </p>
                     <br/>
                     <p>
-                        Outside of work, I love cats, a vast array of music, journaling, and Wikipedia. I could never learn enough, with particular interests in astrophysics, virtual reality 
-                        experiences and development, interior design, and psychology. 
+                        Outside of work, I love cats, heavy and inaccessible music, journaling, and Wikipedia. I could never learn enough about astrophysics, virtual reality experiences and development, interior design, and psychology, just to name a few. Thanks for stopping by! Feel free to reach out to me via email or GitHub if you have any questions, comments, or just want to chat! I love meeting people and hearing new ideas. 
                     </p>
+                    {/* <blockquote className="flex font-gentilis justify-center pl-4 italic text-gray-500 my-4">
+                        "Alas, the future will find you. You must find yourself first; life is not hide and seek."
+                    </blockquote> */}
                 </div>
             </div>
         </div>
