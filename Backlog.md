@@ -12,6 +12,7 @@
 
 ## Necessary Functionality
 - [ ] IMPROVE PERFORMANCE ?
+- [ ] Touch support for safari
 - [x] Spheres swell when hover
 - [x] Show info on hover
 - [x] Expand into modal when clicked
