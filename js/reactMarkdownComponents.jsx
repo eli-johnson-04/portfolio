@@ -77,9 +77,8 @@ const MarkdownToHTMLComponentStyles = {
             {...props}
         />
     ),
-    // TODO: need to center justify images!!!
     img: ({ node, ...props }) => (
-        <div className="flex justify-center my-4 ">
+        <span className="flex justify-center my-4">
             <img
                 className="w-auto h-auto object-cover rounded-lg shadow-md max-w-full border-gray-300"
                 style={{
@@ -90,7 +89,7 @@ const MarkdownToHTMLComponentStyles = {
                 }}
                 {...props}
             />
-        </div>
+        </span>
     ),
     a: ({ node, ...props }) => (
         <a
