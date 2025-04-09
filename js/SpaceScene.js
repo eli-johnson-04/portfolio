@@ -168,7 +168,7 @@ export default class SpaceScene {
     }
 
     handleInteraction(x, y) {
-        // Convert touch coordinates to raycasting and handle sphere interaction
+        // Convert touch coordinates to raycasting and handle sphere interaction.
         const raycaster = new THREE.Raycaster();
         const pointer = new THREE.Vector2(x, y);
         raycaster.setFromCamera(pointer, this.camera);
@@ -176,12 +176,12 @@ export default class SpaceScene {
         const intersects = raycaster.intersectObjects(this.scene.children, true);
         if (intersects.length > 0) {
             const sphere = intersects[0].object;
-            if (sphere.onClick) sphere.onClick(); // Custom interaction logic
+            if (sphere.onClick) sphere.onClick();
         }
     }
 
     handleHover(x, y) {
-        // Handle hover effects for touch interactions
+        // Handle hover effects for touch interactions.
         const raycaster = new THREE.Raycaster();
         const pointer = new THREE.Vector2(x, y);
         raycaster.setFromCamera(pointer, this.camera);
@@ -189,7 +189,7 @@ export default class SpaceScene {
         const intersects = raycaster.intersectObjects(this.scene.children, true);
         if (intersects.length > 0) {
             const sphere = intersects[0].object;
-            if (sphere.onHover) sphere.onHover(); // Custom hover logic
+            if (sphere.onHover) sphere.onHover();
         }
     }
 

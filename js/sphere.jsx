@@ -514,7 +514,8 @@ export default class Sphere {
 
     // Handle hover behavior. 
     handleMouseHover(mouseHover) {
-        // Only proceed if the modal is closed.
+        // Only proceed if the modal is closed and the sphere is fully initialized.
+        if (!(this._labelMesh && this._hoverTextMesh && this._mesh)) return;
         if (!this._isModalOpen) {
 
             // If mouse is hovering and sphere is not hovered, hover sphere and swell.
@@ -532,6 +533,8 @@ export default class Sphere {
 
     // Handle click behavior.
     handleClick(cameraDistance) {
+        // Only proceed if the modal is closed and the sphere is fully initialized.
+        if (!(this._labelMesh && this._hoverTextMesh && this._mesh)) return;
         if (!this._isModalOpen && this._mouseHovered) { 
             this.explode(cameraDistance);
             this.openModal(); 
