@@ -19,7 +19,7 @@ const Popup = () => {
                 </button>
             ) : (
                 <div className="w-full">
-                    <h1 className="text-xl font-semibold mb-3 select-none">Welcome! (DEVELOPMENT BUILD)</h1>
+                    <h1 className="text-xl font-semibold mb-3 select-none">Welcome!</h1>
                     <p className="mb-4 select-none">Press and drag to pan around.</p>
                     <button
                         className="close-btn text-xl"
