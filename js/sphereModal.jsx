@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import { gsap } from 'gsap';
 import '../css/output.css';
 
-// Set the modal's app element
+// Set the modal's app element.
 Modal.setAppElement('#root');
 
 const SphereModal = ({ isOpen, onRequestClose, label, content }) => {
@@ -37,7 +37,7 @@ const SphereModal = ({ isOpen, onRequestClose, label, content }) => {
         <Modal
             isOpen={isOpen}
             onRequestClose={() => {
-                // Fade-out animations
+                // Fade-out animations.
                 gsap.to('.ReactModal__Content', {
                     opacity: 0,
                     duration: 0.2,
@@ -50,10 +50,10 @@ const SphereModal = ({ isOpen, onRequestClose, label, content }) => {
                 });
 
                 // Only close the modal when the animation completes.
-                setTimeout(() => {onRequestClose(); }, 200); // Duration of the fade-out animation
+                setTimeout(() => {onRequestClose(); }, 200);
             }}
             onAfterOpen={() => {
-                // Fade-in animations
+                // Fade-in animations.
                 gsap.to('.ReactModal__Content', {
                     opacity: 1,
                     duration: 0.2,
@@ -77,7 +77,7 @@ const SphereModal = ({ isOpen, onRequestClose, label, content }) => {
                 <button 
                     className="ml-4 close-btn"
                     onClick={() => {
-                        // Start the fade-out before closing the modal
+                        // Start the fade-out before closing the modal.
                         gsap.to('.ReactModal__Content', {
                             opacity: 0,
                             duration: 0.2,
@@ -89,7 +89,7 @@ const SphereModal = ({ isOpen, onRequestClose, label, content }) => {
                             ease: 'easeIn'
                         });
                         
-                        // Delay the closing until the animations complete. 
+                        // Delay the closing until the animations complete.
                         setTimeout(() => onRequestClose(), 200);
                     }}
                 >

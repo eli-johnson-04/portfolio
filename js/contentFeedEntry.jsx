@@ -80,7 +80,7 @@ function extractName(id) {
         return null;
     }
     
-    // Replace hyphens with spaces to get the title
+    // Replace hyphens with spaces to get the title.
     return match[1].replace(/-/g, ' ');
 }
 

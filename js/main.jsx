@@ -64,7 +64,7 @@ async function setupScene(spaceWorld) {
 async function showLoadingScreen() {
     const screen = document.getElementById('loading-screen');
 
-    // Start fade-in transition
+    // Start fade-in transition.
     screen.classList.remove('opacity-0');
     screen.classList.add('opacity-100');
 
@@ -99,7 +99,7 @@ async function hideLoadingScreen() {
 const container = document.body;
 const spaceWorld = new SpaceScene(container);
 
-// Add touch event listeners for touch interaction
+// Add touch event listeners for touch interaction.
 container.addEventListener('touchstart', (event) => {
     const touch = event.touches[0];
     const rect = container.getBoundingClientRect();
@@ -118,9 +118,9 @@ container.addEventListener('touchmove', (event) => {
     spaceWorld.handleHover(x, y);
 });
 
-container.addEventListener('touchend', () => {
-    spaceWorld.handleInteractionEnd();
-});
+// container.addEventListener('touchend', () => {
+//     spaceWorld.handleInteractionEnd();
+// });
 
 // Start rendering the scene immediately.
 spaceWorld.render();

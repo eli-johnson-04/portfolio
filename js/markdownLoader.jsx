@@ -10,7 +10,7 @@ export default class markdownLoader {
     importAllMarkdown() {
         const rawContent = import.meta.glob('/*/*.md', { query: '?raw', import: 'default' });
         this.allContent = Object.entries(rawContent).map(([path, loader]) => ({
-            path, // Add the path property
+            path,
             loader,
         }));
         console.log("Finished importing markdown.");
@@ -18,7 +18,7 @@ export default class markdownLoader {
 
     // Helper function that gets a specific set of markdown content. 
     async getContentFromFolder(folder) {
-        // Filter out the specified content. 
+        // Filter out the specified content by the folder it is located in. 
         const entries = this.allContent
             .filter(({ path }) => path.includes(`/${folder}/`))
             .map(({ path, loader }) => {
@@ -28,7 +28,7 @@ export default class markdownLoader {
 
         // Resolve the content of all markdown files. 
         const contentPromises = entries.map(async (entry) => {
-            const md = await entry.loader(); // Resolves the markdown content
+            const md = await entry.loader(); // Resolves markdown content
 
             // Attempt to extract TL;DR section (first line starting with "**TL;DR:**").
             let tooltipMatch = md.match(/\*\*TL;DR:.*?\*\*/);
