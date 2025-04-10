@@ -3,8 +3,8 @@ name: Deploy Portfolio to GitHub Pages
 on:
   push:
     branches:
-      #- main
-      - dev # FOR TESTING
+      - main
+      #- dev # FOR TESTING
 
 permissions: 
   contents: read
