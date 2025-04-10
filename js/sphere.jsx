@@ -162,11 +162,11 @@ export default class Sphere {
         const labelTextMesh = new THREE.Mesh(labelTextGeometry, labelTextMaterial);
         const hoverTextMesh = new THREE.Mesh(hoverTextGeometry, hoverTextMaterial);
 
-        // Enable shadow casting for text meshes
+        // Enable shadow casting for text meshes.
         labelTextMesh.castShadow = true;
         //hoverTextMesh.castShadow = true; // start with this off
 
-        // Set position to prevent clipping
+        // Set position to prevent clipping.
         labelTextMesh.position.set(0, 0, this._geometry.parameters.radius + (2 * RADIUS_OFFSET) + RADIAL_TEXT_OFFSET); // 2x to prevent clipping between title and text
         hoverTextMesh.position.set(0, 0, this._geometry.parameters.radius + RADIUS_OFFSET + RADIAL_TEXT_OFFSET);
 
@@ -327,6 +327,7 @@ export default class Sphere {
         positionAttribute.needsUpdate = true;
     }
 
+    // Set the position of the sphere and modify its "center" or "actual" position.
     setPosition(x = 0, y = 0, z = 0) {
         this._mesh.position.set(x, y, z); // may need to tinker with z-pos when content cards are behind circles
         this._position = this._mesh.position;
@@ -342,7 +343,7 @@ export default class Sphere {
         // Calculate the maximum 3D displacement.
         const maxTotalDisplacement = maxDisplacementPerAxis * Math.sqrt(3);
 
-        const boundaryRadius = (2 * this._geometry.parameters.radius) + maxTotalDisplacement; // account forthe size of the sphere AND the geometry
+        const boundaryRadius = (2 * this._geometry.parameters.radius) + maxTotalDisplacement; // account for the size of the sphere AND the geometry
         
         const boundaryGeometry = new THREE.SphereGeometry(boundaryRadius, 16, 16);
         const boundaryMaterial = new THREE.MeshBasicMaterial({ 
@@ -375,7 +376,7 @@ export default class Sphere {
         const distanceFromCenter = targetPosition.distanceTo(this._position);
 
         // Clamp the position to the boundary sphere's radius.
-        const boundaryRadius = this._geometry.parameters.radius; // Adjust if needed
+        const boundaryRadius = this._geometry.parameters.radius;
         if (distanceFromCenter > boundaryRadius) {
             // Scale the position back to the boundary sphere's surface.
             targetPosition.sub(this._position).setLength(boundaryRadius).add(this._position);
@@ -393,7 +394,7 @@ export default class Sphere {
 
     // Swell animation for size and opacity.
     swell() {
-        // Make sphere bigger on swell
+        // Make sphere bigger on swell.
         gsap.to(this._mesh.scale, {
             x: 1.3,
             y: 1.3,
@@ -403,7 +404,7 @@ export default class Sphere {
             overwrite: "auto"
         });
 
-        // Make sphere more opaque on swell
+        // Make sphere more opaque on swell.
         gsap.to(this._mesh.material, {
             opacity: 0.87,
             duration: 0.35,
@@ -411,7 +412,7 @@ export default class Sphere {
             overwrite: "auto"
         });
 
-        // Hide title on swell
+        // Hide title on swell.
         gsap.to(this._labelMesh.children[0].material, {
             opacity: 0,
             duration: 0.19,
@@ -425,7 +426,7 @@ export default class Sphere {
             }
         });
 
-        // Show text on swell
+        // Show text on swell.
         gsap.to(this._hoverTextMesh.children[0].material, {
             opacity: 1,
             duration: 0.35,
@@ -439,7 +440,7 @@ export default class Sphere {
     
     // Size and opacity reset animation.
     shrink() {
-        // Shrink sphere to normal size
+        // Shrink sphere to normal size.
         gsap.to(this._mesh.scale, {
             x: 1, 
             y: 1, 
@@ -449,7 +450,7 @@ export default class Sphere {
             overwrite: "auto"
         });
 
-        // Make sphere less opaque on shrink
+        // Make sphere less opaque on shrink.
         gsap.to(this._mesh.material, {
             opacity: DEFAULT_SPHERE_OPACITY,
             duration: 0.3,
@@ -457,7 +458,7 @@ export default class Sphere {
             overwrite: "auto"
         });
 
-        // Show title on shrink
+        // Show title on shrink.
         gsap.to(this._labelMesh.children[0].material, {
             opacity: 1,
             duration: 0.3,
@@ -546,7 +547,7 @@ export default class Sphere {
         // The mouse can no longer be considered as hovering over the sphere. 
         this._mouseHovered = false;
 
-        // Show the modal
+        // Show the modal.
         this._isModalOpen = true;
         this.renderModal();
     }

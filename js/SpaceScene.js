@@ -5,6 +5,7 @@ import Sphere from './sphere.jsx';
 import SkyDome from './SkyDome.js';
 import ParticleSystem from './ParticleSystem.js';
 
+// Contains the main scene and the camera. 
 export default class SpaceScene {
     static SCENE_LAYER = 0;
     static SKYDOME_LAYER = 1;
@@ -12,28 +13,28 @@ export default class SpaceScene {
     constructor(container) {
         this.container = container;
 
-        // Scene setup
+        // Scene setup.
         this.scene = new THREE.Scene();
         this.scene.layers.set(SpaceScene.SCENE_LAYER);
 
-        // World setup
+        // World setup.
         this.world = new CANNON.World();
         this.world.gravity.set(0, 0, 0);
 
-        // Spheres container
+        // Spheres container.
         this.spheres = [];
 
-        // SkyDome setup
+        // SkyDome setup.
         this.skyDome = SkyDome.getInstance();
         this.skyDome.skyDomeMesh.layers.set(SpaceScene.SKYDOME_LAYER);
         this.scene.add(this.skyDome.skyDomeMesh);
 
-        // Camera setup
+        // Camera setup.
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         this.camera.layers.enable(SpaceScene.SKYDOME_LAYER);
         this.camera.position.z = 10;
 
-        // Renderer setup
+        // Renderer setup.
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setClearColor(0x000000);
@@ -41,7 +42,7 @@ export default class SpaceScene {
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Use soft shadows
         this.container.appendChild(this.renderer.domElement);
 
-        // Controls setup
+        // Controls setup.
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.25;
@@ -51,11 +52,11 @@ export default class SpaceScene {
         this.controls.minAzimuthAngle = -Math.PI / 2;
         this.controls.maxAzimuthAngle = Math.PI / 2;
 
-        // Raycaster setup
+        // Raycaster setup.
         this.raycaster = new THREE.Raycaster();
         this.mouse = new THREE.Vector2(-1000, -1000);
 
-        // Lighting setup
+        // Lighting setup.
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
         this.scene.add(ambientLight);
 
@@ -68,10 +69,10 @@ export default class SpaceScene {
         directionalLight.shadow.camera.far = 50;
         this.scene.add(directionalLight);
 
-        // Initialize the particle system
+        // Initialize the particle system.
         this.particleSystem = new ParticleSystem(this.scene);
 
-        // Event listeners
+        // Event listeners.
         window.addEventListener('resize', this.onWindowResize.bind(this), false);
         window.addEventListener('mousemove', this.onMouseMove.bind(this));
         window.addEventListener('click', this.onClick.bind(this));

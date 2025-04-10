@@ -4,7 +4,7 @@ export default class ParticleSystem {
     constructor(scene) {
         this.scene = scene;
 
-        // Particle system setup
+        // Particle system setup.
         this.particles = [];
         this.particleMaterial = new THREE.PointsMaterial({
             color: 0xffffff,
@@ -16,6 +16,7 @@ export default class ParticleSystem {
         this.scene.add(this.particleMesh);
     }
 
+    // Generate a particle for each markdown file, corresponding to the sphere it should fly into on hover. 
     initializeFromMarkdown(sphereData, spheres) {
         const particleData = [];
         sphereData.forEach((data, index) => {
@@ -37,6 +38,7 @@ export default class ParticleSystem {
         this.initialize(particleData);
     }
 
+    // set all sphere positions and track them. 
     initialize(particleData) {
         if (!particleData || particleData.length === 0) return;
 
@@ -50,6 +52,8 @@ export default class ParticleSystem {
         this.particleGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
     }
 
+    // If the sphere is hovered, the particle should move towards the sphere.
+    // If the sphere is not hovered, the particle should move back to its original position.
     update() {
         if (!this.particleGeometry.attributes.position) return;
 

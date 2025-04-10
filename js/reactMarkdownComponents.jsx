@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-// Custom formatting options for generated HTML.
+// Custom formatting options for Markdown converted to HTML. 
 const MarkdownToHTMLComponentStyles = {
     h1: ({ node, ...props }) => (
         <h1
