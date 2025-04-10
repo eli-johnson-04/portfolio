@@ -17,7 +17,7 @@ const ProfileContent = () => {
                 {/* Name & Bio (Top Right) */}
                 <div className="flex flex-col justify-center h-full">
                     <h2 className="text-5xl font-bold">Elijah Johnson</h2>
-                    <div className="text-xl text-gray-400">
+                    <div className="text-xl text-white">
                         <h3>
                             Undergraduate, Third Year | University of Florida
                         </h3>
@@ -27,13 +27,13 @@ const ProfileContent = () => {
                         <hr/>
                         <div className="w-full">
                             <div>
-                                <h3 className="text-gray-500">Contact:</h3>
-                                <h4 className="text-lg text-gray-600">
+                                <h3 className="text-gray-400">Contact:</h3>
+                                <h4 className="text-lg text-gray-500">
                                     <a href="mailto:elijahdanjohnson@gmail.com">elijahdanjohnson@gmail.com</a>
                                 </h4>
                                 <br/>
-                                <h3 className="text-gray-500">GitHub:</h3>
-                                <h4 className="text-lg text-gray-600">
+                                <h3 className="text-gray-400">GitHub:</h3>
+                                <h4 className="text-lg text-gray-500">
                                     <a href="https://www.github.com/eli-johnson-04">eli-johnson-04</a>
                                 </h4>
                             </div>
