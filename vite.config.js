@@ -3,18 +3,16 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  root: './', // Set the root to the current directory
   build: {
-    outDir: 'build', // Output directory for the build
-    rollupOptions: {
-      input: {
-        main: 'index.html',
-      },
-    },
+    outDir: 'dist', // Output directory for the build
+    emptyOutDir: true,
   },
-  base: '',
+  base: './', // Ensure this matches your GitHub Pages repository name
+  resolve: {
+    extensions: ['.jsx', '.js'], // Ensure .jsx files are resolved
+  },
   server: {
     open: true, // Open the browser when the server starts
   },
-  assetsInclude: ['**/*.md']
+  assetsInclude: ['**/*.md'],
 });

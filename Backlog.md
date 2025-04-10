@@ -6,16 +6,17 @@
     - I'm doing both :D
 
 ## Code-based changes
-- [ ] large-scale refactoring, mostly in Sphere.jsx
-- [ ] convert pngs to jpgs to save space
+- [x] large-scale refactoring, mostly in Sphere.jsx
+- [x] convert all images to webp to save space
 - [ ] look into google indexing and crawling and how that works with markdown!
 
 ## Necessary Functionality
+- [ ] IMPROVE PERFORMANCE ?
+- [ ] Touch support for safari
 - [x] Spheres swell when hover
 - [x] Show info on hover
 - [x] Expand into modal when clicked
 - [x] Spheres can be customized for different modal content, either via attribute or hard-coded (using an attribute is ideal...)
-- [ ] Modal holds information related to sphere customization (i have no idea what i meant here)
 - [x] Multiple spheres work indpendently of each other
 - [x] Markdown viewer library for modal
 - [x] Grab content from respective folders
@@ -27,16 +28,20 @@
     - [ ] MAKE APPEARANCE CONSISTENT ACROSS VARYING SCREEN SIZES
 - [ ] Complete Activity feed (up to date)
 - [ ] Complete Portfolio page with grid for content (somehow make responsive and dynam ic??) ((completeness determined by an entry for each master resume project))
-- [ ] fix portfolio activity entry styling
-    - [ ] Smooth when collapsing an entry in activity or portfolio
-    - [ ] add a hover popup on portfolio entries for keywords
-        - have markdownLoader class add a property for a string of keywords and extract the keywords from the end of the "md" property and put them here, then contentFeed can create a tooltip using the keywords property of each entry
-- [ ] SPLASH/LOADING PAGE BEFORE SPHERES ARE READY
-    - Once I figure out how users will interact, provide that information on this page! I can also put a small notification guy in the bottom left corner or something as a reminder with a button to close the popup
-        - popup auto-close timer (with notification?)
-- [ ] fix weird issues where clicking text does not register as clicking the sphere
+- [ ] portfolio activity entry styling
+    - [x] Smooth when collapsing an entry in activity or portfolio
+    - [x] add a hover tooltip on portfolio entries for keywords
+        -[ ] fix tooltip stutter on first open
+- [x] SPLASH/LOADING PAGE BEFORE SPHERES ARE READY
+- [x] fix weird issues where clicking text does not register as clicking the sphere
+- [x] prevent spheres from getting too close to each other
+- [x] encapsulate space scene functionality
+- [x] fix one-click closing for expanding activity/portfolio entries in contentFeedEntry
+    - [x] add visual indactor that the entry can be closed by clicking its title
 
 ## Beautification
+- [ ] add a big entry, probably pinned to the top of the portfolio entries (using my "out-of-bounds" numbering trick) about the website itself
+- [ ] functionality for mobile (touch screens)!!!!
 - [x] Spheres have hover physics
 - [x] Modal ~~open~~ fade-in animation
 - [x] Modal **explosion** animation
@@ -52,10 +57,10 @@
 
 
 ## Background Cards - maybe now background STARS?????
-- [ ] Create little background cards (or STARS????) for every markdown file
-- [ ] Give background cards color (washed out, muted, kinda blurry) (i may be able to make these one-dimensional and have them face the camera but that could be cheap)
-- [ ] Make them fly into their respective sphere when that sphere is hovered
-- [ ] Glassy appearance effect?
+- [x] Create little background cards (or STARS????) for every markdown file
+- [x] Give background cards color (washed out, muted, kinda blurry) (i may be able to make these one-dimensional and have them face the camera but that could be cheap)
+- [x] Make them fly into their respective sphere when that sphere is hovered
+- [x] Glassy appearance effect?
 
 ## Optional/Stretch Goals
-- [ ] Putting text on a flat visible card instead of wrapping it, still allowing it to face the user but being obviously on a card
+- [NO] Putting text on a flat visible card instead of wrapping it, still allowing it to face the user but being obviously on a card
