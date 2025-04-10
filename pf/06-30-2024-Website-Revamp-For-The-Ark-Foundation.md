@@ -1,7 +1,7 @@
 # Working in the Gold Coast
 In the Summer of 2024 I chose to spend 6 weeks in Ghana, a life-changing experience that provided me with a worldview like no other and a powerful feeling of global citizenship. The University of Florida is pioneering a new service abroad program, where internship work with local nonprofits is incorporated into the study-abroad model. Alongside 17 other students, I built technology for a local organization while taking key courses. I have since resolved to visit all the continents, and I returned with an incomparable sense of intercultural competence. I witnessed the African perspective, saw the impacts of imperialism firsthand, and I will never forget how hot "spicy" can really be. 
 
-![Group Picture at Showcase](/images/pf/showcase-group-pic.jpg)
+![Group Picture at Showcase](/images/pf/showcase-group-pic.webp)
 *My colleagues and I, program supervisor Dr. Sanethia Thomas (front center), and representatives from several of our clients.*
 
 Still a student, I gained valuable professional and industry experience working directly with The Ark Foundation and leading a team to revitalize their online presence, breathing new life into an 8-year old website. I was blessed with the chance to capitalize on the opportunity to practice the technical skills I had acquired and rigorously put them to use through the software engineering life cycle. 
@@ -22,7 +22,7 @@ There were several major components of my time travelling through the country:
 ## The Ark Foundation
 Based in Accra, Ghana, located on the Gold Coast of West Africa, sits the altruistic and faith-based nonprofit Ark Foundation. They provide relief, support, and a wide range of services for survivors of domestic and gender-based abuse, a tragically rampant issue in Ghana. Working with them forced a new understanding of how to communicate with people, even in my own language. Many times I spoke to Ghanaians and both of us had such a thick accent that neither one of us could understand the other. 
 
-Given our limited time in-country, a heavy emphasis of our work was placed on documentation. We recorded many daily scrum sessions, composed extensive documentation on the scope, scale, and motivation of our work, and created a handoff document with every conceivable component of useful information to give to the Ark after we were finished. 
+Given our limited time in-country, a heavy emphasis of our work was placed on documentation. We recorded many daily scrum sessions, using Trello for a dynamic backlog, we composed extensive documentation on the scope, scale, and motivation of our work, and we created a handoff document with every conceivable component of useful information to give to the Ark after we were finished. 
 
 ### 8-Year-Old Website
 Following our first on-site meeting, the Ark illustrated a desperate need for a new (or at least updated) website. The old one was made somewhat haphazardly, their WordPress systems were 8 years out-of-date, and they had no idea how to do anything related to upkeep or maintenance themselves. My team and I resolved to not only revamp their entire website, but to create an intuitive desktop application that we affectionately named *Noah* for in-house education on website maintenance and management. 
@@ -35,7 +35,7 @@ My team and I were provided access to their cPanel management system and everyon
 
 Our plans played out mostly as we had hoped, but the landscape of our work changed frequently. Nonetheless we stayed resilient and adapted to create a website and application we were proud of. Feel free to check it out [here](https://arkfoundationghana.org/site/)! We were thrilled to show it off to everyone we travelled with, our clients at the Ark, and the clients of the other teams at the final showcase, the capstone of our journey. 
 
-![Final Showcase](images/pf/showcase-day.png)
+![Final Showcase](images/pf/showcase-day.webp)
 *My team (left-to-right) at the showcase: Pieter, myself, Mouray (student TA, not on-team), and Endrit.*
 
 
@@ -61,6 +61,6 @@ I practiced a variety of hard and soft skills while in the Asante Region. I had 
 
 I arrived in Ghana with no expectations and I was floored at almost every turn with the richness of culture, of food, of nature, and the kindness of those I worked with and met. I was fortunate to have done, seen, tasted, or experienced just about everything worth visiting the country for, and I would love to go back. 
 
-![Doing the Gator Chomp over a Crocodile LOL](/images/pf/gator-chomp-over-crocodile.jpg)
+![Doing the Gator Chomp over a Crocodile LOL](/images/pf/gator-chomp-over-crocodile.webp)
 
 *Keywords: software engineering, software development life cycle, Agile methods, Scrum, intercultural competence, African perspective, Electron, ReactJS, NodeJS, TailwindCSS, Git, GitHub, WordPress, cPanel, Gutenberg, Visual Composer, project management, consulting, UXD, Figma, think-aloud*
