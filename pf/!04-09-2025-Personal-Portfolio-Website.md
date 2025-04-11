@@ -18,7 +18,7 @@ I heard about Three.JS and was intruiged; I figured I could make a unique experi
 
 This website initially was going to have three spheres, where two of them were connected by black lines to one of them in the center. These spheres would bridge between the *world* and the *content*, as it were, to provide a medium between the experience and *my* experience. These spheres would swell and shrink when hovered or unhovered, and would expand into a React modal, styled with TailwindCSS, when clicked. They would feature a title and hover text, which would change with its state to provide information about what the user is seeing. 
 
-Each of the spheres would contain different information. There would be a Profile sphere, with information about me, contacts, a bio and a headshot, an Ativity sphere containing a feed for regular updates on my work and classes, and a Portfolio sphere with entries for completed projects. 
+Each of the spheres would contain different information. There would be a Profile sphere, with information about me, contacts, a bio and a headshot, an Activity sphere containing a feed for regular updates on my work and classes, and a Portfolio sphere with entries for completed projects. 
 
 The color pallete would be glassy, modern, and matte, with off-whites and muted colors to be easy on the eyes and easy on the mind. Simple. 
 
@@ -52,13 +52,13 @@ Over the last several months I had been bothered by not enjoying web development
 My code standards were tested and I learned substantially about how I like to organize my code, as well as how hard it is to do so consistently. I actively benefitted from trusting in the value of encapsulation, modularity, and short functions, and saw how much easier it was to debug using a call stack when doing these things. To that end, I would love to rewrite the site again, in TypeScript, so I can hopefully avoid a lot of the JavaScript irritation that made this such an adventure. I also would like to see if I could place the *content* into a unique medium like I did with the *world*. I didn't want to over-extend myself on my first website, but I know I could do more. 
 
 ## Deployment
-I acquired a custom domain name and set out to deploy the site on GitHub Pages, since it only needed to be built and served; it had no external sources. This was brutal. I read the documentation and employed AI assistance, and I fell short. For nearly 8 hours GitHub was generating my artifact while serving another that *wasn't even built*. I did not catch this until I was interacting with Claude and realized that GitHub was executing two deploy scripts, only one of which actually served content. 
+I acquired a custom domain name and set out to deploy the site on GitHub Pages, since it only needed to be built and served; it had no external sources. This was brutal. I read the documentation and employed AI assistance, and I fell short. For nearly 6 hours GitHub was generating my artifact while serving another that *wasn't even built*. I did not catch this until I was interacting with Claude and realized that GitHub was executing two deploy scripts, only one of which actually served content. 
 
 > "Is it possible that GitHub is generating an artifact after building my site but a different script is deploying an unbuilt artifact, hence the MIME error referencing *main.jsx*?"
 >
 > "You have raised a crucial point! Yes..."
 
-I didn't read anything after those seven words. Everything was working!
+I didn't read anything after those seven words. I fixed the problem.
 
 Two days later I wanted to see if I could make a preview build from the dev branch and serve it separately, and broke my deployment again. I was so frustrated. I fixed it several hours later, but resolved not to touch it again until merging all my dev changes into the main branch and permanently serving the site from main. 
 
