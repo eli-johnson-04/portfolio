@@ -4,7 +4,7 @@
 ## The music screen
 I saw a TikTok a few years ago about someone who turned an old iPad into an extra display for their computer, and I remembered this over Christmas break '24. Unfortunately, my iPad was at school and I had two weeks left of break. It would have to wait.
 
-I got back to Gainesville and got to work. I found the app that does the thing, Splashtop Wired XDisplay, and miraculously it works with iOS, like, 9. It does this over a **lightning** cable (you know, the 13-year old cable format?), so I set it up on my PC and my iPad. The case has a cool stand too, so I was able to prop it up really nice and I really just use it as a music display. I love it! It's a little small for anything else, but perfect to watch lyrics go by, or to have a cool audio visualizer while playing Guitar Hero. Windows recognizes it as a genuine display, and I keep it all the way on the "left" so I can still use my taskbar on the bottom. Check it out (and say hi to the duckies)! 
+I got back to Gainesville and got to work. I found the app that does the thing, Splashtop Wired XDisplay, and miraculously it works with iOS, like, 9. It does this over a **lightning** cable (you know, the cable from 2012?), so I set it up on my PC and my iPad. The case has a cool stand too, so I was able to prop it up all nice and I really just use it as a music display. I love it! It's a little small for anything else, but perfect to watch lyrics go by, or to have a cool audio visualizer while playing Guitar Hero. Windows recognizes it as a genuine display, and I keep it all the way on the "left" so I can still use my taskbar on the bottom. Check it out (and say hi to the duckies)! 
 
 ![iPad Mini Monitor](images/activity/ipad-monitor.webp)
 
@@ -18,7 +18,7 @@ I thought to myself, as any normal person does:
 ...What ensued next was one of the most hair-pulling, stressful, and eye-opening adventures I have gone on for the sake of a convenience. But I'm a programmer, so, I stared this iPad in the eye until Machine Girl stared back without touching the screen. 
 
 ## This isn't illegal, right...?
-Initially, I tried to use a VNC connection and a hotkey exectuable with the Windows Task Scheduler to run a script that would turn on the screen with Activator, a mostly gesture-focused tool for enabling efficient behavior on the iPad that also has a CLI library. Then my computer would open a VNC session, the iPad would constantly wait for and detect a VNC connection from my PC's IP address (hard-coded :p), type in the password, and open the app. Something this complex was definitely going to work! 
+Initially, I tried to use a VNC connection and a hotkey exectuable with the Windows Task Scheduler. My computer would open this VNC session, the iPad would constantly wait for and detect a VNC connection from my PC's IP address (hard-coded :p), then the hotkey executable would type in the password and open the app. Something this complex was definitely going to work! 
 
 ...It was worse than you think. Yes, iOS is written on top of Linux, but no, iPads do not come with bash installed, ipconfig or any inetutils/network commands, or tree, or openssh, grep (no, it does not have grep), gzip, lsof, NANO IT DOESN'T HAVE NANO, netcat, and a variety of other utilities I am used to. 
 
@@ -26,11 +26,11 @@ I jailbroke it. Thanks Reddit and ChatGPT, you guys are awesome, but you lied to
 
 ## This is what the Colosseum must have felt like
 
-Except they didn't. I was at war with this thing. I had no idea how to have the system run this script on its own to detect a VNC connection, and even when I figured that out after several hours, the hotkeys were so frustrating. Eventually I used the VNC connection to run Activator commands to open the lock screen and open Splashtop, throwing hotkeys out the window, but this was a whole other adventure. I promise, you would be blown away at how difficult it is to locate the *filename* of an iOS application. 
+Except they didn't. I was at war with this thing. I had no idea how to have the system run this script on its own to detect a VNC connection, and even when I figured that out after several hours, the hotkeys were so frustrating. Eventually I used the VNC connection to run Activator commands. Activator is a pre-installed (with jailbreak ;)) utility mostly focused on touch gestures for extra functionality. The Activator command would turn on the lock screen and open Splashtop, throwing hotkeys out the window, but this was a whole other adventure. I promise, you would be blown away at how difficult it is to locate the *filename* of an iOS application. 
 
 I navigated through the abyssal bowels of this metal slab's filesystem for every bit of two and a half hours, installing standard terminal utilities through a fake app store. With extensive help from Claude and ChatGPT I was able to determine how to find it, and I took like six pictures so I could write a shell script that would run it for me, and I could have Activator run that. 
 
-***FINALLY*** I had something real. I got the Task Scheduler to do the thing every time I unlocked the computer. But, it opened a big VNC application on my computer, and that's so ugly. Nobody wants to see this thing happening. It should be magic. 
+***FINALLY*** I had something real. I got the Task Scheduler to do the thing every time I unlocked the computer. However, it opened a big VNC application on my computer, and that's so ugly. Nobody wants to see this thing happening. It should be magic. 
 
 So I made magic. Why couldn't I just use SSH and a shell script for the whole thing? 
 
