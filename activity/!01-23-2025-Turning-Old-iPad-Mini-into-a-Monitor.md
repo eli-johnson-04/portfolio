@@ -20,7 +20,7 @@ I thought to myself, as any normal person does:
 ## This isn't illegal, right...?
 Initially, I tried to use a VNC connection and a hotkey exectuable with the Windows Task Scheduler. My computer would open this VNC session, the iPad would constantly wait for and detect a VNC connection from my PC's IP address (hard-coded :p), then the hotkey executable would type in the password and open the app. Something this complex was definitely going to work! 
 
-...It was worse than you think. Yes, iOS is written on top of Linux, but no, iPads do not come with bash installed, ipconfig or any inetutils/network commands, or tree, or openssh, grep (no, it does not have grep), gzip, lsof, NANO IT DOESN'T HAVE NANO, netcat, and a variety of other utilities I am used to. 
+...It was worse than you think. Yes, iOS is written on top of Linux, but no, iPads do not come with bash installed, ipconfig or any inetutils/network commands, or tree, or openssh, grep (no, it does not have grep), gzip, lsof, nano, netcat, and a variety of other utilities I am used to. 
 
 I jailbroke it. Thanks Reddit and ChatGPT, you guys are awesome, but you lied to me. This iPad had nothing I needed, and *I* didn't even know what I needed so I had to install it all as I went using the janky package manager. Once I successfully jailbroke it, I was able to start messing around and seeing what was possible. I learned that the standard iOS root password is "alpine", which is pretty cool (yes, I changed it and set up an SSH private key). I felt like such a hacker, SSH-ing into my 12(?) year-old iPad mini to write scripts that would run on their own. 
 

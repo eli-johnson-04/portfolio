@@ -15,7 +15,7 @@ For my algorithms abstraction and design course I elected to use Markdown to com
 > 
 > "Yes, this is a great idea for creating a static, easily-updatable website. Using *react-markdown*, you can convert..."
 
-I knew it was possible. 
+Thanks Claude, I knew it was possible. 
 
 ### Enter react-markdown
 Written as a React component, react-markdown allows a user to convert Markdown into HTML quickly and efficiently, and, as I would discover later, permits the inclusion of custom styling during conversion. I now had a plan. 
