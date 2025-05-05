@@ -45,7 +45,7 @@ const ProfileContent = () => {
                 {/* Additional Info (Bottom - Spans 2 Columns) */}
                 <div className="col-span-2 text-gray-300 break-words whitespace-normal">
                     <p>
-                        Hello, I'm Eli! I'm actively pursuing a career in virtual reality application and game development, a longstanding passion. I can think of no better way to share my vision with the world then to curate every detail of the experiences I dream of. My goal is to be a part of the next generation of engineers and developers who are not only capable of creating, but of realizing the future.
+                        Hello, I'm Eli! I'm actively pursuing a career in development of virtual reality applications and games, a longstanding passion. I can think of no better way to share my vision with the world then to curate every detail of the experiences I dream of. My goal is to be a part of the next generation of engineers and developers who are not only capable of creating, but of realizing the future.
                     </p>
                     <br/>
                     <p>
