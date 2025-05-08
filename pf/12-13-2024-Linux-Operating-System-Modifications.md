@@ -21,7 +21,7 @@ The second part of the project was far more involved. I added a system-wide and 
 After adding the syscalls to the 64-bit syscall table for x86 architectures, I defined their prototypes and wrote their behaviors using the standard `SYSCALL_DEFINE` macros in  *kernel/sys.c* so that processes can only log at the same level or more severe than the current **PROC_LOG_LEVEL**. The syscalls were then wrapped in a library to be accessible from user space (and human-readable). I am proud to report that I did not brick the kernel even once, and I was thrilled to learn about navigating these low-level operations.
 
 ![Syscall Tests](/images/pf/syscall-tests.webp)
-*A screenshot of the ring buffer after running my test suite.*
+###### A screenshot of the ring buffer after running my test suite.
 
 # Memory Manager
 Part 2 involved the design and creation of a static memory management library. I obtained a large initial space from the OS, then maintained used and free spaces with a variety of allocation strategies while handing out blocks to other processes. Key operations included:
@@ -45,10 +45,10 @@ My libWad filesystem uses a stack-based traversal of the nested file structure t
 Nonetheless I was able to permit common file operations (touch, mkdir, rm, cp, etc) and copying in/out large files, a staunchly empowering success after many hours behind the screen. If I didn't learn *anything* from writing a C++ memory manager, I definitely did here. Reading and writing and rewriting to byte offsets was tedious to keep up with and required of me an attention to detail and incredible amount of whiteboard time I had not previously encountered in my study. I loved it. 
 
 ![Exploring the Wad](/images/pf/exploring-the-wad.webp)
-*Mounting and exploring the directory in search of the holy grail.*
+###### Mounting and exploring the directory in search of the holy grail.
 
 ![Making Inner Directories](/images/pf/making-inner-directories.webp)
-*Making and copying files, persistent across mounts.*
+###### Making and copying files, persistent across mounts.
 
 > Smart pointers are cool. 
 > 

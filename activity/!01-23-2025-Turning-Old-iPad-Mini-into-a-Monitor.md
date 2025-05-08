@@ -38,7 +38,7 @@ I did. I'm a sorcerer. The whole script is like, 4 lines, and it works like a dr
 
 ![8 hours of work](images/activity/the-culmination-of-8-hours.webp)
 ![Proof or it didn't happen](images/activity/the-proof.gif)
-*I can't really express in words how good it feels that this just works when I unlock my PC. I just keep the iPad plugged in. And it works.*
+###### I can't really express in words how good it feels that this just works when I unlock my PC. I just keep the iPad plugged in. And it works.
 
 ## Everythingisfineeverythingisfineeverythingisfine
 I accomplished the goal in only a single afternoon and evening! I slept so well that night, all five and a half hours before my 8AM alarm. After, of course, I answered the question: what if... what if locking my computer also locked the iPad? I wrote a script for that too, just to have Activator show the lock screen (since the iPad turns off the screen automatically 15 seconds after the lock screen appears). 

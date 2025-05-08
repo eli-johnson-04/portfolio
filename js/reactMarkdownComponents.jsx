@@ -23,6 +23,13 @@ const MarkdownToHTMLComponentStyles = {
             {...props}
         />
     ),
+    h6: ({ node, ...props }) => (
+        <h6
+            className="italic text-center text-gray-800 my-2"
+            style={{ fontFamily: 'Gentilis', fontStyle: 'italic', fontWeight: 'normal' }}
+            {...props}
+        />
+    ),
     ul: ({ node, ...props }) => (
         <ul
             className="list-disc list-inside pl-5 mb-4 space-y-2 text-gray-800"

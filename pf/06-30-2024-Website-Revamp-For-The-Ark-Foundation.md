@@ -2,7 +2,7 @@
 In the Summer of 2024 I chose to spend 6 weeks in Ghana, a life-changing experience that provided me with a worldview like no other and a powerful feeling of global citizenship. The University of Florida is pioneering a new service abroad program, where internship work with local nonprofits is incorporated into the study-abroad model. Alongside 17 other students, I built technology for a local organization while taking key courses. I have since resolved to visit all the continents, and I returned with an incomparable sense of intercultural competence. I witnessed the African perspective, saw the impacts of imperialism firsthand, and I will never forget how hot "spicy" can really be. 
 
 ![Group Picture at Showcase](/images/pf/showcase-group-pic.webp)
-*My colleagues and I, program supervisor Dr. Sanethia Thomas (front center), and representatives from several of our clients.*
+###### My colleagues and I, program supervisor Dr. Sanethia Thomas (front center), and representatives from several of our clients.
 
 Still a student, I gained valuable professional and industry experience working directly with The Ark Foundation and leading a team to revitalize their online presence, breathing new life into an 8-year old website. I was blessed with the chance to capitalize on the opportunity to practice the technical skills I had acquired and rigorously put them to use through the software engineering life cycle. 
 
@@ -36,7 +36,7 @@ My team and I were provided access to their cPanel management system and everyon
 Our plans played out mostly as we had hoped, but the landscape of our work changed frequently. Nonetheless we stayed resilient and adapted to create a website and application we were proud of. Feel free to check it out [here](https://arkfoundationghana.org/site/)! We were thrilled to show it off to everyone we travelled with, our clients at the Ark, and the clients of the other teams at the final showcase, the capstone of our journey. 
 
 ![Final Showcase](images/pf/showcase-day.webp)
-*My team (left-to-right) at the showcase: Pieter, myself, Mouray (student TA, not on-team), and Endrit.*
+###### My team (left-to-right) at the showcase: Pieter, myself, Mouray (student TA, not on-team), and Endrit.
 
 
 
