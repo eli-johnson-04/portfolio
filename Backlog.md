@@ -14,6 +14,7 @@
 - [ ] IMPROVE PERFORMANCE ?
 - [ ] Touch support for safari
 - [ ] Add activity categories (yikes... i will definitely need this...)
+    - [ ] make it so that subfolders of activity will automatically have their own feeds, but maybe each feed can be contained in an entry of a singular large feed? NESTING
 - [x] Spheres swell when hover
 - [x] Show info on hover
 - [x] Expand into modal when clicked
