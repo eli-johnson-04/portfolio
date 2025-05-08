@@ -45,11 +45,11 @@ const ProfileContent = () => {
                 {/* Additional Info (Bottom - Spans 2 Columns) */}
                 <div className="col-span-2 text-gray-300 break-words whitespace-normal">
                     <p>
-                        Hello, I'm Eli! I'm actively working in pursuit of working in a variety of fields: virtual reality, cybersecurity, systems-level engineering, or applications of ML and AI. While I thoroughly enjoy developing, I have loftier goals; I want to tell a story of superior security, of efficient systems, of immersive experiences, and of the future of technology. I want to be a part of the next generation of engineers and developers who are not only capable of creating, but of realizing the future.
+                        Hello, I'm Eli! I'm actively pursuing a career in development of virtual reality applications and games, a longstanding passion. I can think of no better way to share my vision with the world then to curate every detail of the experiences I dream of. My goal is to be a part of the next generation of engineers and developers who are not only capable of creating, but of realizing the future.
                     </p>
                     <br/>
                     <p>
-                        Outside of work, I love cats, heavy and inaccessible music, journaling, and Wikipedia. I could never learn enough about astrophysics, virtual reality experiences and development, interior design, and psychology, just to name a few. Thanks for stopping by! Feel free to reach out to me via email or GitHub if you have any questions, comments, or just want to chat! I love meeting people and hearing new ideas. 
+                        Outside of work, I love cats, serene and extreme music, journaling, and Wikipedia. I could never learn enough about astrophysics, VR experiences and development, interior design, and psychology, just to name a few. Thanks for stopping by! Feel free to reach out to me via email or GitHub if you have any questions, comments, or just want to chat! I love meeting people and hearing new ideas. 
                     </p>
                     {/* <blockquote className="flex font-gentilis justify-center pl-4 italic text-gray-500 my-4">
                         "Alas, the future will find you. You must find yourself first; life is not hide and seek."
