@@ -18,7 +18,7 @@ async function setupScene(spaceWorld) {
     // Pre-load all sphere content.
     const mdLoader = new markdownLoader();
     mdLoader.importAllMarkdown();
-    const sphereData = await Promise.all([
+    const markdownLists = await Promise.all([
         mdLoader.getContentFromFolder(ACTIVITY_PATH),
         mdLoader.getContentFromFolder(PORTFOLIO_PATH)
     ]);
@@ -28,14 +28,14 @@ async function setupScene(spaceWorld) {
         new Sphere({
             label: 'Activity',
             hoverText: 'Recent Work and Projects',
-            content: <ContentFeed data={sphereData[0]} />,
+            content: await mdLoader.getFolderHTML(markdownLists[0], ACTIVITY_PATH),
             layer: SpaceScene.SCENE_LAYER,
             texturePath: 'textures/Pluto.webp',
         }),
         new Sphere({
             label: 'Portfolio',
             hoverText: 'View Completed Projects',
-            content: <ContentFeed data={sphereData[1]} />,
+            content: await mdLoader.getFolderHTML(markdownLists[1], PORTFOLIO_PATH),
             layer: SpaceScene.SCENE_LAYER,
             texturePath: 'textures/Callisto-0.webp',
         }),
@@ -56,7 +56,7 @@ async function setupScene(spaceWorld) {
 
     spheres.forEach(sphere => spaceWorld.addSphere(sphere));
 
-    spaceWorld.initializeParticlesFromMarkdown(sphereData, spheres);
+    spaceWorld.initializeParticlesFromMarkdown(markdownLists, spheres);
 
     await hideLoadingScreen();
 }

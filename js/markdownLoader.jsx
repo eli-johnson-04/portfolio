@@ -1,14 +1,27 @@
 import React from 'react';
 import ContentFeed from './contentFeed.jsx';
+import ContentFeedEntry from'./contentFeedEntry.jsx';
+import CollapsibleFolderFeed from './collapsibleFolderFeed.jsx';
 
 export default class markdownLoader {
     constructor() { this.allContent = null; }
 
     getContent() { return this.allContent; }
 
+    // Extract a date string and turn it into Date object.
+    extractDate(filename) {
+        const match = filename.match(/^(?:!)?(?<month>\d{1,2})-(?<day>\d{1,2})-(?<year>\d{4})/);
+        if (!match) {
+            console.log("Unexpected filename format (date): ", filename);
+            return null;
+        }
+        const date = new Date(Number(match.groups.year), Number(match.groups.month)-1, Number(match.groups.day))
+        return date;
+    }
+
     // Get all markdown content available in website folders. 
     importAllMarkdown() {
-        const rawContent = import.meta.glob('/*/*.md', { query: '?raw', import: 'default' });
+        const rawContent = import.meta.glob('/**/*.md', { query: '?raw', import: 'default' });
         this.allContent = Object.entries(rawContent).map(([path, loader]) => ({
             path,
             loader,
@@ -22,8 +35,11 @@ export default class markdownLoader {
         const entries = this.allContent
             .filter(({ path }) => path.includes(`/${folder}/`))
             .map(({ path, loader }) => {
-                const id = path.split(`/${folder}/`)[1].replace('.md', '');
-                return { path, id, loader }; 
+                const splitted = path.split("/");
+                const id = splitted.at(splitted.length - 1).replace('.md', '');
+                const date = this.extractDate(id);
+
+                return { entryType: folder, path, id, loader, date: date }; 
             });
 
         // Resolve the content of all markdown files. 
@@ -48,7 +64,7 @@ export default class markdownLoader {
             return { ...entry, md, tooltipContent };
         });
         
-        // Wait for all the content to be loaded and sort it with priority on "!" files.
+        // Wait for all the content to be loaded and sort it by date with priority on "!" files.
         const resolvedContent = (await Promise.all(contentPromises));
         resolvedContent.sort((a, b) => {
             // Check if either filename starts with "!".
@@ -64,6 +80,70 @@ export default class markdownLoader {
             return b.id.localeCompare(a.id);
         });
 
+        // Return the final list of imported and sorted markdown content.
         return resolvedContent;
     }
+
+    // Make a ContentFeed out of a selection of processed and sorted markdown entries.
+    makeMarkdownContentFeed(mds) {
+        return <ContentFeed
+            content={
+                mds.map((entry) => 
+                    <ContentFeedEntry key={entry.id} data={entry}/>
+                )
+            }
+        />
+    }
+
+    // Parse and generate the proper content structure based on subfolders. 
+    // For example, subfolders of activity should be in their own CollapsibleFolderFeed that holds a content feed.
+    async getFolderHTML(mds) {
+        // Iterate over each file once, storing them in an array according to their immediate parent.
+        let subfolders = new Map();
+        let rootdirEntries = [];
+        mds.forEach((md) => {
+            let match = md.path.match(/([^\/]+)\/([!|\d].*\.md)/);
+            // If it matches and is in a subfolder, add it to the hierarchy.
+            if (match && match[1] != md.entryType) {
+                // Check if this folder already exists. If so, append this entry to the end of its owned files. 
+                if (subfolders.has(match[1])) {
+                    let arr = subfolders.get(match[1]);
+                    arr.push(md);
+                    subfolders.set(match[1], arr);
+                }
+                // Otherwise, create a new subfolder. 
+                else subfolders.set(match[1], [md]);
+            }
+            // Otherwise if this entry does not belong in a subfolder, create its entry.
+            else if (match && match[1] == md.entryType)
+                rootdirEntries.push(<ContentFeedEntry key={md.id} data={md}/>)
+            else console.log("Regex failed for file: " + md.path);
+        });
+
+        // Now we have a map of immediate parents. We need to set up the relationships between these parents up to the top. 
+        // Assume this is just one sublevel below "activity" or "portfolio", since I don't think I will need more than that 
+        // when writing entries. 
+        let feeds = [];
+        function isNotPriority(entry) {
+            return entry.id.at(0) !== '!';
+        }        
+        for (const [subfolder, entries] of subfolders) {
+            const latestPriority = entries.at(0);
+            const latestNonPriority = entries.find(isNotPriority);
+            const latestEntry = latestPriority.date > latestNonPriority.date
+                    ? latestPriority
+                    : latestNonPriority;
+            feeds.push(<CollapsibleFolderFeed 
+                    key={subfolder}
+                    title={subfolder} 
+                    contentFeed={this.makeMarkdownContentFeed(entries)} 
+                    lastUpdate={latestEntry}
+                />
+            );
+        }
+
+        let orderedContent = [feeds, rootdirEntries.length > 0 ? rootdirEntries : null];
+        return <ContentFeed content={orderedContent}/>;
+    }
+
 }
