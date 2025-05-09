@@ -13,7 +13,8 @@
 ## Necessary Functionality
 - [ ] IMPROVE PERFORMANCE ?
 - [ ] Touch support for safari
-- [ ] Add activity categories (yikes... i will definitely need this...)
+- [x] Add activity categories (yikes... i will definitely need this...)
+    - [x] make it so that subfolders of activity will automatically have their own feeds, but maybe each feed can be contained in an entry of a singular large feed? NESTING
 - [x] Spheres swell when hover
 - [x] Show info on hover
 - [x] Expand into modal when clicked
@@ -25,14 +26,14 @@
 - [x] COLLAPSIBLE ENTRIES
 - [x] Add styling and support for embeds
 - [ ] Complete Profile page
-    - [ ] fix visibility of text 
+    - [x] fix visibility of text 
     - [ ] MAKE APPEARANCE CONSISTENT ACROSS VARYING SCREEN SIZES
-- [ ] Complete Activity feed (up to date)
-- [ ] Complete Portfolio page with grid for content (somehow make responsive and dynam ic??) ((completeness determined by an entry for each master resume project))
+- [x] Complete Activity feed (up to date)
+- [x] Complete Portfolio page with grid for content (somehow make responsive and dynam ic??) ((completeness determined by an entry for each master resume project))
 - [ ] portfolio activity entry styling
     - [x] Smooth when collapsing an entry in activity or portfolio
     - [x] add a hover tooltip on portfolio entries for keywords
-        -[ ] fix tooltip stutter on first open
+        -[x] fix tooltip stutter on first open {update, its a feature not a bug :)}
 - [x] SPLASH/LOADING PAGE BEFORE SPHERES ARE READY
 - [x] fix weird issues where clicking text does not register as clicking the sphere
 - [x] prevent spheres from getting too close to each other
@@ -41,7 +42,7 @@
     - [x] add visual indactor that the entry can be closed by clicking its title
 
 ## Beautification
-- [ ] add a big entry, probably pinned to the top of the portfolio entries (using my "out-of-bounds" numbering trick) about the website itself
+- [x] add a big entry, probably pinned to the top of the portfolio entries (using my "out-of-bounds" numbering trick) about the website itself
 - [ ] functionality for mobile (touch screens)!!!!
 - [x] Spheres have hover physics
 - [x] Modal ~~open~~ fade-in animation

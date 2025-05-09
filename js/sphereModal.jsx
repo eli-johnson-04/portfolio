@@ -23,7 +23,7 @@ const SphereModal = ({ isOpen, onRequestClose, label, content }) => {
             transform: 'translate(-50%, -50%)',
             padding: '20px',
             borderRadius: '10px',
-            width: '60%',
+            width: '70%',
             maxHeight: '90vh',
             backgroundColor: 'rgba(224, 224, 224, 0.95)',
             opacity: 0,

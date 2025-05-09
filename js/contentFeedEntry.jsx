@@ -55,7 +55,7 @@ const ContentFeedEntry = ({ data }) => {
                 >
                     <span>
                         <h1 className="text-3xl font-bold text-gray-800">{extractName(data.id) + (isPriority ? " ★" : "")}</h1>
-                        <h1 className="text-sm font-semibold text-gray-800">{extractDate(data.id)}</h1>
+                        <h1 className="text-sm font-semibold text-gray-800">{convertDateToText(data.date)}</h1>
                     </span>
                 </div>
             </Tooltip>
@@ -73,10 +73,10 @@ const ContentFeedEntry = ({ data }) => {
 };
 
 // Helper function to extract the name from a filename. 
-function extractName(id) {
+export function extractName(id) {
     const match = id.match(/^(?:!)?\d{1,2}-\d{1,2}-\d{4}-(.+)$/);
     if (!match) {
-        console.log("Unexpected filename format: ", id);
+        console.log("Unexpected filename format (name): ", id);
         return null;
     }
     
@@ -84,42 +84,22 @@ function extractName(id) {
     return match[1].replace(/-/g, ' ');
 }
 
-// Helper function to extract the date from a filename.
-function extractDate(id) {
-    const match = id.match(/^(?:!)?(?<month>\d{1,2})-(?<day>\d{1,2})-(?<year>\d{4})/);
-    if (!match) {
-        console.log("Unexpected filename format: ", id + ".md");
-        return null;
-    }
-
-    // Remove leading zeros.
-    let day = match.groups.day;
-    let month = match.groups.month;
-    if (day[0] == "0") { day = day[1]; } 
-    if (month[0] == "0") { month = month[1]; }
-    
+export function convertDateToText(date) {
     const monthMap = {
-        "1": "January",
-        "2": "February",
-        "3": "March",
-        "4": "April",
-        "5": "May",
-        "6": "June",
-        "7": "July",
-        "8": "August",
-        "9": "September",
-        "10": "October",
-        "11": "November",
-        "12": "December"
+        "0": "January",
+        "1": "February",
+        "2": "March",
+        "3": "April",
+        "4": "May",
+        "5": "June",
+        "6": "July",
+        "7": "August",
+        "8": "September",
+        "9": "October",
+        "10": "November",
+        "11": "December"
     }
-
-    // Allow for improper day formatting to use just the month and year in the date.
-    month = monthMap[month] || month;
-    if (parseInt(day) > 31) { day = " "; }
-    else { day = " " + day + ", ";}
-
-    // Return the formatted date. 
-    return `${month}${day}${match.groups.year}`;
+    return `${monthMap[date.getMonth()]} ${date.getDay()}, ${date.getFullYear()}`;
 }
 
 export default ContentFeedEntry;
