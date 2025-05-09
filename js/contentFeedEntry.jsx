@@ -54,7 +54,7 @@ const ContentFeedEntry = ({ data }) => {
                         }`}
                 >
                     <span>
-                        <h1 className="text-2xl font-bold text-gray-800">{extractName(data.id) + (isPriority ? " ★" : "")}</h1>
+                        <h1 className="text-3xl font-bold text-gray-800">{extractName(data.id) + (isPriority ? " ★" : "")}</h1>
                         <h1 className="text-sm font-semibold text-gray-800">{convertDateToText(data.date)}</h1>
                     </span>
                 </div>

@@ -13,7 +13,7 @@ const CollapsibleFolderFeed = ({ title, contentFeed, lastUpdate }) => {
     return (
         <div 
             className={`m-4 rounded-xl pt-2 pb-4 px-2 transition-transform duration-100 ease-in-out ${
-                isCollapsed ? 'hover:shadow-lg hover:bg-gray-100 hover:scale-[1.02]' : 'border-l-2 border-gray-600'
+                isCollapsed ? 'hover:shadow-lg hover:bg-gray-100 hover:scale-[1.02]' : 'border-l-2 border-t-2 border-gray-600 bg-gray-500 bg-opacity-5'
             }`}
         >
             <div 
@@ -27,7 +27,8 @@ const CollapsibleFolderFeed = ({ title, contentFeed, lastUpdate }) => {
                         <span className="italic">Topic: </span>
                         {title}
                     </h1>
-                    <h1 className="text-sm font-semibold italic text-gray-800">{isCollapsed ? `Latest: ${convertDateToText(lastUpdate.date)} - ${extractName(lastUpdate.id)}` : ""}</h1>
+                    {/*<h1 className="text-sm font-semibold italic text-gray-800">{isCollapsed ? `Latest: ${convertDateToText(lastUpdate.date)} - ${extractName(lastUpdate.id)}` : ""}</h1>*/}
+                    <h1 className="text-sm font-semibold italic text-gray-800">{`Latest: ${convertDateToText(lastUpdate.date)} - ${extractName(lastUpdate.id)}`}</h1>
                 </span>
             </div>
             {!isCollapsed && (

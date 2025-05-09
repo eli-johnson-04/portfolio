@@ -116,7 +116,7 @@ export default class markdownLoader {
             }
             // Otherwise if this entry does not belong in a subfolder, create its entry.
             else if (match && match[1] == md.entryType)
-                rootdirEntries.push(<ContentFeedEntry key={md.id} data={md}/>)
+                rootdirEntries.push(md);
             else console.log("Regex failed for file: " + md.path);
         });
 
@@ -124,12 +124,10 @@ export default class markdownLoader {
         // Assume this is just one sublevel below "activity" or "portfolio", since I don't think I will need more than that 
         // when writing entries. 
         let feeds = [];
-        function isNotPriority(entry) {
-            return entry.id.at(0) !== '!';
-        }        
+        function isPriority(entry) { return entry.id.at(0) === '!'; }
         for (const [subfolder, entries] of subfolders) {
             const latestPriority = entries.at(0);
-            const latestNonPriority = entries.find(isNotPriority);
+            const latestNonPriority = entries.find((entry) => !isPriority(entry));
             const latestEntry = latestPriority.date > latestNonPriority.date
                     ? latestPriority
                     : latestNonPriority;
@@ -142,7 +140,13 @@ export default class markdownLoader {
             );
         }
 
-        let orderedContent = [feeds, rootdirEntries.length > 0 ? rootdirEntries : null];
+        const isRootdirEmpty = rootdirEntries.length === 0;
+        const rootdirPriority = rootdirEntries.filter((entry) => isPriority(entry))
+                                    .map((entry) => <ContentFeedEntry key={entry.id} data={entry}/>);
+        const rootdirNonPriority = rootdirEntries.filter((entry) => !isPriority (entry))
+                                    .map((entry) => <ContentFeedEntry key={entry.id} data={entry}/>);
+
+        const orderedContent = [isRootdirEmpty ? null : rootdirPriority, feeds, isRootdirEmpty ? null : rootdirNonPriority];
         return <ContentFeed content={orderedContent}/>;
     }
 
