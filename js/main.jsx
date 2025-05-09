@@ -5,7 +5,6 @@ import ProfileContent from './profileContent.jsx';
 import markdownLoader from './markdownLoader.jsx';
 import SpaceScene from './SpaceScene.js';
 import Popup from './Popup.jsx';
-import ContentFeed from './contentFeed.jsx';
 
 const ACTIVITY_PATH = 'activity';
 const PORTFOLIO_PATH = 'pf';
