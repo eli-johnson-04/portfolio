@@ -25,6 +25,7 @@ I also learned about making compelling physics interactions by changing the grab
 
 ###### I didn't think it would be this easy to create such rich interactions. The opportunity ceiling must be so, so high.
 ![No Intersections](/images/activity/05-07-2025/blocks-collision.gif)
+###### I didn't think it would be this easy to create such rich interactions. The opportunity ceiling must be so, so high.
 
 ![Blocks on Table](/images/activity/05-07-2025/blocks-on-table.gif)
 ###### Delicious.
