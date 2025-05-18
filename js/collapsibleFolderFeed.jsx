@@ -13,14 +13,14 @@ const CollapsibleFolderFeed = ({ title, contentFeed, lastUpdate, length }) => {
     return (
         <div 
             className={`m-4 rounded-xl pt-2 pb-4 px-2 transition-transform duration-100 ease-in-out ${
-                isCollapsed ? 'hover:shadow-lg hover:bg-gray-100 hover:scale-[1.02]' : 'border-l-2 border-t-2 border-gray-600 bg-gray-500 bg-opacity-5'
-            }`}
+                isCollapsed ? 'hover:shadow-lg hover:bg-gray-100 hover:scale-[1.02]' : 'border-l-2 border-t-2 border-gray-600 bg-gray-500 bg-opacity-5'}`
+            }
         >
             <div 
                 onClick={toggleVisibility}
                 className={`rounded-xl flex items-center transition-transform duration-100 ease-in-out
-                    ${isCollapsed ? '' : 'hover:scale-[1.01]'
-                    }`}
+                    ${isCollapsed ? '' : 'hover:scale-[1.01]'}`
+                }
             >
                 <span>
                     <h1 className={`text-3xl font-bold text-gray-800 ${isCollapsed ? "" : "underline"}`}>

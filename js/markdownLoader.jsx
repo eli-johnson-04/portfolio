@@ -2,9 +2,6 @@ import ContentFeed from './contentFeed.jsx';
 import ContentFeedEntry from'./contentFeedEntry.jsx';
 import CollapsibleFolderFeed from './collapsibleFolderFeed.jsx';
 
-// Determine if the entry is a priority entry (starts with "!").
-function isPriority(entry) { return entry.id.at(0) === '!'; }
-
 class subFolder {
     name = null;
     entries = [];
@@ -28,8 +25,8 @@ class subFolder {
 
     setLatestEntry() {
         // Determine the first priority and non-priority entries in the folder.
-        const latestPriority = this.entries.find(entry => isPriority(entry));
-        const latestNonPriority = this.entries.find(entry => !isPriority(entry));
+        const latestPriority = this.entries.find(entry => entry.isPriority);
+        const latestNonPriority = this.entries.find(entry => !entry.isPriority);
 
         // If both entries are found, compare their dates and keep the latest one.
         if (!latestPriority && !latestNonPriority) this.latest = null; // Skip if no entries found.
@@ -93,7 +90,7 @@ export default class markdownLoader {
                 const id = splitted.at(splitted.length - 1).replace('.md', '');
                 const date = this.extractDate(id);
 
-                return { entryType: folder, path, id, loader, date: date }; 
+                return { entryType: folder, path, id, loader, date: date, isPriority: id.at(0) === '!'}; 
             });
 
         // Resolve the content of all markdown files. 
@@ -189,9 +186,9 @@ export default class markdownLoader {
         });
         
         const isRootdirEmpty = rootdirEntries.length === 0;
-        const rootdirPriority = rootdirEntries.filter((entry) => isPriority(entry))
+        const rootdirPriority = rootdirEntries.filter((entry) => entry.isPriority)
                                     .map((entry) => <ContentFeedEntry key={entry.id} data={entry}/>);
-        const rootdirNonPriority = rootdirEntries.filter((entry) => !isPriority (entry))
+        const rootdirNonPriority = rootdirEntries.filter((entry) => !entry.isPriority)
                                     .map((entry) => <ContentFeedEntry key={entry.id} data={entry}/>);
 
         const orderedContent = [isRootdirEmpty ? null : rootdirPriority, collapsibleFeeds, isRootdirEmpty ? null : rootdirNonPriority];
