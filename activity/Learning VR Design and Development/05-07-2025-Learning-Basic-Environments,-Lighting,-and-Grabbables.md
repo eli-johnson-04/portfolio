@@ -24,7 +24,7 @@ Anyhow, the direct interactor on each hand would allow me to pick up a grab inte
 I also learned about making compelling physics interactions by changing the grab interactables to be velocity tracked, meaning their velocity is tracked while they are held so that they can be thrown like a real object. I went further with Valem and modified the physics time step in the project settings to be 1/90, since we shoot for the standard 90 FPS in-game, as well as changing physics settings for GameObjects like the solver iterations from 6 to 15, and the solver type from Projected Gauss Seidel to Temporal Gauss Seidel to account for time when solving physics interactions. This is more expensive and I noted this, but Valem did too and I intend to learn more, whether he covers it or not. Nonetheless, the interactions are pretty swanky.
 
 ![No Intersections](/images/activity/05-07-2025/blocks-collision.gif)
-###### I didn't think it would be this easy to create such rich interactions.
+###### I didn't think it would be this easy to create such rich interactions. The opportunity ceiling must be so, so high.
 
 ![Blocks on Table](/images/activity/05-07-2025/blocks-on-table.gif)
 ###### Delicious.
