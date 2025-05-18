@@ -6,7 +6,7 @@ I saw a TikTok a few years ago about someone who turned an old iPad into an extr
 
 I got back to Gainesville and got to work. I found the app that does the thing, Splashtop Wired XDisplay, and miraculously it works with iOS, like, 9. It does this over a **lightning** cable (you know, the cable from 2012?), so I set it up on my PC and my iPad. The case has a cool stand too, so I was able to prop it up all nice and I really just use it as a music display. I love it! It's a little small for anything else, but perfect to watch lyrics go by, or to have a cool audio visualizer while playing Guitar Hero. Windows recognizes it as a genuine display, and I keep it all the way on the "left" so I can still use my taskbar on the bottom. Check it out (and say hi to the duckies)! 
 
-![iPad Mini Monitor](images/activity/ipad-monitor.webp)
+![iPad Mini Monitor](images/activity/01-23-2025/ipad-monitor.webp)
 
 ## What am I getting into?
 I thought to myself, as any normal person does:
@@ -36,14 +36,14 @@ So I made magic. Why couldn't I just use SSH and a shell script for the whole th
 
 I did. I'm a sorcerer. The whole script is like, 4 lines, and it works like a dream come true. I successfully spent 8 hours automating a task that takes 8 seconds. 
 
-![8 hours of work](images/activity/the-culmination-of-8-hours.webp)
-![Proof or it didn't happen](images/activity/the-proof.gif)
+![8 hours of work](images/activity/01-23-2025/the-culmination-of-8-hours.webp)
+![Proof or it didn't happen](images/activity/01-23-2025/the-proof.gif)
 ###### I can't really express in words how good it feels that this just works when I unlock my PC. I just keep the iPad plugged in. And it works.
 
 ## Everythingisfineeverythingisfineeverythingisfine
 I accomplished the goal in only a single afternoon and evening! I slept so well that night, all five and a half hours before my 8AM alarm. After, of course, I answered the question: what if... what if locking my computer also locked the iPad? I wrote a script for that too, just to have Activator show the lock screen (since the iPad turns off the screen automatically 15 seconds after the lock screen appears). 
 
-![Whatever, man](images/activity/ipad-lock-script.webp)
+![Whatever, man](images/activity/01-23-2025/ipad-lock-script.webp)
 
 The script works if I run it manually but Windows doesn't like to do anything after the kernel sends the "locking down your system" signal, so I just left it since the iPad turns itself off after a minute or so anyway. 
 
