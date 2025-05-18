@@ -505,7 +505,7 @@ export default class Sphere {
         });
 
         // Hide the hover text.
-        gsap.to(this._hoverTextMesh.material, {
+        gsap.to(this._hoverTextMesh.children[0].material, {
             opacity: 0,
             duration: 0.1,
             ease: "bounce.out",
