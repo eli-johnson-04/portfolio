@@ -21,6 +21,7 @@ class subFolder {
     initialize() {
         this.setLatestEntry();
         this.setContentFeed();
+        this.setEntryNumbers();
     }
 
     setLatestEntry() {
@@ -37,6 +38,15 @@ class subFolder {
                     ? latestPriority
                     : latestNonPriority;
         }
+    }
+
+    // Give each entry an individual number for its subfolder, if it is not a priority entry.
+    setEntryNumbers() {
+        const nonPriorityEntries = this.entries.filter(entry => !entry.isPriority).length;
+        this.entries.filter(entry => !entry.isPriority)
+            .forEach((entry, index) => {
+                entry.subfolderIndex = nonPriorityEntries - index;
+            });
     }
 
     // Create the content feed for this subfolder.
@@ -90,7 +100,7 @@ export default class markdownLoader {
                 const id = splitted.at(splitted.length - 1).replace('.md', '');
                 const date = this.extractDate(id);
 
-                return { entryType: folder, path, id, loader, date: date, isPriority: id.at(0) === '!'}; 
+                return { entryType: folder, path, id, loader, date: date, isPriority: id.at(0) === '!', subfolderIndex: -1}; 
             });
 
         // Resolve the content of all markdown files. 
@@ -132,7 +142,7 @@ export default class markdownLoader {
         });
 
         // Return the final list of imported and sorted markdown content.
-        return this.getFolderHTML(resolvedContent, folder);
+        return await this.getFolderHTML(resolvedContent, folder);
     }
 
     // Iterate over each markdown file and add it to a Map containing the immediate parent folder as the key, and return the base-level entries in their own array.

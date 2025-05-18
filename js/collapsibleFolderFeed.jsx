@@ -26,10 +26,8 @@ const CollapsibleFolderFeed = ({ title, contentFeed, lastUpdate, length }) => {
                     <h1 className={`text-3xl font-bold text-gray-800 ${isCollapsed ? "" : "underline"}`}>
                         <span className="italic">Topic: </span>
                         {title}
-                        {/* <span className="text-xl"> ({length} posts)</span> */}
                     </h1>
-                    {/*<h1 className="text-sm font-semibold italic text-gray-800">{isCollapsed ? `Latest: ${convertDateToText(lastUpdate.date)} - ${extractName(lastUpdate.id)}` : ""}</h1>*/}
-                    <h1 className="text-sm font-semibold italic text-gray-800">{`Latest: ${convertDateToText(lastUpdate.date)} - ${extractName(lastUpdate.id)}`}</h1>
+                    <h1 className="text-sm font-semibold italic text-gray-800">{length} posts | {`Latest: ${convertDateToText(lastUpdate.date)} - ${extractName(lastUpdate.id)}`}</h1>
                 </span>
             </div>
             {!isCollapsed && (
