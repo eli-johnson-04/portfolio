@@ -34,8 +34,9 @@ I navigated through the abyssal bowels of this metal slab's filesystem for every
 
 So I made magic. Why couldn't I just use SSH and a shell script for the whole thing? 
 
-I did. I'm a sorcerer. The whole script is like, 4 lines, and it works like a dream come true. I successfully spent 8 hours automating a task that takes 8 seconds. 
+I did. I'm a sorcerer. The scripts together are like 9 lines, and it works like a dream come true. I successfully spent 8 hours automating a task that takes 8 seconds. 
 
+![The iPad script](images/activity/01-23-2025/open-xdisplay.webp) 
 ![8 hours of work](images/activity/01-23-2025/the-culmination-of-8-hours.webp)
 ![Proof or it didn't happen](images/activity/01-23-2025/the-proof.gif)
 ###### I can't really express in words how good it feels that this just works when I unlock my PC. I just keep the iPad plugged in. And it works.
