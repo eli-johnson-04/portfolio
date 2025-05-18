@@ -99,7 +99,7 @@ export function convertDateToText(date) {
         "10": "November",
         "11": "December"
     }
-    return `${monthMap[date.getMonth()]} ${date.getDay()}, ${date.getFullYear()}`;
+    return `${monthMap[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 }
 
 export default ContentFeedEntry;
