@@ -20,7 +20,7 @@ In astrophysics I learned about the layers of the Sun and derived formulas for t
 # tHe FuTuRe
 I've been exceptionally inspired lately. Really looking into the games I enjoy, the projects I personally have created, some of the software I have used, and peers of mine that are artists has left me itching to create something. I have really been wanting to make a VR game, after nearly a decade in the space. I was dejected about the state of my website while working on it one day, and during some decompression I thought about making a VR game, but I was presented with this screen in the VR template and was not in the headspace to receive it well: 
 
-![Scary Unity Template](/images/activity/unity-vr-template.webp)
+![Scary Unity Template](/images/activity/04-01-2025/unity-vr-template.webp)
 
 All was not lost, though. I registered for classes two days ago and managed to get into a class I was genuinely stoked about: *Introduction to Virtual Reality*, where I get to learn all about VR app development and the final project is a VR experience. Are you kidding me? If I was told 7 years ago, when I was getting into this, that I would have the skillset *and* the opportunity to make an experience on my own that *I* could enjoy, I would have refused to believe you. 
 

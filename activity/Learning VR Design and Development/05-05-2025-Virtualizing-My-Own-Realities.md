@@ -8,7 +8,7 @@ I've been stoked about the possibility of taking VR development seriously and pu
 ## Of course they're called affordances!
 I did some digging into where to start, and I began playing around in Unity's XR template, which I mentioned early last month. It wasn't as daunting this time, but it still felt like the editor was yelling at me. I was looking around in the scene hierarchy, and I laughed when I saw that the popouts and tooltips around my controller, or the teleport aiming line, among other things, were all called *affordances*. After taking a UXD class in fall '24, 7th grade me was seeing through a new lens, and he was giddy.
 
-![XR Template Affordances](/images/activity/xr-template-affordances.webp)
+![XR Template Affordances](/images/activity/05-05-2025/xr-template-affordances.webp)
 ###### Each tooltip and the teleport line are affordances, as they **afford** the player the ability to complete an action.
 
 I played around and got familiar with Unity's interface and XR system, and now I'm sitting down to properly learn, with enough knowledge to follow tutorials. I'm watching and taking notes on Valem Tutorials' 3-hour Unity VR tutorial, and I'm learning so much. I can see the possibilities, and my mind is constantly flooded with ideas for mechanics and interactions I never imagined I'd be learning how to make. 
