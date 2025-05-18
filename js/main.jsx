@@ -17,24 +17,28 @@ async function setupScene(spaceWorld) {
     // Pre-load all sphere content.
     const mdLoader = new markdownLoader();
     mdLoader.importAllMarkdown();
-    const markdownLists = await Promise.all([
-        mdLoader.getContentFromFolder(ACTIVITY_PATH),
-        mdLoader.getContentFromFolder(PORTFOLIO_PATH)
+    const convertedMarkdown = await Promise.all([
+        mdLoader.getSphereMarkdown(ACTIVITY_PATH),
+        mdLoader.getSphereMarkdown(PORTFOLIO_PATH)
     ]);
+    const folderLengths = [
+        mdLoader.countFilesInFolder(ACTIVITY_PATH),
+        mdLoader.countFilesInFolder(PORTFOLIO_PATH)
+    ];
 
     // Create spheres with the loaded content.
     const spheres = [
         new Sphere({
             label: 'Activity',
             hoverText: 'Recent Work and Projects',
-            content: await mdLoader.getFolderHTML(markdownLists[0], ACTIVITY_PATH),
+            content: convertedMarkdown[0],
             layer: SpaceScene.SCENE_LAYER,
             texturePath: 'textures/Pluto.webp',
         }),
         new Sphere({
             label: 'Portfolio',
             hoverText: 'View Completed Projects',
-            content: await mdLoader.getFolderHTML(markdownLists[1], PORTFOLIO_PATH),
+            content: convertedMarkdown[1],
             layer: SpaceScene.SCENE_LAYER,
             texturePath: 'textures/Callisto-0.webp',
         }),
@@ -55,7 +59,7 @@ async function setupScene(spaceWorld) {
 
     spheres.forEach(sphere => spaceWorld.addSphere(sphere));
 
-    spaceWorld.initializeParticlesFromMarkdown(markdownLists, spheres);
+    spaceWorld.initializeParticlesFromMarkdown(folderLengths, spheres);
 
     await hideLoadingScreen();
 }

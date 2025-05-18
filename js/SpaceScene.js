@@ -90,8 +90,8 @@ export default class SpaceScene {
         this.scene.add(boundary);
     }
 
-    initializeParticlesFromMarkdown(sphereData, spheres) {
-        this.particleSystem.initializeFromMarkdown(sphereData, spheres);
+    initializeParticlesFromMarkdown(folderLengths, spheres) {
+        this.particleSystem.initializeFromMarkdown(folderLengths, spheres);
     }
 
     updateParticles() {
