@@ -3,7 +3,7 @@ import { convertDateToText, extractName } from './contentFeedEntry.jsx';
 import "rc-tooltip/assets/bootstrap.css";
 
 // Stores a folder's markdown files inside a ContentFeed, displayed as a collapsible folder. By itself, strongly resembles a contentFeedEntry.
-const CollapsibleFolderFeed = ({ title, contentFeed, lastUpdate }) => {
+const CollapsibleFolderFeed = ({ title, contentFeed, lastUpdate, length }) => {
     const [isCollapsed, setIsCollapsed] = useState(true);
 
     const toggleVisibility = () => {
@@ -26,6 +26,7 @@ const CollapsibleFolderFeed = ({ title, contentFeed, lastUpdate }) => {
                     <h1 className={`text-3xl font-bold text-gray-800 ${isCollapsed ? "" : "underline"}`}>
                         <span className="italic">Topic: </span>
                         {title}
+                        {/* <span className="text-xl"> ({length} posts)</span> */}
                     </h1>
                     {/*<h1 className="text-sm font-semibold italic text-gray-800">{isCollapsed ? `Latest: ${convertDateToText(lastUpdate.date)} - ${extractName(lastUpdate.id)}` : ""}</h1>*/}
                     <h1 className="text-sm font-semibold italic text-gray-800">{`Latest: ${convertDateToText(lastUpdate.date)} - ${extractName(lastUpdate.id)}`}</h1>
