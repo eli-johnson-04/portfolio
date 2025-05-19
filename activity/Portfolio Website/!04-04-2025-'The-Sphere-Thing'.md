@@ -51,10 +51,10 @@ I created the spheres and added hovering, added some lighting, and learned how t
 
 I created a branch just for the modals and worked on them there until they got to a place where I was satisified with merging them into the main branch avoiding breaking changes. This part was hard. I hated this part. Getting React to work with manually handling interactions for Three.JS objects sucked, and I employed some AI help to figure out how to do this, but I got it working. Even if I had to write some truly ugly stuff. JavaScript is such an unserious language and it felt fitting to leave facetious commit messages and comments on ugly code. Like these: 
 
-![Ugly JavaScript React](images/activity/ugly-js.webp)
+![Ugly JavaScript React](images/activity/03-27-2025/ugly-js.webp)
 ###### This is so ugly man.
 
-![Ugly Modal Member](images/activity/ugly-modal-member.webp)
+![Ugly Modal Member](images/activity/04-04-2025/ugly-modal-member.webp)
 ###### Not as bad, but still. I strongly dislike JavaScript's lambdas. It makes sense for web dev, but euuggh.
 
 After this I continued on when I had time. I fixed bugs, made the spheres face the camera for liveness (which eventually changed to just the text so sphere textures made sense), customized scrollbars, created some favicons that worked across multiple devices, and added a whole slew of improvements, finally adding my first markdown file five months after creating the repository. From there it felt like a nag, but I was still excited to get it done. 

@@ -77,14 +77,14 @@ export default class markdownLoader {
             }
             
             // Otherwise, sort by date in reverse chronological order.
-            return b.id.localeCompare(a.id);
+            return b.date - a.date;
         });
 
         // Return the final list of imported and sorted markdown content.
         return resolvedContent;
     }
 
-    // Make a ContentFeed out of a selection of processed and sorted markdown entries.
+    // Make a ContentFeed out of an array of processed and sorted markdown entries.
     makeMarkdownContentFeed(mds) {
         return <ContentFeed
             content={
@@ -95,10 +95,8 @@ export default class markdownLoader {
         />
     }
 
-    // Parse and generate the proper content structure based on subfolders. 
-    // For example, subfolders of activity should be in their own CollapsibleFolderFeed that holds a content feed.
-    async getFolderHTML(mds) {
-        // Iterate over each file once, storing them in an array according to their immediate parent.
+    // Iterate over each markdown file and add it to a Map containing the immediate parent folder as the key, and return the base-level entries in their own array.
+    parseDirectory(mds) {
         let subfolders = new Map();
         let rootdirEntries = [];
         mds.forEach((md) => {
@@ -119,34 +117,72 @@ export default class markdownLoader {
                 rootdirEntries.push(md);
             else console.log("Regex failed for file: " + md.path);
         });
+        return [subfolders, rootdirEntries];
+    }
+    
+    // Determine if an entry starts with "!".
+    isPriority(entry) { return entry.id.at(0) === '!'; }
 
-        // Now we have a map of immediate parents. We need to set up the relationships between these parents up to the top. 
-        // Assume this is just one sublevel below "activity" or "portfolio", since I don't think I will need more than that 
-        // when writing entries. 
-        let feeds = [];
-        function isPriority(entry) { return entry.id.at(0) === '!'; }
-        for (const [subfolder, entries] of subfolders) {
-            const latestPriority = entries.at(0);
-            const latestNonPriority = entries.find((entry) => !isPriority(entry));
-            const latestEntry = latestPriority.date > latestNonPriority.date
-                    ? latestPriority
-                    : latestNonPriority;
-            feeds.push(<CollapsibleFolderFeed 
-                    key={subfolder}
-                    title={subfolder} 
-                    contentFeed={this.makeMarkdownContentFeed(entries)} 
-                    lastUpdate={latestEntry}
+    // Determine the latest entries of each subfolder.
+    getLatestEntriesSorted(subfolders) {
+        let latestEntries = [];
+        for (const folder of subfolders.entries()) {
+            // Determine the first priority and non-priority entries in the folder.
+            const latestPriority = folder[1].find(entry => this.isPriority(entry));
+            const latestNonPriority = folder[1].find(entry => !this.isPriority(entry));
+
+            // If both entries are found, compare their dates and keep the latest one.
+            if (!latestPriority && !latestNonPriority) continue; // Skip if no entries found.
+            else if (!latestNonPriority) latestEntries.push(latestPriority);
+            else if (!latestPriority) latestEntries.push(latestNonPriority);
+            else {
+                const latestEntry = latestPriority.date > latestNonPriority.date
+                        ? latestPriority
+                        : latestNonPriority;
+                latestEntries.push(latestEntry);
+            }
+        }
+
+        // Sort the latest entries in reverse chronological order.
+        latestEntries.sort((a, b) => b.date - a.date);
+        return latestEntries;
+    }
+
+    // Construct the collapsible feeds in reverse chronological order.
+    getCollapsibleFeeds(latestEntries, subfolders) {
+        let orderedFeeds = [];
+        for (const entry of latestEntries) {
+            let folder;
+            subfolders.keys().forEach((subf) => {
+                if (subfolders.get(subf).includes(entry)) {
+                    folder = subf;
+                }
+            });
+            orderedFeeds.push(<CollapsibleFolderFeed 
+                    key={folder}
+                    title={folder} 
+                    contentFeed={this.makeMarkdownContentFeed(subfolders.get(folder))} 
+                    lastUpdate={entry}
                 />
             );
         }
+        return orderedFeeds;
+    }
 
+    // Parse and generate the proper content structure based on subfolders. 
+    // For example, subfolders of activity should be in their own CollapsibleFolderFeed that holds a content feed.
+    async getFolderHTML(mds) {
+        const [subfolders, rootdirEntries] = this.parseDirectory(mds);
+        const latestEntries = this.getLatestEntriesSorted(subfolders);
+        const orderedFeeds = this.getCollapsibleFeeds(latestEntries, subfolders);
+        
         const isRootdirEmpty = rootdirEntries.length === 0;
-        const rootdirPriority = rootdirEntries.filter((entry) => isPriority(entry))
+        const rootdirPriority = rootdirEntries.filter((entry) => this.isPriority(entry))
                                     .map((entry) => <ContentFeedEntry key={entry.id} data={entry}/>);
-        const rootdirNonPriority = rootdirEntries.filter((entry) => !isPriority (entry))
+        const rootdirNonPriority = rootdirEntries.filter((entry) => !this.isPriority (entry))
                                     .map((entry) => <ContentFeedEntry key={entry.id} data={entry}/>);
 
-        const orderedContent = [isRootdirEmpty ? null : rootdirPriority, feeds, isRootdirEmpty ? null : rootdirNonPriority];
+        const orderedContent = [isRootdirEmpty ? null : rootdirPriority, orderedFeeds, isRootdirEmpty ? null : rootdirNonPriority];
         return <ContentFeed content={orderedContent}/>;
     }
 
