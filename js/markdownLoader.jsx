@@ -201,7 +201,11 @@ export default class markdownLoader {
         const rootdirNonPriority = rootdirEntries.filter((entry) => !entry.isPriority)
                                     .map((entry) => <ContentFeedEntry key={entry.id} data={entry}/>);
 
-        const orderedContent = [isRootdirEmpty ? null : rootdirPriority, collapsibleFeeds, isRootdirEmpty ? null : rootdirNonPriority];
+        const orderedContent = [
+            isRootdirEmpty ? null : rootdirPriority, 
+            collapsibleFeeds, 
+            isRootdirEmpty ? null : rootdirNonPriority
+        ];
         return <ContentFeed content={orderedContent}/>;
     }
 }
