@@ -9,11 +9,28 @@ import Popup from './Popup.jsx';
 const ACTIVITY_PATH = 'activity';
 const PORTFOLIO_PATH = 'pf';
 
+const rootEl = document.getElementById('root');
+
+// Create a container DIV for three.js to render into
+const sceneContainer = document.createElement('div');
+sceneContainer.style.width = '100vw';
+sceneContainer.style.height = '100vh';
+sceneContainer.style.position = 'fixed';
+sceneContainer.style.left = '0';
+sceneContainer.style.top = '0';
+sceneContainer.style.zIndex = '0';
+sceneContainer.style.overflow = 'hidden';
+sceneContainer.style.touchAction = 'none'; // Important for consistent touch
+rootEl.appendChild(sceneContainer);
+
+// Initialize the SpaceScene.
+const spaceWorld = new SpaceScene(sceneContainer);
+
 async function setupScene(spaceWorld) {
     console.log("Setting up the scene...");
-
+    
     await showLoadingScreen();
-
+    
     // Pre-load all sphere content.
     const mdLoader = new markdownLoader();
     mdLoader.importAllMarkdown();
@@ -98,32 +115,36 @@ async function hideLoadingScreen() {
     }
 }
 
-// Initialize the SpaceScene and start rendering.
-const container = document.body;
-const spaceWorld = new SpaceScene(container);
-
-// Add touch event listeners for touch interaction.
-container.addEventListener('touchstart', (event) => {
-    const touch = event.touches[0];
+// Input normalization between pointer and touch events for mobile compatibility.
+function getPointerCoords(event, container) {
+    let clientX, clientY;
+    if (event.touches & event.touches.length) {
+        clientX = event.touches[0].clientX;
+        clientY = event.touches[0].clientY;
+    } else {
+        clientX = event.clientX;
+        clientY = event.clientY;
+    }
     const rect = container.getBoundingClientRect();
-    const x = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
-    const y = -((touch.clientY - rect.top) / rect.height) * 2 + 1;
+    const x = ((clientX - rect.left) / rect.width) * 2 - 1;
+    const y = -((clientY - rect.top) / rect.height) * 2 + 1;
+    return { x, y };
+}
 
-    spaceWorld.handleInteraction(x, y);
-});
+function handlePointerDown(event) {
+    const { x, y } = getPointerCoords(event, sceneContainer);
+    spaceWorld.handlePointerOrTouch(x, y);
+}
 
-container.addEventListener('touchmove', (event) => {
-    const touch = event.touches[0];
-    const rect = container.getBoundingClientRect();
-    const x = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
-    const y = -((touch.clientY - rect.top) / rect.height) * 2 + 1;
+function handleTouchStart(event) {
+    event.preventDefault();
+    const { x, y } = getPointerCoords(event, sceneContainer);
+    spaceWorld.handlePointerOrTouch(x, y);
+}
 
-    spaceWorld.handleHover(x, y);
-});
-
-// container.addEventListener('touchend', () => {
-//     spaceWorld.handleInteractionEnd();
-// });
+// Use pointer events for desktop and touch events for mobile
+sceneContainer.addEventListener('pointerdown', handlePointerDown);
+sceneContainer.addEventListener('touchstart', handleTouchStart, { passive: false });
 
 // Start rendering the scene immediately.
 spaceWorld.render();
@@ -131,7 +152,5 @@ spaceWorld.render();
 // Show the loading screen and start setting up the scene.
 setupScene(spaceWorld);
 
-// Render the Popup component.
-const root = document.createElement('div');
-document.body.appendChild(root);
-ReactDOM.createRoot(root).render(<Popup />);
+// Render the Popup component after the scene is set up.
+ReactDOM.createRoot(rootEl).render(<Popup />);
