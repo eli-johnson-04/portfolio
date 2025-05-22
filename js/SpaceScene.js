@@ -198,7 +198,6 @@ export default class SpaceScene {
     }
 
     // Handle the case that a sphere was tapped, not clicked with a mouse. The behavior is basically the same but who cares.
-    // TODO: touch events currently cannot interact with any HTML, only the spheres :D
     handleTouchInteraction(event) {
         // Set the mouse position and handle the hover check. 
         const lastHovered = this.hoveredSphere ? this.hoveredSphere : null;

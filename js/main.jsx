@@ -9,7 +9,8 @@ import Popup from './Popup.jsx';
 const ACTIVITY_PATH = 'activity';
 const PORTFOLIO_PATH = 'pf';
 
-const rootEl = document.getElementById('root');
+//const rootEl = document.getElementById('root');
+const rootEl = document.createElement('div');
 
 // Create a container DIV for three.js to render into
 //const sceneContainer = document.createElement('div');
@@ -21,11 +22,12 @@ sceneContainer.style.left = '0';
 sceneContainer.style.top = '0';
 sceneContainer.style.zIndex = '0';
 sceneContainer.style.overflow = 'hidden';
-sceneContainer.style.touchAction = 'none'; // Important for consistent touch
-//rootEl.appendChild(sceneContainer);
+sceneContainer.style.touchAction = 'none';
 
 // Initialize the SpaceScene.
 const spaceWorld = new SpaceScene(sceneContainer);
+document.body.appendChild(rootEl);
+
 
 async function setupScene(spaceWorld) {
     console.log("Setting up the scene...");
@@ -131,8 +133,6 @@ async function waitForFirstEvent(event) {
 }
 
 async function handleInteraction(event) {
-    event.preventDefault();
-
     // Properly handle the first event to set a precedent.
     if (!lastEvent) {
         await waitForFirstEvent(event);
@@ -145,12 +145,12 @@ async function handleInteraction(event) {
     }
     switch (event.type) {
         case "pointerdown":
-            console.log("doing ptr event");
+            event.preventDefault();
             spaceWorld.onInteractorMove(event);
             spaceWorld.handleInteraction();
             break;
         case "touchstart":
-            console.log("doing touch event");
+            if (event.target.localName == "canvas") event.preventDefault();
             spaceWorld.handleTouchInteraction(event);
             break;
     }
