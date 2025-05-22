@@ -82,7 +82,7 @@ export default class SpaceScene {
 
         // Event listeners.
         window.addEventListener('resize', this.onWindowResize.bind(this), false);
-        this.container.addEventListener('mousemove', this.onPointerMove.bind(this));
+        this.container.addEventListener('mousemove', this.onInteractorMove.bind(this));
         this.animate();
     }
 
@@ -120,9 +120,11 @@ export default class SpaceScene {
         this.particleSystem.update();
     }
 
-    onPointerMove(event) {
-        this.mouse.x = (event.clientX / this.container.clientWidth) * 2 - 1;
-        this.mouse.y = -(event.clientY / this.container.clientHeight) * 2 + 1;
+    onInteractorMove(event) {
+        const cX = event.touches ? event.touches[0].clientX : event.clientX;
+        const cY = event.touches ? event.touches[0].clientY : event.clientY;
+        this.mouse.x = (cX / this.container.clientWidth) * 2 - 1;
+        this.mouse.y = -(cY / this.container.clientHeight) * 2 + 1;
         this.checkHover();
     }
 
@@ -150,25 +152,24 @@ export default class SpaceScene {
                 // Only enable hovering if no modal is open. 
                 if (!modalOpen) { 
                     this.hoveredSphere = sphere;
-                    sphere.userData.instance.handlePointerHover(true); 
+                    sphere.userData.instance.attemptHover(true); 
                 }
 
                 // Cancel the hover of any other hovered spheres.
                 this.spheres.forEach(s => {
                     if (s !== sphere.userData.instance)
-                        s.handlePointerHover(false);
+                        s.attemptHover(false);
                 });
             }
         } else {
             // If not hovered, tell the spheres.
             this.hoveredSphere = null;
-            this.spheres.forEach(s => s.handlePointerHover(false));
+            this.spheres.forEach(s => s.attemptHover(false));
         }
     }
 
     // Handle the case that a sphere was clicked or tapped.
     handleInteraction() {
-        console.log("handling interaction!!!!!!!");
         this.raycaster.setFromCamera(this.mouse, this.camera);
         const intersects = this.raycaster.intersectObjects(this.scene.children, true);
 
@@ -198,17 +199,14 @@ export default class SpaceScene {
 
     // Handle the case that a sphere was tapped, not clicked with a mouse. The behavior is basically the same but who cares.
     // TODO: touch events currently cannot interact with any HTML, only the spheres :D
-    handleTouchInteraction(x, y) {
+    handleTouchInteraction(event) {
         // Set the mouse position and handle the hover check. 
-        this.mouse.x = x;
-        this.mouse.y = y;
         const lastHovered = this.hoveredSphere ? this.hoveredSphere : null;
-        this.checkHover(); // TODO: currently not setting hoveredSphere for first touchstart
+        this.onInteractorMove(event);
 
         // If the same sphere is tapped twice, consider it clicked. 
-        if (this.hoveredSphere && this.hoveredSphere === lastHovered) {
+        if (this.hoveredSphere && this.hoveredSphere === lastHovered)
             this.handleInteraction();
-        }
     }
 
     render() {

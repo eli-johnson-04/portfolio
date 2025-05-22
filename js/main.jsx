@@ -116,40 +116,13 @@ async function hideLoadingScreen() {
     }
 }
 
-// Input normalization between pointer and touch events for mobile compatibility.
-function getInteractionCoords(event, container) {
-    let clientX, clientY;
-    if (event.touches && event.touches.length) {
-        clientX = event.touches[0].clientX;
-        clientY = event.touches[0].clientY;
-    } else {
-        clientX = event.clientX;
-        clientY = event.clientY;
-    }
-    const rect = container.getBoundingClientRect();
-    const x = ((clientX - rect.left) / rect.width) * 2 - 1;
-    const y = -((clientY - rect.top) / rect.height) * 2 + 1;
-    return x, y;
-}
-
-class eventTypeAndCoords {
-    constructor(event) {
-        this.type = event.type;
-        const { x, y } = getInteractionCoords(event, sceneContainer);
-        this.x = x;
-        this.y = y;
-    }
-
-    areSameCoords(x, y) { return this.x === x && this.y === y; }
-    compareType(other) { return this.type == other.type; }
-}
 
 let lastEvent = null;
 let isTouchEvent = false;
 const firstEvents = [];
 
 // Set a short timer to wait for the last first event to occur, since touchstarts often (always?????) seem to be preceded by pointerdowns.
-// I know it's bad, you know it's bad. its horrible but it works and we can throw a party when we get rid of it.
+// I know it's bad, you know it's bad. its horrible but it works and we can throw a party when its gone.
 async function waitForFirstEvent(event) {
     firstEvents.push(event.type);
     if (firstEvents.length <= 1) await new Promise(r => setTimeout(r, 10));
@@ -164,31 +137,24 @@ async function handleInteraction(event) {
     if (!lastEvent) {
         await waitForFirstEvent(event);
         if (isTouchEvent && event.type != "touchstart") return;
-        lastEvent = new eventTypeAndCoords(event);
-        switch (lastEvent.type) {
-            case "pointerdown":
-                console.log("first event is pointerdown");
-                spaceWorld.onPointerMove(event);
-                spaceWorld.handleInteraction();
-                break;
-            case "touchstart":
-                console.log("first event is touchstart");
-                spaceWorld.handleTouchInteraction(getInteractionCoords(event, sceneContainer));
-                break;
-        }
+        lastEvent = event;
+    }
+    if (lastEvent.type != event.type) {
+        //console.log("Interaction modality changed from " + lastEvent.type + " to " + event.type + ". Interactions in new modality may cause unexpected behavior. To use " + event.type + " interactions, please refresh the page.");
         return;
     }
-
-    // Only handle a pointer event if the last event was a pointer event. 
-    if (event.type == "pointerdown" && lastEvent.compareType(event)) {
-        console.log("doing ptr event");
-        spaceWorld.onPointerMove(event)
-        spaceWorld.handleInteraction();
-    } else if (event.type == "touchstart" && lastEvent.compareType(event)) {
-        console.log("doing touch event");
-        spaceWorld.handleTouchInteraction(getInteractionCoords(event, sceneContainer));
-    } else return;
-    lastEvent = new eventTypeAndCoords(event);
+    switch (event.type) {
+        case "pointerdown":
+            console.log("doing ptr event");
+            spaceWorld.onInteractorMove(event);
+            spaceWorld.handleInteraction();
+            break;
+        case "touchstart":
+            console.log("doing touch event");
+            spaceWorld.handleTouchInteraction(event);
+            break;
+    }
+    return;
 }
 
 // Use pointer events for desktop and touch events for mobile

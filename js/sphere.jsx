@@ -514,7 +514,7 @@ export default class Sphere {
     }
 
     // Handle hover behavior. 
-    handlePointerHover(mouseHover) {
+    attemptHover(mouseHover) {
         // Only proceed if the modal is closed and the sphere is fully initialized.
         if (!(this._labelMesh && this._hoverTextMesh && this._mesh)) return;
         if (!this._isModalOpen) {
@@ -533,13 +533,13 @@ export default class Sphere {
     }
 
     // Handle touch hover behavior.
-    handleTouchHover() {
-        // Trigger the hover state for touch devices
-        if (!this._isModalOpen) {
-            this.swell();
-            this._isHovered = true;
-        }
-    }
+    // handleTouchHover() {
+    //     // Trigger the hover state for touch devices
+    //     if (!this._isModalOpen) {
+    //         this.swell();
+    //         this._isHovered = true;
+    //     }
+    // }
     
     // Handle click behavior.
     handleOpen(cameraDistance) {
