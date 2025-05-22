@@ -12,7 +12,8 @@ const PORTFOLIO_PATH = 'pf';
 const rootEl = document.getElementById('root');
 
 // Create a container DIV for three.js to render into
-const sceneContainer = document.createElement('div');
+//const sceneContainer = document.createElement('div');
+const sceneContainer = document.body;
 sceneContainer.style.width = '100vw';
 sceneContainer.style.height = '100vh';
 sceneContainer.style.position = 'fixed';
@@ -21,7 +22,7 @@ sceneContainer.style.top = '0';
 sceneContainer.style.zIndex = '0';
 sceneContainer.style.overflow = 'hidden';
 sceneContainer.style.touchAction = 'none'; // Important for consistent touch
-rootEl.appendChild(sceneContainer);
+//rootEl.appendChild(sceneContainer);
 
 // Initialize the SpaceScene.
 const spaceWorld = new SpaceScene(sceneContainer);
@@ -116,9 +117,9 @@ async function hideLoadingScreen() {
 }
 
 // Input normalization between pointer and touch events for mobile compatibility.
-function getPointerCoords(event, container) {
+function getInteractionCoords(event, container) {
     let clientX, clientY;
-    if (event.touches & event.touches.length) {
+    if (event.touches && event.touches.length) {
         clientX = event.touches[0].clientX;
         clientY = event.touches[0].clientY;
     } else {
@@ -131,20 +132,42 @@ function getPointerCoords(event, container) {
     return { x, y };
 }
 
-function handlePointerDown(event) {
-    const { x, y } = getPointerCoords(event, sceneContainer);
-    spaceWorld.handlePointerOrTouch(x, y);
-}
-
 function handleTouchStart(event) {
     event.preventDefault();
-    const { x, y } = getPointerCoords(event, sceneContainer);
-    spaceWorld.handlePointerOrTouch(x, y);
+    const { x, y } = getInteractionCoords(event, sceneContainer);
+    spaceWorld.handleTouchInteraction(x, y, event);
+}
+
+class eventTypeAndCoords {
+    constructor(event) {
+        this.type = event.type;
+        const { x, y } = getInteractionCoords(event, sceneContainer);
+        this.x = x;
+        this.y = y;
+    }
+
+    areSameCoords(x, y) { return this.x === x && this.y === y; }
+}
+
+let lastEvent = null;
+
+function handleInteraction(event) {
+    if (lastEvent && lastEvent.type != event.type && lastEvent.areSameCoords(getInteractionCoords(event, sceneContainer))) {
+        // TODO: figure out some way to trigger only a touch event if a touch event is preceded by a pointer event, like when testing on desktop!
+    }
+    if (event.type == "pointerdown") {
+        spaceWorld.handlePointerInteraction(event);
+    } else if (event.type == "touchstart") {
+        event.preventDefault();
+        const { x, y } = getInteractionCoords(event, sceneContainer);
+        spaceWorld.handleTouchInteraction(x, y, event);
+    }
+    lastEvent = eventTypeAndCoords(event);
 }
 
 // Use pointer events for desktop and touch events for mobile
-sceneContainer.addEventListener('pointerdown', handlePointerDown);
-sceneContainer.addEventListener('touchstart', handleTouchStart, { passive: false });
+sceneContainer.addEventListener('pointerdown', (event) => spaceWorld.handlePointerInteraction(event), { passive: false });
+sceneContainer.addEventListener('touchstart', (event) => handleTouchStart(event), { passive: false });
 
 // Start rendering the scene immediately.
 spaceWorld.render();

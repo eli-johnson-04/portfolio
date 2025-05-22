@@ -105,7 +105,7 @@ export default class Sphere {
         this._noiseSpeed = 0.2; // Controls the speed of sphere movement
 
         // Track hover state.
-        this._mouseHovered = false;
+        this._isHovered = false;
 
         // ---------------------MODAL SETUP---------------------
         // I hate JavaScript. 
@@ -520,13 +520,13 @@ export default class Sphere {
         if (!this._isModalOpen) {
 
             // If mouse is hovering and sphere is not hovered, hover sphere and swell.
-            if (mouseHover && !this._mouseHovered) {
+            if (mouseHover && !this._isHovered) {
                 this.swell();
-                this._mouseHovered = true;
+                this._isHovered = true;
 
             // If mouse is not hovering and sphere is hovered, sphere is no longer hovered and should shrink. 
-            } else if (!mouseHover && this._mouseHovered) {
-                this._mouseHovered = false;
+            } else if (!mouseHover && this._isHovered) {
+                this._isHovered = false;
                 this.shrink();
             }
         }
@@ -537,15 +537,15 @@ export default class Sphere {
         // Trigger the hover state for touch devices
         if (!this._isModalOpen) {
             this.swell();
-            this._mouseHovered = true;
+            this._isHovered = true;
         }
     }
     
     // Handle click behavior.
-    handleClick(cameraDistance) {
+    handleOpen(cameraDistance) {
         // Only proceed if the modal is closed and the sphere is fully initialized.
         if (!(this._labelMesh && this._hoverTextMesh && this._mesh)) return;
-        if (!this._isModalOpen && this._mouseHovered) { 
+        if (!this._isModalOpen && this._isHovered) { 
             this.explode(cameraDistance);
             this.openModal(); 
         }
@@ -554,7 +554,7 @@ export default class Sphere {
     // Handle modal opens and closes. 
     openModal() {
         // The mouse can no longer be considered as hovering over the sphere. 
-        this._mouseHovered = false;
+        this._isHovered = false;
 
         // Show the modal.
         this._isModalOpen = true;
