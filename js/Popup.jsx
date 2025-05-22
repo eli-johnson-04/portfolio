@@ -21,7 +21,7 @@ const Popup = () => {
             ) : (
                 <div className="w-full">
                     <h1 className="text-xl font-semibold mb-3 select-none">Welcome!</h1>
-                    <p className="mb-4 select-none">Press and drag to pan around.</p>
+                    <p className="mb-4 select-none">Press and drag to look around.</p>
                     <button
                         className="close-btn text-xl"
                         onClick={() => setIsMinimized(true)}
