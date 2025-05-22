@@ -129,13 +129,7 @@ function getInteractionCoords(event, container) {
     const rect = container.getBoundingClientRect();
     const x = ((clientX - rect.left) / rect.width) * 2 - 1;
     const y = -((clientY - rect.top) / rect.height) * 2 + 1;
-    return { x, y };
-}
-
-function handleTouchStart(event) {
-    event.preventDefault();
-    const { x, y } = getInteractionCoords(event, sceneContainer);
-    spaceWorld.handleTouchInteraction(x, y, event);
+    return x, y;
 }
 
 class eventTypeAndCoords {
@@ -147,27 +141,59 @@ class eventTypeAndCoords {
     }
 
     areSameCoords(x, y) { return this.x === x && this.y === y; }
+    compareType(other) { return this.type == other.type; }
 }
 
 let lastEvent = null;
+let isTouchEvent = false;
+const firstEvents = [];
 
-function handleInteraction(event) {
-    if (lastEvent && lastEvent.type != event.type && lastEvent.areSameCoords(getInteractionCoords(event, sceneContainer))) {
-        // TODO: figure out some way to trigger only a touch event if a touch event is preceded by a pointer event, like when testing on desktop!
+// Set a short timer to wait for the last first event to occur, since touchstarts often (always?????) seem to be preceded by pointerdowns.
+// I know it's bad, you know it's bad. its horrible but it works and we can throw a party when we get rid of it.
+async function waitForFirstEvent(event) {
+    firstEvents.push(event.type);
+    if (firstEvents.length <= 1) await new Promise(r => setTimeout(r, 10));
+    else isTouchEvent = true;
+    return;
+}
+
+async function handleInteraction(event) {
+    event.preventDefault();
+
+    // Properly handle the first event to set a precedent.
+    if (!lastEvent) {
+        await waitForFirstEvent(event);
+        if (isTouchEvent && event.type != "touchstart") return;
+        lastEvent = new eventTypeAndCoords(event);
+        switch (lastEvent.type) {
+            case "pointerdown":
+                console.log("first event is pointerdown");
+                spaceWorld.onPointerMove(event);
+                spaceWorld.handleInteraction();
+                break;
+            case "touchstart":
+                console.log("first event is touchstart");
+                spaceWorld.handleTouchInteraction(getInteractionCoords(event, sceneContainer));
+                break;
+        }
+        return;
     }
-    if (event.type == "pointerdown") {
-        spaceWorld.handlePointerInteraction(event);
-    } else if (event.type == "touchstart") {
-        event.preventDefault();
-        const { x, y } = getInteractionCoords(event, sceneContainer);
-        spaceWorld.handleTouchInteraction(x, y, event);
-    }
-    lastEvent = eventTypeAndCoords(event);
+
+    // Only handle a pointer event if the last event was a pointer event. 
+    if (event.type == "pointerdown" && lastEvent.compareType(event)) {
+        console.log("doing ptr event");
+        spaceWorld.onPointerMove(event)
+        spaceWorld.handleInteraction();
+    } else if (event.type == "touchstart" && lastEvent.compareType(event)) {
+        console.log("doing touch event");
+        spaceWorld.handleTouchInteraction(getInteractionCoords(event, sceneContainer));
+    } else return;
+    lastEvent = new eventTypeAndCoords(event);
 }
 
 // Use pointer events for desktop and touch events for mobile
-sceneContainer.addEventListener('pointerdown', (event) => spaceWorld.handlePointerInteraction(event), { passive: false });
-sceneContainer.addEventListener('touchstart', (event) => handleTouchStart(event), { passive: false });
+sceneContainer.addEventListener('pointerdown', handleInteraction, { passive: false });
+sceneContainer.addEventListener('touchstart', handleInteraction, { passive: false });
 
 // Start rendering the scene immediately.
 spaceWorld.render();

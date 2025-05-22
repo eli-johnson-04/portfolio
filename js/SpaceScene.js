@@ -123,10 +123,10 @@ export default class SpaceScene {
     onPointerMove(event) {
         this.mouse.x = (event.clientX / this.container.clientWidth) * 2 - 1;
         this.mouse.y = -(event.clientY / this.container.clientHeight) * 2 + 1;
-        this.checkPointerHover();
+        this.checkHover();
     }
 
-    checkPointerHover() {
+    checkHover() {
         if (this.spheres.length === 0) return;
         // Check if the mouse is hovering over a sphere. If so, call its handlePointerHover.
         this.raycaster.layers.set(SpaceScene.SCENE_LAYER)
@@ -166,10 +166,9 @@ export default class SpaceScene {
         }
     }
 
-    // Handle the case that a sphere was clicked with a mouse, not tapped.
-    handlePointerInteraction(event) {
-        console.log(event);
-        //this.onPointerMove(event);
+    // Handle the case that a sphere was clicked or tapped.
+    handleInteraction() {
+        console.log("handling interaction!!!!!!!");
         this.raycaster.setFromCamera(this.mouse, this.camera);
         const intersects = this.raycaster.intersectObjects(this.scene.children, true);
 
@@ -197,22 +196,19 @@ export default class SpaceScene {
         }
     }
 
-    // Handle the case that a sphere was tapped, not clicked with a mouse.
-    // TODO: figure out why touch events are preceded by pointer events and do something about it
-    handleTouchInteraction(x, y, event) {
-        console.log("---------TOUCH EVENT----------");
-        //console.log(event);
-        // Simulate a move event and run the hover handler.
+    // Handle the case that a sphere was tapped, not clicked with a mouse. The behavior is basically the same but who cares.
+    // TODO: touch events currently cannot interact with any HTML, only the spheres :D
+    handleTouchInteraction(x, y) {
+        // Set the mouse position and handle the hover check. 
         this.mouse.x = x;
         this.mouse.y = y;
         const lastHovered = this.hoveredSphere ? this.hoveredSphere : null;
-        this.checkPointerHover();
-        console.log("last hovered: ", lastHovered);
-        console.log("hovered sphere: ", this.hoveredSphere);
-        console.log(this.hoveredSphere === lastHovered);
+        this.checkHover(); // TODO: currently not setting hoveredSphere for first touchstart
 
         // If the same sphere is tapped twice, consider it clicked. 
-        if (this.hoveredSphere === lastHovered) this.handlePointerInteraction(event);
+        if (this.hoveredSphere && this.hoveredSphere === lastHovered) {
+            this.handleInteraction();
+        }
     }
 
     render() {
@@ -227,7 +223,6 @@ export default class SpaceScene {
             }
         });
 
-        //this.checkPointerHover();
         this.updateParticles();
         this.controls.update();
         SkyDome.updateClock();
