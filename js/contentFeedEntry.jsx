@@ -13,14 +13,11 @@ const ContentFeedEntry = ({ data }) => {
         setIsCollapsed(!isCollapsed);
     };
 
-    // Check if this is a priority post.
-    const isPriority = data.id.startsWith('!');
-
     return (
         <div 
             className={`m-4 pb-4 rounded-xl px-2 pt-2 transition-transform duration-100 ease-in-out ${
-                isCollapsed ? 'hover:shadow-lg hover:bg-gray-100 hover:scale-[1.02]' : 'border-2 border-gray-600'
-            }`}
+                isCollapsed ? 'hover:shadow-lg hover:bg-gray-100 hover:scale-[1.02]' : 'border-2 border-gray-600'}`
+            }
         >
             <Tooltip
                 placement="top" // Tooltip appears above the title
@@ -50,11 +47,11 @@ const ContentFeedEntry = ({ data }) => {
                 <div 
                     onClick={toggleVisibility}
                     className={`rounded-xl flex items-center transition-transform duration-100 ease-in-out
-                        ${isCollapsed ? '' : 'hover:scale-[1.01]'
-                        }`}
+                        ${isCollapsed ? '' : 'hover:scale-[1.01]'}`
+                    }
                 >
                     <span>
-                        <h1 className="text-3xl font-bold text-gray-800">{extractName(data.id) + (isPriority ? " ★" : "")}</h1>
+                        <h1 className="text-3xl font-bold text-gray-800">{data.isPriority || (data.subfolderIndex === -1) ? "" : `#${data.subfolderIndex}: `}{extractName(data.id)}{data.isPriority ? " ★" : ""}</h1>
                         <h1 className="text-sm font-semibold text-gray-800">{convertDateToText(data.date)}</h1>
                     </span>
                 </div>

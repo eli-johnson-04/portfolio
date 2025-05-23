@@ -17,21 +17,20 @@ export default class ParticleSystem {
     }
 
     // Generate a particle for each markdown file, corresponding to the sphere it should fly into on hover. 
-    initializeFromMarkdown(sphereData, spheres) {
+    initializeFromMarkdown(folderLengths, spheres) {
         const particleData = [];
-        sphereData.forEach((data, index) => {
+        folderLengths.forEach((folderLength, index) => {
             const sphere = spheres[index];
-            const markdownEntries = data;
 
-            if (markdownEntries && markdownEntries.length > 0) {
-                markdownEntries.forEach(() => {
+            if (folderLength && folderLength > 0) {
+                for (let i = 0; i < folderLength; i++) {
                     const randomPosition = new THREE.Vector3(
                         (Math.random() - 0.5) * 50,
                         (Math.random() - 0.5) * 50,
                         (Math.random() - 0.5) * 50
                     );
                     particleData.push({ position: randomPosition, sphere });
-                });
+                }
             }
         });
 

@@ -1,9 +1,7 @@
-import React from 'react';
-
 // Contains the structure and content for the Profile sphere!
 const ProfileContent = () => {
     return (
-        <div className="my-4 mx-2 max-h-[60vh] scrollbar-thin scrollbar-webkit overflow-y-auto">
+        <div className="my-4 mx-2 h-full overflow-y-none scrollbar-thin scrollbar-webkit">
             <div className="grid grid-cols-[1fr_2fr] grid-rows-[auto,auto] gap-4 p-4 bg-gray-900 place-items-center text-white rounded-lg shadow-lg">
                 {/* Profile Picture (Top Left) */}
                 <div className="h-full flex flex-col items-center justify-center">

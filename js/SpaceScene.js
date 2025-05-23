@@ -17,6 +17,24 @@ export default class SpaceScene {
         this.scene = new THREE.Scene();
         this.scene.layers.set(SpaceScene.SCENE_LAYER);
 
+        // Camera setup.
+        this.camera = new THREE.PerspectiveCamera(
+            75, 
+            container.clientWidth / container.clientHeight, 
+            0.1, 
+            1000
+        );
+        this.camera.layers.enable(SpaceScene.SKYDOME_LAYER);
+        this.camera.position.set(0, 0, 10);
+
+        // Renderer setup.
+        this.renderer = new THREE.WebGLRenderer({ antialias: true });
+        this.renderer.setSize(container.clientWidth, container.clientHeight);
+        this.renderer.setClearColor(0x000000);
+        this.renderer.shadowMap.enabled = true; 
+        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Use soft shadows
+        this.container.appendChild(this.renderer.domElement);
+
         // World setup.
         this.world = new CANNON.World();
         this.world.gravity.set(0, 0, 0);
@@ -28,19 +46,6 @@ export default class SpaceScene {
         this.skyDome = SkyDome.getInstance();
         this.skyDome.skyDomeMesh.layers.set(SpaceScene.SKYDOME_LAYER);
         this.scene.add(this.skyDome.skyDomeMesh);
-
-        // Camera setup.
-        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        this.camera.layers.enable(SpaceScene.SKYDOME_LAYER);
-        this.camera.position.z = 10;
-
-        // Renderer setup.
-        this.renderer = new THREE.WebGLRenderer({ antialias: true });
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setClearColor(0x000000);
-        this.renderer.shadowMap.enabled = true; 
-        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Use soft shadows
-        this.container.appendChild(this.renderer.domElement);
 
         // Controls setup.
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -72,10 +77,27 @@ export default class SpaceScene {
         // Initialize the particle system.
         this.particleSystem = new ParticleSystem(this.scene);
 
+        // Track the last hovered sphere.
+        this.hoveredSphere = null;
+
         // Event listeners.
         window.addEventListener('resize', this.onWindowResize.bind(this), false);
-        window.addEventListener('mousemove', this.onMouseMove.bind(this));
-        window.addEventListener('click', this.onClick.bind(this));
+        this.container.addEventListener('mousemove', this.onInteractorMove.bind(this));
+        this.animate();
+    }
+
+    animate() {
+        requestAnimationFrame(this.animate.bind(this));
+        this.renderer.render(this.scene, this.camera);
+    }
+
+    onWindowResize() {
+        const w = this.container.clientWidth;
+        const h = this.container.clientHeight;
+        this.camera.aspect = w / h;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(w, h);
+        this.controls.update();
     }
 
     addSphere(sphere) {
@@ -90,35 +112,78 @@ export default class SpaceScene {
         this.scene.add(boundary);
     }
 
-    initializeParticlesFromMarkdown(sphereData, spheres) {
-        this.particleSystem.initializeFromMarkdown(sphereData, spheres);
+    initializeParticlesFromMarkdown(folderLengths, spheres) {
+        this.particleSystem.initializeFromMarkdown(folderLengths, spheres);
     }
 
     updateParticles() {
         this.particleSystem.update();
     }
 
-    onMouseMove(event) {
-        this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    onInteractorMove(event) {
+        const cX = event.touches ? event.touches[0].clientX : event.clientX;
+        const cY = event.touches ? event.touches[0].clientY : event.clientY;
+        this.mouse.x = (cX / this.container.clientWidth) * 2 - 1;
+        this.mouse.y = -(cY / this.container.clientHeight) * 2 + 1;
+        this.checkHover();
     }
 
-    onClick(event) {
-        // Detect if a sphere or a child of a sphere was clicked. If so, call handleClick on the sphere.
-        this.onMouseMove(event);
+    checkHover() {
+        if (this.spheres.length === 0) return;
+        // Check if the mouse is hovering over a sphere. If so, call its handlePointerHover.
+        this.raycaster.layers.set(SpaceScene.SCENE_LAYER)
         this.raycaster.setFromCamera(this.mouse, this.camera);
         const intersects = this.raycaster.intersectObjects(this.scene.children, true);
 
-        // If something is clicked
+        // If an object is detected to be hovered over
+        if (intersects.length > 0) {
+            const sphere = intersects[0].object;
+
+            if (sphere.userData.instance instanceof Sphere) {
+                // If there is a modal open, no spheres should be hoverable.
+                let modalOpen = false;
+                this.spheres.forEach(s => {
+                    if (s._isModalOpen) {
+                        modalOpen = true;
+                        return;
+                    }
+                })
+
+                // Only enable hovering if no modal is open. 
+                if (!modalOpen) { 
+                    this.hoveredSphere = sphere;
+                    sphere.userData.instance.attemptHover(true); 
+                }
+
+                // Cancel the hover of any other hovered spheres.
+                this.spheres.forEach(s => {
+                    if (s !== sphere.userData.instance)
+                        s.attemptHover(false);
+                });
+            }
+        } else {
+            // If not hovered, tell the spheres.
+            this.hoveredSphere = null;
+            this.spheres.forEach(s => s.attemptHover(false));
+        }
+    }
+
+    // Handle the case that a sphere was clicked or tapped.
+    handleInteraction() {
+        this.raycaster.setFromCamera(this.mouse, this.camera);
+        const intersects = this.raycaster.intersectObjects(this.scene.children, true);
+
+        // If the mouse is intersecting with something
         if (intersects.length > 0) {
             let obj = intersects[0].object;
 
-            // Check if the clicked object a child of a sphere and get a reference to the parent sphere, a child of the scene. 
+            // Check if the clicked object is a child of a sphere and get a reference to the parent sphere.
+            // This is necessary because spheres have separate spheres for the label, hover text, and the sphere itself.
             while (obj.parent && !(obj.parent instanceof THREE.Scene)) obj = obj.parent;
 
-            // Check if a sphere was clicked, and handle the click. 
+            // Check if a sphere was clicked and handle the click.
             if (obj.userData.instance instanceof Sphere) {
-                // The sphere's scale will be set to the distance between the camera and the sphere. 
+                // The sphere's scale will be set to the distance between the camera and the sphere.
                 const sphere = obj.userData.instance;
                 const cameraPos = new THREE.Vector3();
                 this.camera.getWorldPosition(cameraPos);
@@ -127,79 +192,20 @@ export default class SpaceScene {
                 sphere._mesh.getWorldPosition(spherePos);
 
                 const cameraDist = cameraPos.distanceTo(spherePos);
-                sphere.handleClick(cameraDist);
+                sphere.handleOpen(cameraDist);
             }
         }
     }
 
-    checkHover() {
-        // Check if the mouse is hovering over a sphere. If so, call handleMouseHover.
-        this.raycaster.layers.set(SpaceScene.SCENE_LAYER);
-        this.raycaster.setFromCamera(this.mouse, this.camera);
-        const intersects = this.raycaster.intersectObjects(this.scene.children, true);
+    // Handle the case that a sphere was tapped, not clicked with a mouse. The behavior is basically the same but who cares.
+    handleTouchInteraction(event) {
+        // Set the mouse position and handle the hover check. 
+        const lastHovered = this.hoveredSphere ? this.hoveredSphere : null;
+        this.onInteractorMove(event);
 
-        // If an object is detected to be hovered over.
-        if (intersects.length > 0) {
-            const obj = intersects[0].object;
-
-            if (obj.userData.instance instanceof Sphere) {
-                // If there is a modal open, no spheres should be hoverable. 
-                let modalOpen = false;
-                this.spheres.forEach(s => {
-                    if (s._isModalOpen) {
-                        modalOpen = true;
-                        return;
-                    }
-                })
-    
-                // Only enable hovering if no modal is open.
-                if (!modalOpen) { obj.userData.instance.handleMouseHover(true); }
-    
-                // Cancel the hover of any other hovered spheres.
-                this.spheres.forEach(s => {
-                    if (!(s === obj.userData.instance)) {
-                        s.handleMouseHover(false);
-                    }
-                });
-            }
-        } else {
-            // If not hovered, tell the spheres
-            this.spheres.forEach(s => s.handleMouseHover(false));
-        }
-    }
-
-    handleInteraction(x, y) {
-        // Convert touch coordinates to raycasting and handle sphere interaction.
-        const raycaster = new THREE.Raycaster();
-        const pointer = new THREE.Vector2(x, y);
-        raycaster.setFromCamera(pointer, this.camera);
-
-        const intersects = raycaster.intersectObjects(this.scene.children, true);
-        if (intersects.length > 0) {
-            const sphere = intersects[0].object;
-            if (sphere.onClick) sphere.onClick();
-        }
-    }
-
-    handleHover(x, y) {
-        // Handle hover effects for touch interactions.
-        const raycaster = new THREE.Raycaster();
-        const pointer = new THREE.Vector2(x, y);
-        raycaster.setFromCamera(pointer, this.camera);
-
-        const intersects = raycaster.intersectObjects(this.scene.children, true);
-        if (intersects.length > 0) {
-            const sphere = intersects[0].object;
-            if (sphere.onHover) sphere.onHover();
-        }
-    }
-
-    onWindowResize() {
-        this.camera.aspect = window.innerWidth / window.innerHeight;
-        this.camera.updateProjectionMatrix();
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.controls.target.set(0, 0, 0);
-        this.controls.update();
+        // If the same sphere is tapped twice, consider it clicked. 
+        if (this.hoveredSphere && this.hoveredSphere === lastHovered)
+            this.handleInteraction();
     }
 
     render() {
@@ -214,7 +220,6 @@ export default class SpaceScene {
             }
         });
 
-        this.checkHover();
         this.updateParticles();
         this.controls.update();
         SkyDome.updateClock();
