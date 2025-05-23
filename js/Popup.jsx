@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import '../css/output.css';
 
 // Welcome popup providing basic information about how to interact with the site. 

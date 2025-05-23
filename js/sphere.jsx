@@ -5,7 +5,6 @@ import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUti
 import * as CANNON from 'cannon-es';
 import { gsap } from 'gsap';
 import CustomEase from 'gsap/CustomEase';
-import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Modal from 'react-modal';
 import SphereModal from './sphereModal.jsx';

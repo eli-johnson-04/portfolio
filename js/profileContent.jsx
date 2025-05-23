@@ -1,5 +1,3 @@
-import React from 'react';
-
 // Contains the structure and content for the Profile sphere!
 const ProfileContent = () => {
     return (

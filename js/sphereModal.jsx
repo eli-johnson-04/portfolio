@@ -1,4 +1,3 @@
-import React from 'react';
 import Modal from 'react-modal';
 import { gsap } from 'gsap';
 import '../css/output.css';

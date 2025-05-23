@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Sphere from './sphere.jsx';
 import ProfileContent from './profileContent.jsx';
