@@ -44,7 +44,9 @@ const SphereModal = ({ isOpen, onRequestClose, label, content }) => {
                     Close
                 </button>
             </div>
-            <div className="w-full rounded-lg p-0 flex-grow overflow-none">{content}</div>
+            <div className="w-full overflow-y-auto rounded-lg p-0 flex-grow scrollbar-thin scrollbar-webkit">
+                {content}
+            </div>
         </Modal>
     );
 };
