@@ -60,7 +60,7 @@ export default class ParticleSystem {
         this.particles.forEach((particle, i) => {
             const lerpSpeed = 0.13;
 
-            const target = particle.sphere._mouseHovered || particle.sphere._isModalOpen
+            const target = particle.sphere._isHovered || particle.sphere._isModalOpen
                 ? particle.sphere._position
                 : particle.originalPosition;
             particle.position.lerp(target, lerpSpeed);
