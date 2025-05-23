@@ -1,24 +1,22 @@
-import React from "react";
-
 // Custom formatting options for Markdown converted to HTML. 
 const MarkdownToHTMLComponentStyles = {
     h1: ({ node, ...props }) => (
         <h1
-            className="text-2xl font-semibold text-gray-800 mt-5 mb-3"
+            className="text-2xl font-semibold text-gray-800 mt-5 mb-3 break-words"
             style={{ fontFamily: 'Gentilis' }}
             {...props}
         />
     ),
     h2: ({ node, ...props }) => (
         <h2
-            className="text-xl font-semibold text-gray-800 mt-3 mb-2"
+            className="text-xl font-semibold text-gray-800 mt-3 mb-2 break-words"
             style={{ fontFamily: 'Gentilis' }}
             {...props}
         />
     ),
     h3: ({ node, ...props }) => (
         <h3
-            className="text-lg font-medium text-gray-800"
+            className="text-lg font-medium text-gray-800 break-words"
             style={{ fontFamily: 'Gentilis' }}
             {...props}
         />
