@@ -11,8 +11,8 @@
 - [ ] look into google indexing and crawling and how that works with markdown!
 
 ## Necessary Functionality
-- [ ] IMPROVE PERFORMANCE ?
-- [ ] Touch support for safari
+- [x] IMPROVE PERFORMANCE ?
+- [x] Touch support for safari
 - [x] Add activity categories (yikes... i will definitely need this...)
     - [x] make it so that subfolders of activity will automatically have their own feeds, but maybe each feed can be contained in an entry of a singular large feed? NESTING
 - [x] Spheres swell when hover
@@ -25,12 +25,12 @@
 - [x] Favicon
 - [x] COLLAPSIBLE ENTRIES
 - [x] Add styling and support for embeds
-- [ ] Complete Profile page
+- [x] Complete Profile page
     - [x] fix visibility of text 
-    - [ ] MAKE APPEARANCE CONSISTENT ACROSS VARYING SCREEN SIZES
+    - [x] MAKE APPEARANCE CONSISTENT ACROSS VARYING SCREEN SIZES
 - [x] Complete Activity feed (up to date)
 - [x] Complete Portfolio page with grid for content (somehow make responsive and dynam ic??) ((completeness determined by an entry for each master resume project))
-- [ ] portfolio activity entry styling
+- [x] portfolio activity entry styling
     - [x] Smooth when collapsing an entry in activity or portfolio
     - [x] add a hover tooltip on portfolio entries for keywords
         -[x] fix tooltip stutter on first open {update, its a feature not a bug :)}
@@ -43,7 +43,7 @@
 
 ## Beautification
 - [x] add a big entry, probably pinned to the top of the portfolio entries (using my "out-of-bounds" numbering trick) about the website itself
-- [ ] functionality for mobile (touch screens)!!!!
+- [x] functionality for mobile (touch screens)!!!!
 - [x] Spheres have hover physics
 - [x] Modal ~~open~~ fade-in animation
 - [x] Modal **explosion** animation

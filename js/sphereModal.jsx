@@ -23,6 +23,7 @@ const SphereModal = ({ isOpen, onRequestClose, label, content }) => {
                 gsap.to('.ReactModal__Overlay', { opacity: 1, duration: 0.2, ease: 'easeIn' });
             }}
             overlayClassName="sphere-modal-overlay"
+            shouldCloseOnOverlayClick={true}
             className="sphere-modal-content"
             contentLabel={label}
         >
