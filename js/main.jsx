@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Sphere from './sphere.jsx';
 import ProfileContent from './profileContent.jsx';
@@ -9,11 +8,31 @@ import Popup from './Popup.jsx';
 const ACTIVITY_PATH = 'activity';
 const PORTFOLIO_PATH = 'pf';
 
+//const rootEl = document.getElementById('root');
+const rootEl = document.createElement('div');
+
+// Create a container DIV for three.js to render into
+//const sceneContainer = document.createElement('div');
+const sceneContainer = document.body;
+sceneContainer.style.width = '100vw';
+sceneContainer.style.height = '100vh';
+sceneContainer.style.position = 'fixed';
+sceneContainer.style.left = '0';
+sceneContainer.style.top = '0';
+sceneContainer.style.zIndex = '0';
+sceneContainer.style.overflow = 'hidden';
+sceneContainer.style.touchAction = 'none';
+
+// Initialize the SpaceScene.
+const spaceWorld = new SpaceScene(sceneContainer);
+document.body.appendChild(rootEl);
+
+
 async function setupScene(spaceWorld) {
     console.log("Setting up the scene...");
-
+    
     await showLoadingScreen();
-
+    
     // Pre-load all sphere content.
     const mdLoader = new markdownLoader();
     mdLoader.importAllMarkdown();
@@ -98,32 +117,48 @@ async function hideLoadingScreen() {
     }
 }
 
-// Initialize the SpaceScene and start rendering.
-const container = document.body;
-const spaceWorld = new SpaceScene(container);
 
-// Add touch event listeners for touch interaction.
-container.addEventListener('touchstart', (event) => {
-    const touch = event.touches[0];
-    const rect = container.getBoundingClientRect();
-    const x = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
-    const y = -((touch.clientY - rect.top) / rect.height) * 2 + 1;
+let lastEvent = null;
+let isTouchEvent = false;
+const firstEvents = [];
 
-    spaceWorld.handleInteraction(x, y);
-});
+// Set a short timer to wait for the last first event to occur, since touchstarts often (always?????) seem to be preceded by pointerdowns.
+// I know it's bad, you know it's bad. its horrible but it works and we can throw a party when its gone.
+async function waitForFirstEvent(event) {
+    firstEvents.push(event.type);
+    if (firstEvents.length <= 1) await new Promise(r => setTimeout(r, 10));
+    else isTouchEvent = true;
+    return;
+}
 
-container.addEventListener('touchmove', (event) => {
-    const touch = event.touches[0];
-    const rect = container.getBoundingClientRect();
-    const x = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
-    const y = -((touch.clientY - rect.top) / rect.height) * 2 + 1;
+async function handleInteraction(event) {
+    // Properly handle the first event to set a precedent.
+    if (!lastEvent) {
+        await waitForFirstEvent(event);
+        if (isTouchEvent && event.type != "touchstart") return;
+        lastEvent = event;
+    }
+    if (lastEvent.type != event.type) {
+        //console.log("Interaction modality changed from " + lastEvent.type + " to " + event.type + ". Interactions in new modality may cause unexpected behavior. To use " + event.type + " interactions, please refresh the page.");
+        return;
+    }
+    switch (event.type) {
+        case "pointerdown":
+            event.preventDefault();
+            spaceWorld.onInteractorMove(event);
+            spaceWorld.handleInteraction();
+            break;
+        case "touchstart":
+            if (event.target.localName == "canvas") event.preventDefault();
+            spaceWorld.handleTouchInteraction(event);
+            break;
+    }
+    return;
+}
 
-    spaceWorld.handleHover(x, y);
-});
-
-// container.addEventListener('touchend', () => {
-//     spaceWorld.handleInteractionEnd();
-// });
+// Use pointer events for desktop and touch events for mobile
+sceneContainer.addEventListener('pointerdown', handleInteraction, { passive: false });
+sceneContainer.addEventListener('touchstart', handleInteraction, { passive: false });
 
 // Start rendering the scene immediately.
 spaceWorld.render();
@@ -131,7 +166,5 @@ spaceWorld.render();
 // Show the loading screen and start setting up the scene.
 setupScene(spaceWorld);
 
-// Render the Popup component.
-const root = document.createElement('div');
-document.body.appendChild(root);
-ReactDOM.createRoot(root).render(<Popup />);
+// Render the Popup component after the scene is set up.
+ReactDOM.createRoot(rootEl).render(<Popup />);
