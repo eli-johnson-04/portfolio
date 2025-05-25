@@ -13,6 +13,7 @@ I decided that moving the mouse could trigger a hover event on a system not usin
 I'm having to set up event listeners in my *main.jsx* to call handlers in *SpaceScene.js* since it deals will all the ThreeJS stuff to talk to each individual sphere in *sphere.jsx* to handle individual sphere states. Ugh. It'll be done soon, but now you have the luxury of my thoughts on it before its finished. 
 
 ![NASA Image of the Day May 19, 2025](https://www.nasa.gov/wp-content/uploads/2025/05/54521739963-b58dc96fbb-o.jpg)
+##### Image credit: NASA, ESA, CSA, Ralf Crawford (STScI)
 ###### Here's NASA's image of the day for May 19. I was gonna do today's but it was some jet and I liked this one two pictures to the right.
 
 Mayor of Griperton, signing off. 

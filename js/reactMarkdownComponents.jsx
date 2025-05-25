@@ -21,6 +21,13 @@ const MarkdownToHTMLComponentStyles = {
             {...props}
         />
     ),
+    h5: ({ node, ...props }) => (
+        <h5
+            className="italic text-xs text-center text-gray-800 my-2"
+            style={{ fontFamily: 'Gentilis', fontStyle: 'italic', fontWeight: 'normal' }}
+            {...props}
+        />
+    ),
     h6: ({ node, ...props }) => (
         <h6
             className="italic text-center text-gray-800 my-2"

@@ -24,8 +24,4 @@ I also dolled-up the appearance of the website as a whole, fixed some sizing iss
 
 It's time to celebrate because I'm able to tell my parents who love me so much and don't know a lot about this stuff that they can finally just use their phones <3. My friends as well, and myself. I can push my changes and check my phone later and move on. I'm ready to move on from thinking about mobile and to just focus on my internship and VR.
 
-Just like with you, Earl. I don't want to play with you anymore.
-
-![byebye](https://i.kym-cdn.com/entries/icons/original/000/028/033/Screenshot_7.jpg)
-
 All aboard the Complain Train, departing Griperton immediately!
