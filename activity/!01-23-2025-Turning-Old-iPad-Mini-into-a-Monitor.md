@@ -13,8 +13,6 @@ I thought to myself, as any normal person does:
 
 > "I don't want to turn my iPad on every time I want to use it as a monitor. Surely, **surely**, I can automate this." 
 
-![I was in for it](https://i.kym-cdn.com/entries/icons/original/000/044/438/Untitled-1.png)
-
 ...What ensued next was one of the most hair-pulling, stressful, and eye-opening adventures I have gone on for the sake of a convenience. But I'm a programmer, so, I stared this iPad in the eye until Machine Girl stared back without touching the screen. 
 
 ## This isn't illegal, right...?

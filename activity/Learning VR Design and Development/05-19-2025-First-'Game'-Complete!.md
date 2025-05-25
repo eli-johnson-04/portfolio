@@ -45,6 +45,6 @@ I don't want to say too much; I've already said a lot in the last few posts. The
 
 I know the ropes, now I learn to swing. I might still make that fishing game, or maybe I'll make a roguelike horde survivor, who knows. But first I'm going to play *In Death* because I've earned it. Shout out to this one title from Sólfar Studios that used to make me shiver with the religious horror and choral ambience. I revisited it a few days ago and wow, VR has made serious strides since 2018, but I still had to muster some courage for this one.
 
-![In Death](https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/605450/ss_7f7b543171aa44321aacf3e3cc87ced80a1868bc.1920x1080.jpg?t=1715907411)
+<iframe width="1344" height="756" src="https://www.youtube.com/embed/sAtYvGUQm3E" title="In Death, Gameplay Trailer PlayStation VR PSVR" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 Ohhhhh yeah. See ya.
