@@ -64,7 +64,7 @@ A **hand pose** (synonymous with gesture) is a hand shape + an orientation, with
 
 This all boils down to frustration. Fortunately, XR Hands provides a gesture debugger to determine and set precise shape parameters and thresholds, as well as for testing pose detection. The North and East gestures initially worked far better than South and West, but I chose characteristically unique shapes for the latter two that took quite a while to determine thresholds for. The shapes were detected reliably, but the orientations were, well, *bluggh*.
 
-> As an aside, I **could** describe these poses to the player with text (since gestures will be important to gameplay and these four are not \*exceptionally\* complex), **or** I could find a way to reliably generate icons of hand poses, which would be better. I have no idea how to do this and spent some time trying to find a tool, but I might have to do something hacky and just make it work. I don't know :)
+> As an aside, I **could** describe these poses to the player with text (since gestures will be important to gameplay and these four are not \*exceptionally\* complex), **or** I could find a way to reliably generate icons of hand poses, which would be better. I have no idea how to do this and spent some time trying to find a tool, but I might have to do something hacky and just make it work. I don't know, but I do know that I will need some signifiers for when players are making the correct pose, and a gesture hold time to make them earn it (and to justify a cool signifier).
 
 I created a Cardinal Artifact Manager script to have trackers for current left/right hand direction (cardinal) and state (correct/incorrect), and to use this information to spawn the artifacts. When all four artifacts are in place, the Surface updates its state (occupied: all artifacts in place, complete: candles turned on, incomplete: artifacts missing & candles off). The Artifact Manager *might* be managing things it shouldn't, but the system works for now. The Static Gesture Detectors interface with it to provide a stream of information about hand state.
 
@@ -77,13 +77,13 @@ To my surprise and thorough satisfaction, it works! It feels like actual magic! 
 
 ###### *\*planet-sized grin\**
 
-If I remove even one of the Artifacts, the candles turn back off. This setup is vicious. It's not perfect though, especially that last hand pose for Fire. The shape works surprisingly well (if the fingers are posed in the correct order), but the orientation has been difficult from the beginning. I was also wearing a black hoodie when I recorded that + I was wearing my watch, so my left hand's tracking is iffy. But wow, I'm inspiring myself! I just need to be careful to appreciate my creations from an experience standpoint if I want them to be enjoyable for others, not just the effort required to make them or the technology that makes them possible.
+If I remove even one of the Artifacts, the candles turn back off. This setup is vicious. It's not perfect though, especially that last hand pose for Fire. The shape works surprisingly well (if the fingers are posed in the correct order), but the orientation has been difficult from the beginning. I was also wearing a black hoodie when I recorded that + I was wearing my watch, so my left hand's tracking is iffy (my desk is black). But wow, I'm inspiring myself! I just need to be careful to appreciate my creations from an experience standpoint if I want them to be enjoyable for others, not just the effort required to make them or the technology that makes them possible.
 
 ## Daunted, not down
 
 I feel exceptionally empowered by these successes. I'm not going to reveal too much about this experience, but I am thrilled to share the technical details about making it happen.
 
-This has been terrifying. I am going to keep the main scene pretty enclosed since the art is not going to be my strong point, but I am constantly thinking about interactions, mechanics, and story. I am only just now grasping the full range of skills and work needed to make a complete experience, and, uh, hmm, so... uh...      uhhhhhh....
+I'm going to keep the main scene pretty enclosed since the art is not going to be my strong point, but I am constantly thinking about interactions, mechanics, and story. It's terrifying to go through this process. I am only just now grasping the full range of skills and work needed to make a complete experience, and, uh, hmm, so... uh...    uhhhhhh....
 
 No, I'm not quitting. It's more than I initially estimated, but I'm in this for the ends, and there are no means that are beneath me. I will do whatever it takes, but I'm going to be smart about it, of course. Thankfully there's the Unity Asset Store, a variety of 3D design software (with educational licenses ;)) and plenty of online resources. I also have wonderful friends with more capability to realize an artistic vision than I.
 
