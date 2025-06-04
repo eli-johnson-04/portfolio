@@ -40,6 +40,7 @@
 - [x] encapsulate space scene functionality
 - [x] fix one-click closing for expanding activity/portfolio entries in contentFeedEntry
     - [x] add visual indactor that the entry can be closed by clicking its title
+- [ ] Add a skills section to profile or portfolio
 
 ## Beautification
 - [x] add a big entry, probably pinned to the top of the portfolio entries (using my "out-of-bounds" numbering trick) about the website itself
