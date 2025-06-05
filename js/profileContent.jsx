@@ -1,3 +1,9 @@
+import BlackHoleIcon from "../public/images/black-hole-icon.svg?react";
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from 'rehype-raw'; // Handles raw HTML rendering
+import Tooltip from "rc-tooltip";
+import "rc-tooltip/assets/bootstrap.css";
+
 // Contains the structure and content for the Profile sphere!
 const ProfileContent = () => {
     return (
@@ -34,6 +40,46 @@ const ProfileContent = () => {
                                 <h4 className="text-lg text-gray-500">
                                     <a href="https://www.github.com/eli-johnson-04">eli-johnson-04</a>
                                 </h4>
+                                <br />
+                                <Tooltip
+                                    placement="right"
+                                    motion={{ motionName: 'rc-tooltip-zoom' }}
+                                    trigger={['click']}
+                                    styles={{
+                                        root: {
+                                            //opacity: 1,
+                                            transition: 'opacity 0.1s ease-in-out',
+                                            pointerEvents: 'none',
+                                        },
+                                        body: {
+                                            backgroundColor: 'white',
+                                            padding: 0,
+                                            border: 'none',
+                                            opacity: 1,
+                                        },
+                                    }}
+                                    overlay={
+                                        <div className="whitespace-pre-wrap text-center max-w-xs bg-white p-3 rounded-lg shadow-md text-gray-800 text-sm font-medium">
+                                            hello
+                                        </div>
+                                    }
+                                    mouseEnterDelay={0.2} // Delay before showing the tooltip
+                                    mouseLeaveDelay={0.1} // Delay before hiding the tooltip
+                                >
+                                    <span className="w-full flex justify-center">
+                                        <button 
+                                            className="w-full font-gentilis font-medium text-gray-400 text-xl px-4 pt-2 pb-1 rounded-lg shadow-xl bg-[#282f3c]
+                                                    hover:bg-[#404652] hover:text-neutral-50 hover:shadow-md hover:scale-105 transition-all duration-100 ease-in-out
+                                                    active:bg-[#404652] active:shadow-inner active:scale-95 select-none"
+                                        >
+                                            <span className="flex items-center justify-center">
+                                                <BlackHoleIcon className="w-5 h-5 stroke-current"/>
+                                                <h1 className="mx-2">Skills</h1>
+                                                <BlackHoleIcon className="w-5 h-5 stroke-current"/>
+                                            </span>
+                                        </button>
+                                    </span>
+                                </Tooltip>
                             </div>
                         </div>
                     </div>
