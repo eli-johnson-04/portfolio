@@ -75,6 +75,10 @@ export default class markdownLoader {
         return date;
     }
 
+    async getSkillsMarkdown() {
+        return await this.allContent.find(({ path }) => path.includes('Skills.md'))?.loader();;
+    }
+
     // Get all markdown content available in website folders. 
     importAllMarkdown() {
         const rawContent = import.meta.glob('/**/*.md', { query: '?raw', import: 'default' });

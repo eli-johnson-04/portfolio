@@ -1,11 +1,16 @@
+import React, { useState, useEffect } from "react";
 import BlackHoleIcon from "../public/images/black-hole-icon.svg?react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from 'rehype-raw'; // Handles raw HTML rendering
 import Tooltip from "rc-tooltip";
 import "rc-tooltip/assets/bootstrap.css";
+import MarkdownToHTMLComponentStyles from "./reactMarkdownComponents";
 
 // Contains the structure and content for the Profile sphere!
-const ProfileContent = () => {
+const ProfileContent = ({ markdown }) => {
+    // State to manage the text in the button
+    const [buttonText, setButtonText] = useState("Skills");
+
     return (
         <div className="my-4 mx-2 h-full overflow-y-none scrollbar-thin scrollbar-webkit">
             <div className="grid grid-cols-[1fr_2fr] grid-rows-[auto,auto] gap-4 p-4 bg-gray-900 place-items-center text-white rounded-lg shadow-lg">
@@ -41,40 +46,42 @@ const ProfileContent = () => {
                                     <a href="https://www.github.com/eli-johnson-04">eli-johnson-04</a>
                                 </h4>
                                 <br />
+
                                 <Tooltip
                                     placement="right"
                                     motion={{ motionName: 'rc-tooltip-zoom' }}
                                     trigger={['click']}
                                     styles={{
                                         root: {
-                                            //opacity: 1,
+                                            opacity: 1,
                                             transition: 'opacity 0.1s ease-in-out',
-                                            pointerEvents: 'none',
                                         },
                                         body: {
-                                            backgroundColor: 'white',
+                                            backgroundColor: 'transparent',
+                                            color: "#d9d9da",
                                             padding: 0,
                                             border: 'none',
                                             opacity: 1,
                                         },
                                     }}
                                     overlay={
-                                        <div className="whitespace-pre-wrap text-center max-w-xs bg-white p-3 rounded-lg shadow-md text-gray-800 text-sm font-medium">
-                                            hello
+                                        <div className="max-h-[60vh] bg-[#d9d9da] p-3 rounded-lg shadow-md text-white font-medium overflow-hidden flex flex-col">
+                                            <div className="flex-1 overflow-x-hidden overflow-y-auto scrollbar-thin scrollbar-webkit">
+                                                <ReactMarkdown className="text-white" components={MarkdownToHTMLComponentStyles} rehypePlugins={[rehypeRaw]}>{markdown}</ReactMarkdown>
+                                            </div>
                                         </div>
                                     }
-                                    mouseEnterDelay={0.2} // Delay before showing the tooltip
-                                    mouseLeaveDelay={0.1} // Delay before hiding the tooltip
                                 >
                                     <span className="w-full flex justify-center">
                                         <button 
                                             className="w-full font-gentilis font-medium text-gray-400 text-xl px-4 pt-2 pb-1 rounded-lg shadow-xl bg-[#282f3c]
                                                     hover:bg-[#404652] hover:text-neutral-50 hover:shadow-md hover:scale-105 transition-all duration-100 ease-in-out
-                                                    active:bg-[#404652] active:shadow-inner active:scale-95 select-none"
+                                                    active:bg-[#404652] active:shadow-inner active:scale-95"
+                                            onClick={() => setButtonText(buttonText === "Skills" ? "Close Skills" : "Skills")}
                                         >
                                             <span className="flex items-center justify-center">
                                                 <BlackHoleIcon className="w-5 h-5 stroke-current"/>
-                                                <h1 className="mx-2">Skills</h1>
+                                                <h1 className="mx-2">{buttonText}</h1>
                                                 <BlackHoleIcon className="w-5 h-5 stroke-current"/>
                                             </span>
                                         </button>
