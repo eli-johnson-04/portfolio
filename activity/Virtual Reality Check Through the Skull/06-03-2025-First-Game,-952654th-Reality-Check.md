@@ -2,6 +2,8 @@
 
 # Yikes &#128128;
 
+I'm starting a new topic to explore a captivating idea I had for an immersive, atmospheric, hand-tracked adventure into alternative spirituality. I want to keep myself accountable and show off the small successes to enjoy the journey regardless of its destination.
+
 I've got eight years of VR experience under my belt, so I'm not out of my depth or jumping into aphotic waters where I can't see because the light doesn't penetrate that deep.
 
 ...
