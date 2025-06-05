@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import rehypeRaw from 'rehype-raw'; // Handles raw HTML rendering
 import Tooltip from "rc-tooltip";
 import "rc-tooltip/assets/bootstrap.css";
-import MarkdownToHTMLComponentStyles from "./reactMarkdownComponents";
+import SkillsReactMarkdownComponents from "./SkillsReactMarkdownComponents.jsx";
 
 // Contains the structure and content for the Profile sphere!
 const ProfileContent = ({ markdown }) => {
@@ -28,7 +28,7 @@ const ProfileContent = ({ markdown }) => {
                     <h2 className="text-5xl font-bold">Elijah Johnson</h2>
                     <div className="text-xl text-white">
                         <h3>
-                            Undergraduate, Third Year | University of Florida
+                            Undergraduate, Fourth Year | University of Florida
                         </h3>
                         <h3>
                             B.S. in Computer Science, Astronomy Minor
@@ -69,7 +69,7 @@ const ProfileContent = ({ markdown }) => {
                                         bg-[#d9d9da] p-3 justify-center rounded-lg shadow-md text-white font-medium overflow-hidden flex flex-col"
                                         >
                                             <div className="flex-1 overflow-x-hidden overflow-y-auto scrollbar-thin scrollbar-webkit">
-                                                <ReactMarkdown className="text-white" components={MarkdownToHTMLComponentStyles} rehypePlugins={[rehypeRaw]}>{markdown}</ReactMarkdown>
+                                                <ReactMarkdown className="text-white" components={SkillsReactMarkdownComponents} rehypePlugins={[rehypeRaw]}>{markdown}</ReactMarkdown>
                                             </div>
                                         </div>
                                     }

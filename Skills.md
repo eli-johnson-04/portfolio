@@ -1,60 +1,60 @@
-## Soft Skills
+# Soft Skills
 
-Integrous\
-Zealous\
-Growth- & Goal-Oriented\
-Collaborative\
-Thorough\
-Adaptable\
-Versatile\
-Accountable\
-Proactive\
-Efficient\
-Self-Starter
+- Integrous
+- Zealous
+- Growth- & Goal-Oriented
+- Collaborative
+- Thorough
+- Adaptable
+- Versatile
+- Accountable
+- Proactive
+- Efficient
+- Self-Starter
 
-## Hard Skills
+# Hard Skills
 
-### *Languages:*
+## Languages:
 
 C | C++ | Python | JS | Regex
 
-### *Practices:*
+## Practices:
 
 Scrum | Software Engineering Life Cycle | UXD
 
-### *Web:*
+## Web:
 
 React | Tailwind
 
-### *VR & Development Platforms:*
+## VR & Development Platforms:
 
 Unity XR | Meta Quest Platform
 
-### *Other Technical:*
+## Other Technical:
 
-VR Design & Development\
-IT & Computer Hardware\
-Human-Centered Design\
-Responsive Design\
-Markdown\
-Data Processing & CSV\
-Constructing, Proving, & Testing Algorithms\
-Electron JS
+- VR Design & Development
+- IT & Computer Hardware
+- Human-Centered Design
+- Responsive Design
+- Markdown
+- Data Processing & CSV
+- Constructing, Proving, & Testing Algorithms
+- Electron JS
 
-## Professional Experience
+# Professional Experience
 
-### *Working Knowledge:*
+## Working Knowledge:
 
-Leading Projects\
-Consulting Among Teams\
-Working with International Clients
+- Leading Projects
+- Consulting Among Teams
+- Working with International Clients
 
-## Coursework
+# Coursework
 
-Data Structures & Algorithms\
-Assembly Prog. & Computer Org.\
-UXD\
-OSs\
-Algorithm Abstraction & Design\
-Prog. Language Concepts\
-Network Fundamentals
+- Data Structures & Algorithms
+- Assembly Prog. & Computer Org.
+- UXD
+- OSs
+- Algorithm Abstraction & Design
+- Prog. Language Concepts
+- Network Fundamentals
