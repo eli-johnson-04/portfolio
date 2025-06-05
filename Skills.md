@@ -14,39 +14,40 @@ Self-Starter
 
 ## Hard Skills
 
-### **Languages:**
+### *Languages:*
 
 C | C++ | Python | JS | Regex
 
-### **Web:**
-
-React | Tailwind
-
-### **Practices:**
+### *Practices:*
 
 Scrum | Software Engineering Life Cycle | UXD
 
-### **VR & Development Platforms:**
+### *Web:*
+
+React | Tailwind
+
+### *VR & Development Platforms:*
 
 Unity XR | Meta Quest Platform
 
-### **Other Technical:**
+### *Other Technical:*
 
 VR Design & Development\
 IT & Computer Hardware\
+Human-Centered Design\
 Responsive Design\
 Markdown\
 Data Processing & CSV\
+Constructing, Proving, & Testing Algorithms\
 Electron JS
 
 ## Professional Experience
 
-### **Working Knowledge:**
+### *Working Knowledge:*
 
 Leading Projects\
-Working with International Clients\
-Constructing, Proving, & Testing Algorithms\
-Human-Centered Design
+Consulting Among Teams\
+Working with International Clients
 
 ## Coursework
 
