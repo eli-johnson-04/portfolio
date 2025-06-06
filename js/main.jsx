@@ -49,7 +49,7 @@ async function setupScene(spaceWorld) {
     const spheres = [
         new Sphere({
             label: 'Activity',
-            hoverText: 'Recent Work and Projects',
+            hoverText: 'Latest: ' + mdLoader.getLastPostDate(ACTIVITY_PATH),
             content: convertedMarkdown[0],
             layer: SpaceScene.SCENE_LAYER,
             texturePath: 'textures/Pluto.webp',
@@ -63,7 +63,7 @@ async function setupScene(spaceWorld) {
         }),
         new Sphere({
             label: 'Profile',
-            hoverText: 'About Me',
+            hoverText: 'Learn About Me',
             content: <ProfileContent markdown={await mdLoader.getSkillsMarkdown()}/>,
             layer: SpaceScene.SCENE_LAYER,
             texturePath: 'textures/Eris.webp',
