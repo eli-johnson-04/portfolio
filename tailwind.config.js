@@ -14,6 +14,14 @@ module.exports = {
         '102': '1.02',
         '101': '1.01',
       },
+      keyframes :{
+        'spin-cw': { to: {transform: 'rotate(360deg)' }, },
+        'spin-ccw': { to: {transform: 'rotate(-360deg)' }, },
+      },
+      animation: {
+        'spin-cw': 'spin-cw 4s linear infinite',
+        'spin-ccw': 'spin-ccw 4s linear infinite',
+      },
     },
   },
   variants: {
