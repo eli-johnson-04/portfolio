@@ -64,7 +64,7 @@ async function setupScene(spaceWorld) {
         new Sphere({
             label: 'Profile',
             hoverText: 'About Me',
-            content: <ProfileContent />,
+            content: <ProfileContent markdown={await mdLoader.getSkillsMarkdown()}/>,
             layer: SpaceScene.SCENE_LAYER,
             texturePath: 'textures/Eris.webp',
         })
