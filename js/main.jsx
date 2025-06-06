@@ -142,14 +142,13 @@ async function handleInteraction(event) {
         //console.log("Interaction modality changed from " + lastEvent.type + " to " + event.type + ". Interactions in new modality may cause unexpected behavior. To use " + event.type + " interactions, please refresh the page.");
         return;
     }
+    if (event.target.localName == "canvas") event.preventDefault();
     switch (event.type) {
         case "pointerdown":
-            event.preventDefault();
             spaceWorld.onInteractorMove(event);
             spaceWorld.handleInteraction();
             break;
         case "touchstart":
-            if (event.target.localName == "canvas") event.preventDefault();
             spaceWorld.handleTouchInteraction(event);
             break;
     }
