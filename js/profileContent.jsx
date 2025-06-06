@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import BlackHoleIcon from "../public/images/black-hole-icon.svg?react";
+import BlackHoleIconCW from "../public/images/black-hole-icon-cw.svg?react";
+import BlackHoleIconCCW from "../public/images/black-hole-icon-ccw.svg?react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from 'rehype-raw'; // Handles raw HTML rendering
 import Tooltip from "rc-tooltip";
@@ -84,9 +85,9 @@ const ProfileContent = ({ markdown }) => {
                                             onClick={() => setButtonText(buttonText === "Skills" ? "Close Skills" : "Skills")}
                                         >
                                             <span className="flex items-center justify-center">
-                                                <BlackHoleIcon className="w-5 h-5 stroke-current"/>
+                                                <BlackHoleIconCW className="w-5 h-5 stroke-current animate-spin-cw"/>
                                                 <h1 className="mx-2">{buttonText}</h1>
-                                                <BlackHoleIcon className="w-5 h-5 stroke-current"/>
+                                                <BlackHoleIconCCW className="w-5 h-5 stroke-current animate-spin-ccw"/>
                                             </span>
                                         </button>
                                     </span>
