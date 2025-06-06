@@ -6,6 +6,8 @@ I saw my friend's website and she had a skills section in her profile, so I figu
 
 That'd be pretty funny.
 
+> **UPDATE:** I came back to my computer 4 hours after writing this and they spin now hehe
+
 Getting the tooltip set up with markdown wasn't too bad (except for getting the container alignment/overflow right and creating an entirely new set of react-markdown html stylings), but the little voices in my head told me I was going to combust and blow up the Earth if I didn't make it look decent on mobile, even if my website is really just *functional* on mobile. I didn't have to redesign it from the ground up or anything, but I *did* have to restructure a lot of stuff to make it so the silly tooltip would actually be visible anytime it was open. Lots and *lots* of dimensioning and fiddling and trial/error until it worked, but what can you do!
 
 There was another small detail with changing the text on the button hi button
