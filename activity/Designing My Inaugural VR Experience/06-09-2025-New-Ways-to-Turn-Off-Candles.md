@@ -31,7 +31,7 @@ It kinda sucked. First I tried wick colliders, but they were inside the candle c
 The code that makes this work is kinda ridiculous, at least the way I prevent the interactor from grabbing the candle. When `interactable` is selected it means that something is trying to pick up `interactable`. I have it set up so that `CheckPinch()` is called right after `interactable` is selected, hence the `SelectEnterEventArgs args` arguments.
 
 ![Silly Interactable Disable](/images/activity/06-09-2025/silly-interactable-disable.webp)
-###### Basically, when the Candle is picked up, check if we need to turn the Candle off, disable the thing that lets the Candle get picked up, turn the candle off, and re-enable trhe thing that makes the Candle able to be picked up... **after the candle is \*technically\* picked up**. I don't have words - I really wasn't expecting the disable and re-enable to work. I do love negative space programming though.
+###### Basically, when the Candle is picked up, check if we need to turn the Candle off, disable the thing that lets the Candle get picked up, turn the candle off, and re-enable the thing that makes the Candle able to be picked up... **after the candle is \*technically\* picked up**. I don't have words - I really wasn't expecting the disable and re-enable to work. I do love negative space programming though.
 
 So, yeah, quick progress update. Small update, big learning. I'm more familiar with XR interactor/interactable components and interfaces now. Taking what I can get.
 
