@@ -40,10 +40,6 @@ async function setupScene(spaceWorld) {
         mdLoader.getSphereMarkdown(ACTIVITY_PATH),
         mdLoader.getSphereMarkdown(PORTFOLIO_PATH)
     ]);
-    const folderLengths = [
-        mdLoader.countFilesInFolder(ACTIVITY_PATH),
-        mdLoader.countFilesInFolder(PORTFOLIO_PATH)
-    ];
 
     // Create spheres with the loaded content.
     const spheres = [
@@ -78,7 +74,13 @@ async function setupScene(spaceWorld) {
 
     spheres.forEach(sphere => spaceWorld.addSphere(sphere));
 
-    spaceWorld.initializeParticlesFromMarkdown(folderLengths, spheres);
+    spaceWorld.initializeParticlesFromMarkdown(
+        [
+            mdLoader.countFilesInFolder(ACTIVITY_PATH),
+            mdLoader.countFilesInFolder(PORTFOLIO_PATH)
+        ], 
+        spheres
+    );
 
     await hideLoadingScreen();
 }
@@ -158,6 +160,16 @@ async function handleInteraction(event) {
 // Use pointer events for desktop and touch events for mobile
 sceneContainer.addEventListener('pointerdown', handleInteraction, { passive: false });
 sceneContainer.addEventListener('touchstart', handleInteraction, { passive: false });
+
+// function delay(ms) {
+//     return new Promise(resolve => setTimeout(resolve, ms));
+// }
+
+// async function startTextHideTimer(event) {
+//     sceneContainer.showTextSpheres();
+//     await delay(10000);
+//     sceneContainer.hideTextSpheres();
+// }
 
 // Start rendering the scene immediately.
 spaceWorld.render();

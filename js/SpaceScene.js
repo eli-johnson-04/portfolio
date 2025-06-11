@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import * as CANNON from 'cannon-es';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import Sphere from './sphere.jsx';
 import SkyDome from './SkyDome.js';
@@ -34,10 +33,6 @@ export default class SpaceScene {
         this.renderer.shadowMap.enabled = true; 
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Use soft shadows
         this.container.appendChild(this.renderer.domElement);
-
-        // World setup.
-        this.world = new CANNON.World();
-        this.world.gravity.set(0, 0, 0);
 
         // Spheres container.
         this.spheres = [];
@@ -102,7 +97,7 @@ export default class SpaceScene {
 
     addSphere(sphere) {
         this.spheres.push(sphere);
-        sphere.addToView(this.scene, this.world);
+        this.scene.add(sphere.getMesh());
         //this.addBoundary(sphere);
     }
 
@@ -211,14 +206,7 @@ export default class SpaceScene {
     render() {
         // Make the label and hover text meshes look at the camera. 
         const cameraPos = this.camera.getWorldPosition(new THREE.Vector3());
-        this.spheres.forEach(sphere => {
-            sphere.updateHover(performance.now() / 1000);
-
-            if (sphere._labelMesh && sphere._hoverTextMesh) {
-                sphere._labelMesh.lookAt(cameraPos);
-                sphere._hoverTextMesh.lookAt(cameraPos);
-            }
-        });
+        this.spheres.forEach(s => s.update(cameraPos));
 
         this.updateParticles();
         this.controls.update();

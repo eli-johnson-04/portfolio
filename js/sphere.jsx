@@ -2,26 +2,12 @@ import * as THREE from 'three';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils.js';
-import * as CANNON from 'cannon-es';
 import { gsap } from 'gsap';
 import CustomEase from 'gsap/CustomEase';
 import { createRoot } from 'react-dom/client';
 import Modal from 'react-modal';
 import SphereModal from './sphereModal.jsx';
 import { createNoise3D } from 'simplex-noise';
-
-const DEFAULT_SPHERE_RADIUS = 1.5;
-const DEFAULT_SPHERE_SEGMENTS = 32;
-const DEFAULT_SPHERE_COLOR = 0xe8e8f0;
-const DEFAULT_SPHERE_MASS = 1;
-//const TEXT_COLOR = 0x97979c;
-const TEXT_COLOR = 0xffffff;
-const TEXT_SIZE = 0.3;
-const RADIUS_OFFSET = 0.01;
-const RADIAL_TEXT_OFFSET = 0.05;
-
-const DEFAULT_SPHERE_OPACITY = 0.6;
-const TEXT_LAYER = 2;
 
 // Create the custom swell ease. 
 gsap.registerPlugin(CustomEase);
@@ -34,16 +20,58 @@ Modal.setAppElement('#root');
 // Initialize SimplexNoise instance.
 const simplex3D = createNoise3D(Math.random);
 
+class SphereState {
+    static #IDLE = 0;
+    static #HOVERED = 1;
+    static #SWOLLEN = 2;
+    static #CLICKED = 3;
+    static #EXPLODED = 4;
+    
+    static get IDLE() { return this.#IDLE; }
+    static get HOVERED() { return this.#HOVERED; }
+    static get SWOLLEN() { return this.#SWOLLEN; }
+    static get CLICKED() { return this.#CLICKED; }
+    static get EXPLODED() { return this.#EXPLODED; }
+}
+
 export default class Sphere {
-    // Static members to improve performance. 
-    static #font = null;
+    static #FONT = null;
+    static #DEFAULT_RADIUS = 1.5;
+    static #DEFAULT_SEGMENTS = 32;
+    static #DEFAULT_SPHERE_COLOR = 0xe8e8f0;
+    //static #TEXT_COLOR = 0x97979c;
+    static #TEXT_COLOR = 0xffffff;
+    static #TEXT_SIZE = 0.3;
+    static #TEXT_LAYER = 2;
+    static #RADIUS_OFFSET = 0.01;
+    static #RADIAL_TEXT_OFFSET = 0.05;
+    static #DEFAULT_MESH_OPACITY = 0.6;
+
+    // Pure basics of a sphere.
+    _content;
+    _label;
+    _hoverText;
+    _state;
+
+    // THREE.JS attributes
+    _geometry;
+    _material;
+    _mesh;
+    _spherePosition; // The functional position of the sphere, as opposed to visual
+    _labelSphere; // An invisible sphere holding the label text, turns to face the user
+    _hoverTextSphere; // An invisible sphere holding the hover text, turns to face the user
+
+    // Sphere idling
+    _noiseOffsets;
+    _noiseScale;
+    _noiseSpeed;
 
     constructor({
             label = 'Default Sphere',
             hoverText = 'Default Hover Text', 
-            radius = DEFAULT_SPHERE_RADIUS, 
-            segments = DEFAULT_SPHERE_SEGMENTS, 
-            color = DEFAULT_SPHERE_COLOR, 
+            radius = Sphere.#DEFAULT_RADIUS, 
+            segments = Sphere.#DEFAULT_SEGMENTS, 
+            color = Sphere.#DEFAULT_SPHERE_COLOR, 
             wireframe = false ,
             content = null,
             layer = null,
@@ -61,7 +89,7 @@ export default class Sphere {
             color: color, 
             wireframe: wireframe, 
             transparent: false,
-            opacity: DEFAULT_SPHERE_OPACITY,
+            opacity: Sphere.#DEFAULT_MESH_OPACITY,
             roughness: 0.35, 
             metalness: 0.1,
             clearcoat: 0.3,
@@ -75,38 +103,40 @@ export default class Sphere {
 
         // Store the current position of the sphere. 
         this._mesh.position.set(0, 0, 0);
-        this._position = this._mesh.position;      
+        this._spherePosition = this._mesh.position;      
 
-        // ----------------------FONT LOADING----------------------------
+        this.#setupTextMeshes();
+        this.#setupRandomMovement();
+        this.#setupModal();
+    }
+
+    #setupTextMeshes() {
         // Only load the font if it has not been loaded yet. 
-        if (!Sphere.#font) {
+        if (!Sphere.#FONT) {
             const loader = new FontLoader();
             loader.load('./fonts/gentilis_regular.typeface.json', (font) => {
-                Sphere.#font = font;
+                Sphere.#FONT = font;
                 this.onFontLoaded(font);
             });
         }
-        else this.onFontLoaded(Sphere.#font);
+        else this.onFontLoaded(Sphere.#FONT);
+    }
 
-        // ---------------------CANNON.JS OBJECT SETUP---------------------
-        this._cannonSphere = new CANNON.Sphere(radius);
-        this._cannonBody = new CANNON.Body({ mass: DEFAULT_SPHERE_MASS, shape: this._cannonSphere });
-        this._cannonBody.type = CANNON.Body.KINEMATIC;
-
+    #setupRandomMovement() {
         // Random offsets for noise generation. This will be used in the sphere's hovering effect.
         this._noiseOffsets = {
             x: Math.random() * 1000,
             y: Math.random() * 1000,
             z: Math.random() * 1000
         };
-
         this._noiseScale = 0.002; // Controls the intensity of sphere movement
         this._noiseSpeed = 0.2; // Controls the speed of sphere movement
+    }
 
+    #setupModal() {
         // Track hover state.
         this._isHovered = false;
 
-        // ---------------------MODAL SETUP---------------------
         // I hate JavaScript. 
         this._modal = () => (
             <SphereModal
@@ -147,12 +177,12 @@ export default class Sphere {
         
         // Construct the new text to be drawn onto the sphere.
         const labelTextMaterial = new THREE.MeshStandardMaterial({ 
-            color: TEXT_COLOR, 
+            color: Sphere.#TEXT_COLOR, 
             transparent: true, 
             opacity: 1 
         });
         const hoverTextMaterial = new THREE.MeshStandardMaterial({ 
-            color: TEXT_COLOR, 
+            color: Sphere.#TEXT_COLOR, 
             transparent: true, 
             opacity: 0 
         });
@@ -163,14 +193,13 @@ export default class Sphere {
 
         // Enable shadow casting for text meshes.
         labelTextMesh.castShadow = true;
-        //hoverTextMesh.castShadow = true; // start with this off
 
         // Set position to prevent clipping.
-        labelTextMesh.position.set(0, 0, this._geometry.parameters.radius + (2 * RADIUS_OFFSET) + RADIAL_TEXT_OFFSET); // 2x to prevent clipping between title and text
-        hoverTextMesh.position.set(0, 0, this._geometry.parameters.radius + RADIUS_OFFSET + RADIAL_TEXT_OFFSET);
+        labelTextMesh.position.set(0, 0, this._geometry.parameters.radius + (2 * Sphere.#RADIUS_OFFSET) + Sphere.#RADIAL_TEXT_OFFSET); // 2x to prevent clipping between title and text
+        hoverTextMesh.position.set(0, 0, this._geometry.parameters.radius + Sphere.#RADIUS_OFFSET + Sphere.#RADIAL_TEXT_OFFSET);
 
         // Make a new, completely invisible sphere to enable effective rotation of the text. 
-        this._labelMesh = new THREE.Mesh(
+        this._labelSphere = new THREE.Mesh(
             new THREE.SphereGeometry(this._geometry.parameters.radius, 4),
             new THREE.MeshBasicMaterial({
                 transparent: true,
@@ -179,7 +208,7 @@ export default class Sphere {
                 
             })
         );
-        this._hoverTextMesh = new THREE.Mesh(
+        this._hoverTextSphere = new THREE.Mesh(
             new THREE.SphereGeometry(this._geometry.parameters.radius, 4),
             new THREE.MeshBasicMaterial({
                 transparent: true,
@@ -189,17 +218,17 @@ export default class Sphere {
         );
 
         // Add the label and hovertext meshes to this sphere. 
-        this._labelMesh.add(labelTextMesh);
-        this._hoverTextMesh.add(hoverTextMesh);
+        this._labelSphere.add(labelTextMesh);
+        this._hoverTextSphere.add(hoverTextMesh);
 
-        this._labelMesh.layers.set(TEXT_LAYER);
-        this._hoverTextMesh.layers.set(TEXT_LAYER);
+        this._labelSphere.layers.set(Sphere.#TEXT_LAYER);
+        this._hoverTextSphere.layers.set(Sphere.#TEXT_LAYER);
 
-        this._labelMesh.name = "labelMeshContainerMesh";
-        this._hoverTextMesh.name = "hoverTextMeshContainerMesh";
+        this._labelSphere.name = "labelMeshContainerMesh";
+        this._hoverTextSphere.name = "hoverTextMeshContainerMesh";
 
-        this._mesh.add(this._labelMesh);
-        this._mesh.add(this._hoverTextMesh);
+        this._mesh.add(this._labelSphere);
+        this._mesh.add(this._hoverTextSphere);
     }
     
     // Helper function to split the text into lines based on the max width.
@@ -213,7 +242,7 @@ export default class Sphere {
             const wordGeometry = new TextGeometry(word + ' ', {
                 font: font,
                 curveSegments: 6,
-                size: TEXT_SIZE,
+                size: Sphere.#TEXT_SIZE,
                 depth: 0.01,
             });
 
@@ -246,7 +275,7 @@ export default class Sphere {
             const lineGeometry = new TextGeometry(line, {
                 font: font,
                 curveSegments: 6,
-                size: TEXT_SIZE,
+                size: Sphere.#TEXT_SIZE,
                 depth: 0.01,
             });
 
@@ -303,7 +332,7 @@ export default class Sphere {
         if (height > 0.8) { text.translate(0, height * 0.4, 0); } // i hate these values i had to test for them manually smh
 
         // Bend the text geometry to wrap around the sphere
-        const radiusOffset = this._geometry.parameters.radius + RADIUS_OFFSET;
+        const radiusOffset = this._geometry.parameters.radius + Sphere.#RADIUS_OFFSET;
         const positionAttribute = text.attributes.position;
         const vertex = new THREE.Vector3();
 
@@ -329,7 +358,7 @@ export default class Sphere {
     // Set the position of the sphere and modify its "center" or "actual" position.
     setPosition(x = 0, y = 0, z = 0) {
         this._mesh.position.set(x, y, z); // may need to tinker with z-pos when content cards are behind circles
-        this._position = this._mesh.position;
+        this._spherePosition = this._mesh.position;
     }
 
     createBoundaryVisualization() {
@@ -353,7 +382,7 @@ export default class Sphere {
         });
         
         const boundaryMesh = new THREE.Mesh(boundaryGeometry, boundaryMaterial);
-        boundaryMesh.position.copy(this._position);
+        boundaryMesh.position.copy(this._spherePosition);
         
         return boundaryMesh;
     }
@@ -366,30 +395,36 @@ export default class Sphere {
 
         // Calculate the new position relative to the initial position.
         const targetPosition = new THREE.Vector3(
-            this._position.x + newX,
-            this._position.y + newY,
-            this._position.z + newZ
+            this._spherePosition.x + newX,
+            this._spherePosition.y + newY,
+            this._spherePosition.z + newZ
         );
 
         // Calculate the distance from the initial position.
-        const distanceFromCenter = targetPosition.distanceTo(this._position);
+        const distanceFromCenter = targetPosition.distanceTo(this._spherePosition);
 
         // Clamp the position to the boundary sphere's radius.
         const boundaryRadius = this._geometry.parameters.radius;
         if (distanceFromCenter > boundaryRadius) {
             // Scale the position back to the boundary sphere's surface.
-            targetPosition.sub(this._position).setLength(boundaryRadius).add(this._position);
+            targetPosition.sub(this._spherePosition).setLength(boundaryRadius).add(this._spherePosition);
         }
 
         // Apply the clamped position to the sphere.
         this._mesh.position.copy(targetPosition);
     }
-
-    // Add the sphere to the Three scene and the Cannon world.
-    addToView(scene, world) {
-        scene.add(this._mesh);
-        world.addBody(this._cannonBody);
+    
+    turnTextTo(position) {
+        this._labelSphere?.lookAt(position);
+        this._hoverTextSphere?.lookAt(position);
     }
+
+    update(cameraPos) {
+        this.updateHover(performance.now() / 1000);
+        this.turnTextTo(cameraPos);
+    }
+
+    getMesh() { return this._mesh; }
 
     // Swell animation for size and opacity.
     swell() {
@@ -412,27 +447,27 @@ export default class Sphere {
         });
 
         // Hide title on swell.
-        gsap.to(this._labelMesh.children[0].material, {
+        gsap.to(this._labelSphere.children[0].material, {
             opacity: 0,
             duration: 0.19,
             ease: "swell",
             overwrite: "auto",
             onUpdate: () => {
-                this._labelMesh.children[0].castShadow = true; // Ensure shadow is still active during fade-out
+                this._labelSphere.children[0].castShadow = true; // Ensure shadow is still active during fade-out
             },
             onComplete: () => {
-                this._labelMesh.children[0].castShadow = false; // Disable shadow after fade-out
+                this._labelSphere.children[0].castShadow = false; // Disable shadow after fade-out
             }
         });
 
         // Show text on swell.
-        gsap.to(this._hoverTextMesh.children[0].material, {
+        gsap.to(this._hoverTextSphere.children[0].material, {
             opacity: 1,
             duration: 0.35,
             ease: "swell",
             overwrite: "auto",
             onStart: () => {
-                this._hoverTextMesh.children[0].castShadow = true; // Enable shadow during fade-in
+                this._hoverTextSphere.children[0].castShadow = true; // Enable shadow during fade-in
             }
         });
     }
@@ -451,34 +486,34 @@ export default class Sphere {
 
         // Make sphere less opaque on shrink.
         gsap.to(this._mesh.material, {
-            opacity: DEFAULT_SPHERE_OPACITY,
+            opacity: Sphere.#DEFAULT_MESH_OPACITY,
             duration: 0.3,
             ease: "bounce.out",
             overwrite: "auto"
         });
 
         // Show title on shrink.
-        gsap.to(this._labelMesh.children[0].material, {
+        gsap.to(this._labelSphere.children[0].material, {
             opacity: 1,
             duration: 0.3,
             ease: "bounce.out",
             overwrite: "auto",
             onStart: () => {
-                this._labelMesh.children[0].castShadow = true; // Enable shadow during fade-in
+                this._labelSphere.children[0].castShadow = true; // Enable shadow during fade-in
             }
         });
 
         // Hide text on shrink
-        gsap.to(this._hoverTextMesh.children[0].material, {
+        gsap.to(this._hoverTextSphere.children[0].material, {
             opacity: 0,
             duration: 0.12,
             ease: "bounce.out",
             overwrite: "auto",
             onUpdate: () => {
-                this._hoverTextMesh.children[0].castShadow = true; // Ensure shadow is still active during fade-out
+                this._hoverTextSphere.children[0].castShadow = true; // Ensure shadow is still active during fade-out
             },
             onComplete: () => {
-                this._hoverTextMesh.children[0].castShadow = false; // Disable shadow after fade-out
+                this._hoverTextSphere.children[0].castShadow = false; // Disable shadow after fade-out
             }
         });
     }
@@ -504,7 +539,7 @@ export default class Sphere {
         });
 
         // Hide the hover text.
-        gsap.to(this._hoverTextMesh.children[0].material, {
+        gsap.to(this._hoverTextSphere.children[0].material, {
             opacity: 0,
             duration: 0.1,
             ease: "bounce.out",
@@ -515,7 +550,7 @@ export default class Sphere {
     // Handle hover behavior. 
     attemptHover(mouseHover) {
         // Only proceed if the modal is closed and the sphere is fully initialized.
-        if (!(this._labelMesh && this._hoverTextMesh && this._mesh)) return;
+        if (!(this._labelSphere && this._hoverTextSphere && this._mesh)) return;
         if (!this._isModalOpen) {
 
             // If mouse is hovering and sphere is not hovered, hover sphere and swell.
@@ -530,20 +565,11 @@ export default class Sphere {
             }
         }
     }
-
-    // Handle touch hover behavior.
-    // handleTouchHover() {
-    //     // Trigger the hover state for touch devices
-    //     if (!this._isModalOpen) {
-    //         this.swell();
-    //         this._isHovered = true;
-    //     }
-    // }
     
     // Handle click behavior.
     handleOpen(cameraDistance) {
         // Only proceed if the modal is closed and the sphere is fully initialized.
-        if (!(this._labelMesh && this._hoverTextMesh && this._mesh)) return;
+        if (!(this._labelSphere && this._hoverTextSphere && this._mesh)) return;
         if (!this._isModalOpen && this._isHovered) { 
             this.explode(cameraDistance);
             this.openModal(); 
