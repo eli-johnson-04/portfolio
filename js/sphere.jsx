@@ -8,7 +8,6 @@ import { createRoot } from 'react-dom/client';
 import Modal from 'react-modal';
 import SphereModal from './sphereModal.jsx';
 import { createNoise3D } from 'simplex-noise';
-import getCameraPosition from './SpaceScene.js'
 
 // Create the custom swell ease. 
 gsap.registerPlugin(CustomEase);
@@ -120,13 +119,20 @@ export default class Sphere {
     }
     
     // ----------Setters----------
-    shrink() { this._state = SphereState.SHRINK; }
-    hover() { this._state = SphereState.HOVERED; }
-    click() { this._state = SphereState.CLICKED; }
+    setShrink() { 
+        if (this._state == SphereState.IDLE) return;
+        this._state = SphereState.SHRINK; 
+    }
+    setHover() { 
+        if (this._state == SphereState.SWOLLEN || this._state == SphereState.EXPLODED) return;
+        this._state = SphereState.HOVERED; 
+    }
+    setClick() { this._state = SphereState.CLICKED; }
     
     // ----------Getters----------
     getMesh() { return this._mesh; }
-    isModalOpen() { return this._state == SphereState.EXPLODED; }
+    isHovered() { return this._state == SphereState.HOVERED || this._state == SphereState.SWOLLEN; }
+    isModalOpen() { return this._state >= SphereState.CLICKED; }
     getInstance() { return this._mesh.userData.instance; }
     #isInitialized() { return this._labelSphere && this._hoverTextSphere && this._mesh; }
 
@@ -442,28 +448,25 @@ export default class Sphere {
 
     #_prevState = SphereState.IDLE;
     update(cameraPos) {
-        if (this._state != this.#_prevState) console.log(this._label, " state: ", this._state);
+        //console.log(this._label, " prev:" , this.#_prevState, " cur: ", this._state);
         this.#updateHover(performance.now() / 1000);
         this.#turnTextTo(cameraPos);
         switch (this._state) {
             case SphereState.IDLE:
                 break;
             case SphereState.SHRINK:
-                if (this.#_prevState == SphereState.HOVERED || this.#_prevState == SphereState.EXPLODED)
-                    this.handleShrink();
-                // this.#animateShrink();
-                // this._state = SphereState.IDLE;
+                if (this.#_prevState != SphereState.SHRINK && this._state != SphereState.IDLE)
+                    this.shrink();
                 break;
             case SphereState.HOVERED:
-                this.handleHover();
-                // this.#animateSwell();
-                // this._state = SphereState.SWOLLEN;
+                if (this.#_prevState != SphereState.HOVERED) 
+                    this.hover();
                 break;
             case SphereState.SWOLLEN: // TODO: 
                 break;
             case SphereState.CLICKED:
-                this.explodeToDistance(this._mesh.position.distanceTo(cameraPos));
-                // this.#animateExplode();
+                if (this.#_prevState != SphereState.CLICKED)
+                    this.explodeToDistance(this._mesh.position.distanceTo(cameraPos));
                 break;
             case SphereState.EXPLODED: // TODO: 
                 break;
@@ -595,40 +598,23 @@ export default class Sphere {
     }
 
     // ----------User Interaction Handling----------
-    handleHover() {
-        // Only proceed if the modal is closed and the sphere is fully initialized.
+    hover() {
         if (!this.#isInitialized()) return;
-        this.#animateSwell();
-        this._state = SphereState.SWOLLEN;
+        if (this._state != SphereState.SWOLLEN) {
+            this.#animateSwell();
+            this._state = SphereState.SWOLLEN;
+        }
     }
 
-    handleShrink() {
+    shrink() {
         if (!this.#isInitialized()) return;
-        this.#animateShrink();
-        this._state = SphereState.IDLE;
+        if (this._state != SphereState.IDLE) {
+            this.#animateShrink();
+            this._state = SphereState.IDLE;
+        }
     }
-    // Handle hover behavior. 
-    // attemptHover(mouseHover) {
-    //     // Only proceed if the modal is closed and the sphere is fully initialized.
-    //     if (!this.#isInitialized()) return;
-    //     if (this._state != SphereState.EXPLODED) {
-    //         // If mouse is hovering and sphere is not hovered, hover sphere and swell.
-    //         if (mouseHover && !this._isHovered) {
-    //             this.#animateSwell();
-    //             this._state = SphereState.SWOLLEN;
-    //             this._isHovered = true;
-
-    //         } else if (!mouseHover && this._isHovered) {
-    //             // If mouse is not hovering and sphere is hovered, sphere is no longer hovered and should shrink. 
-    //             this.#animateShrink();
-    //             this._state = SphereState.IDLE;
-    //         }
-    //     }
-    // }
     
-    // Handle click behavior.
     explodeToDistance(cameraDistance) {
-        // Only proceed if the modal is closed and the sphere is fully initialized.
         if (!this.#isInitialized()) return;
         if (this._state != SphereState.EXPLODED) { 
             this.#animateExplode(cameraDistance);
@@ -639,7 +625,6 @@ export default class Sphere {
 
     // Handle modal opens and closes. 
     openModal() {
-
         this.renderModal();
     }
 

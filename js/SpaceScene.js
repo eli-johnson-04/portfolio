@@ -142,24 +142,36 @@ export default class SpaceScene {
                         modalOpen = true;
                         return;
                     }
-                })
-
+                });
                 // Only enable hovering if no modal is open. 
-                if (!modalOpen) { 
-                    this.hoveredMesh = obj;
-                    obj.userData.instance.hover(); 
+                console.log("modalOpen: ", modalOpen);
+                if (!modalOpen) 
+                {
+                    this.spheres.forEach(s => {
+                        if (s.getInstance() === obj.userData?.instance) {
+                                this.hoveredMesh = s.getMesh();
+                                s.setHover();
+                        } else {
+                            s.setShrink();
+                        }
+                    });
                 }
 
-                // Cancel the hover of any other hovered spheres.
-                this.spheres.forEach(s => {
-                    if (s.getInstance() !== obj.userData.instance)
-                        s.shrink();
-                });
+                // if (!modalOpen) { 
+                //     this.hoveredMesh = obj;
+                //     obj.userData.instance.setHover(); 
+                // }
+
+                // // Cancel the hover of any other hovered spheres.
+                // this.spheres.forEach(s => {
+                //     if (s.getInstance() !== obj.userData.instance)
+                //         s.setShrink();
+                // });
             }
         } else {
             // If not hovered, tell the spheres.
             this.hoveredMesh = null;
-            this.spheres.forEach(s => s.shrink());
+            this.spheres.forEach(s => { if (!s.isModalOpen()) s.setShrink(); } );
         }
     }
 
@@ -177,7 +189,7 @@ export default class SpaceScene {
             while (obj.parent && !(obj.parent instanceof THREE.Scene)) obj = obj.parent;
 
             // Check if a sphere was clicked and handle the click.
-            if (Sphere.isSphere(obj)) obj.userData.instance.click();
+            if (Sphere.isSphere(obj)) obj.userData.instance.setClick();
         }
     }
 
