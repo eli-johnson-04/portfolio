@@ -161,6 +161,9 @@ async function handleInteraction(event) {
 sceneContainer.addEventListener('pointerdown', handleInteraction, { passive: false });
 sceneContainer.addEventListener('touchstart', handleInteraction, { passive: false });
 
+// TODO: Add controller to show/hide the popup with mousemove
+
+
 // function delay(ms) {
 //     return new Promise(resolve => setTimeout(resolve, ms));
 // }

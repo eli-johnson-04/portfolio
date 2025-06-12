@@ -8,6 +8,7 @@ import ParticleSystem from './ParticleSystem.js';
 export default class SpaceScene {
     static SCENE_LAYER = 0;
     static SKYDOME_LAYER = 1;
+    static #WAIT_TIME_TO_HIDE_SPHERES = 15000;
 
     constructor(container) {
         this.container = container;
@@ -116,6 +117,8 @@ export default class SpaceScene {
     }
 
     onInteractorMove(event) {
+        this.#lastMouse = performance.now();
+        this.spheres.forEach(s => s.showText());
         const cX = event.touches ? event.touches[0].clientX : event.clientX;
         const cY = event.touches ? event.touches[0].clientY : event.clientY;
         this.mouse.x = (cX / this.container.clientWidth) * 2 - 1;
@@ -192,7 +195,12 @@ export default class SpaceScene {
             this.handleInteraction();
     }
 
+    #lastMouse = performance.now();
     render() {
+        if (performance.now() - this.#lastMouse > SpaceScene.#WAIT_TIME_TO_HIDE_SPHERES) {
+            if (!this.isAModalOpen()) this.spheres.forEach(s => s.hideText());
+        }
+
         // Make the label and hover text meshes look at the camera. 
         const cameraPos = this.camera.getWorldPosition(new THREE.Vector3());
         this.spheres.forEach(s => s.update(cameraPos));

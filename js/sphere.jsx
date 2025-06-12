@@ -609,6 +609,56 @@ export default class Sphere {
         this.#shrink();
     }
 
+    #_isTextVisible = true;
+    hideText() {
+        if (!this.#_isTextVisible || this.#_state != SphereState.IDLE) return;
+        this.#_isTextVisible = false;
+        // Hide label.
+        gsap.to(this.#_labelSphere.children[0].material, {
+            opacity: 0,
+            duration: 0.3,
+            ease: "swell",
+            overwrite: "auto",
+            onUpdate: () => {
+                this.#_labelSphere.children[0].castShadow = true; // Ensure shadow is still active during fade-out
+            },
+            onComplete: () => {
+                this.#_labelSphere.children[0].castShadow = false; // Disable shadow after fade-out
+            }
+        });
+        // Hide text.
+        gsap.to(this.#_hoverTextSphere.children[0].material, {
+            opacity: 0,
+            duration: 0.3,
+            ease: "swell",
+            overwrite: "auto",
+            onUpdate: () => {
+                //this.#_hoverTextSphere.children[0].castShadow = true; // Ensure shadow is still active during fade-out
+            },
+            onComplete: () => {
+                this.#_hoverTextSphere.children[0].castShadow = false; // Disable shadow after fade-out
+            }
+        });
+    }
+
+    showText() {
+        if (this.#_isTextVisible || this.#_state != SphereState.IDLE) return;
+        this.#_isTextVisible = true;
+        // Show label.
+        gsap.to(this.#_labelSphere.children[0].material, {
+            opacity: 1,
+            duration: 0.3,
+            ease: "swell",
+            overwrite: "auto",
+            onUpdate: () => {
+                this.#_labelSphere.children[0].castShadow = true; // Ensure shadow is still active during fade-out
+            },
+            onComplete: () => {
+                this.#_labelSphere.children[0].castShadow = true; // Disable shadow after fade-out
+            }
+        });
+    }
+
     // Render the modal onto the screen. this is grody thank u react :3
     #renderModal() {
         this._root.render(<this._modal />);
