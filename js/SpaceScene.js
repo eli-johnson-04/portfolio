@@ -73,7 +73,7 @@ export default class SpaceScene {
         this.particleSystem = new ParticleSystem(this.scene);
 
         // Track the last hovered sphere.
-        this.hoveredSphere = null;
+        this.hoveredMesh = null;
 
         // Event listeners.
         window.addEventListener('resize', this.onWindowResize.bind(this), false);
@@ -124,18 +124,17 @@ export default class SpaceScene {
     }
 
     checkHover() {
-        // TODO: REPLACE WITH NEW SPHERE STATE INTERFACE
         if (this.spheres.length === 0) return;
-        // Check if the mouse is hovering over a sphere. If so, call its handlePointerHover.
+        // Check if the mouse is hovering over a sphere.
         this.raycaster.layers.set(SpaceScene.SCENE_LAYER)
         this.raycaster.setFromCamera(this.mouse, this.camera);
         const intersects = this.raycaster.intersectObjects(this.scene.children, true);
 
         // If an object is detected to be hovered over
         if (intersects.length > 0) {
-            const sphere = intersects[0].object;
+            const obj = intersects[0].object;
 
-            if (Sphere.isSphere(sphere)) {
+            if (Sphere.isSphere(obj)) {
                 // If there is a modal open, no spheres should be hoverable.
                 let modalOpen = false;
                 this.spheres.forEach(s => {
@@ -147,20 +146,20 @@ export default class SpaceScene {
 
                 // Only enable hovering if no modal is open. 
                 if (!modalOpen) { 
-                    this.hoveredSphere = sphere;
-                    sphere.userData.instance.attemptHover(true); 
+                    this.hoveredMesh = obj;
+                    obj.userData.instance.hover(); 
                 }
 
                 // Cancel the hover of any other hovered spheres.
                 this.spheres.forEach(s => {
-                    if (s.getInstance() !== sphere.userData.instance)
-                        s.attemptHover(false);
+                    if (s.getInstance() !== obj.userData.instance)
+                        s.shrink();
                 });
             }
         } else {
             // If not hovered, tell the spheres.
-            this.hoveredSphere = null;
-            this.spheres.forEach(s => s.attemptHover(false));
+            this.hoveredMesh = null;
+            this.spheres.forEach(s => s.shrink());
         }
     }
 
@@ -178,29 +177,18 @@ export default class SpaceScene {
             while (obj.parent && !(obj.parent instanceof THREE.Scene)) obj = obj.parent;
 
             // Check if a sphere was clicked and handle the click.
-            if (Sphere.isSphere(obj)) {
-                // The sphere's scale will be set to the distance between the camera and the sphere.
-                const sphere = obj.userData.instance;
-                const cameraPos = new THREE.Vector3();
-                this.camera.getWorldPosition(cameraPos);
-
-                const spherePos = new THREE.Vector3();
-                sphere.getMesh().getWorldPosition(spherePos);
-
-                const cameraDist = cameraPos.distanceTo(spherePos);
-                sphere.handleOpen(cameraDist);
-            }
+            if (Sphere.isSphere(obj)) obj.userData.instance.click();
         }
     }
 
     // Handle the case that a sphere was tapped, not clicked with a mouse. The behavior is basically the same but who cares.
     handleTouchInteraction(event) {
         // Set the mouse position and handle the hover check. 
-        const lastHovered = this.hoveredSphere ? this.hoveredSphere : null;
+        const lastHovered = this.hoveredMesh ? this.hoveredMesh : null;
         this.onInteractorMove(event);
 
         // If the same sphere is tapped twice, consider it clicked. 
-        if (this.hoveredSphere && this.hoveredSphere === lastHovered)
+        if (this.hoveredMesh && this.hoveredMesh === lastHovered)
             this.handleInteraction();
     }
 
