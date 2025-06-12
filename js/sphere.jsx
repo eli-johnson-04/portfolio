@@ -60,13 +60,13 @@ export default class Sphere {
     #_material;
     #_mesh;
     #_spherePosition; // The functional position of the sphere, as opposed to visual
-    _labelSphere; // An invisible sphere holding the label text, turns to face the user
-    _hoverTextSphere; // An invisible sphere holding the hover text, turns to face the user
+    #_labelSphere; // An invisible sphere holding the label text, turns to face the user
+    #_hoverTextSphere; // An invisible sphere holding the hover text, turns to face the user
 
-    // Sphere idling
-    _noiseOffsets;
-    _noiseScale;
-    _noiseSpeed;
+    // Sphere idle movement effects
+    #_noiseOffsets;
+    #_noiseScale;
+    #_noiseSpeed;
 
     constructor({
             label = 'Default Sphere',
@@ -103,10 +103,7 @@ export default class Sphere {
         this.#_mesh.userData = { instance: this };
         this.#_mesh.receiveShadow = true; // Enable shadow receiving
 
-        // Store the current position of the sphere. 
-        this.#_mesh.position.set(0, 0, 0);
-        this._spherePosition = this.#_mesh.position;      
-
+        this.setPosition();  
         this.#setupTextMeshes();
         this.#setupRandomMovement();
         this.#setupModal();
@@ -132,7 +129,7 @@ export default class Sphere {
     isModalOpen() { return this.#_state >= SphereState.CLICKED; }
     getInstance() { return this.#_mesh.userData.instance; }
     getSpherePosition() { return this.#_spherePosition; }
-    #isInitialized() { return this._labelSphere && this._hoverTextSphere && this.#_mesh; }
+    #isInitialized() { return this.#_labelSphere && this.#_hoverTextSphere && this.#_mesh; }
 
     // ----------Sphere Setup Helpers----------
     #setupTextMeshes() {
@@ -149,13 +146,13 @@ export default class Sphere {
 
     #setupRandomMovement() {
         // Random offsets for noise generation. This will be used in the sphere's hovering effect.
-        this._noiseOffsets = {
+        this.#_noiseOffsets = {
             x: Math.random() * 1000,
             y: Math.random() * 1000,
             z: Math.random() * 1000
         };
-        this._noiseScale = 0.002; // Controls the intensity of sphere movement
-        this._noiseSpeed = 0.2; // Controls the speed of sphere movement
+        this.#_noiseScale = 0.002; // Controls the intensity of sphere movement
+        this.#_noiseSpeed = 0.2; // Controls the speed of sphere movement
     }
 
     #setupModal() {
@@ -173,9 +170,6 @@ export default class Sphere {
         this._modalRoot = document.createElement('div');
         this._modalRoot.id = `modal-root-${this.id}`;
         document.body.appendChild(this._modalRoot);
-
-        // Bind the openModal method to the sphere.
-        this.#_mesh.userData.openModal = this.#openModal.bind(this);
 
         // Create the root for this sphere's modal.
         this._root = createRoot(this._modalRoot);
@@ -218,7 +212,7 @@ export default class Sphere {
         hoverTextMesh.position.set(0, 0, this.#_geometry.parameters.radius + Sphere.#RADIUS_OFFSET + Sphere.#RADIAL_TEXT_OFFSET);
 
         // Make a new, completely invisible sphere to enable effective rotation of the text. 
-        this._labelSphere = new THREE.Mesh(
+        this.#_labelSphere = new THREE.Mesh(
             new THREE.SphereGeometry(this.#_geometry.parameters.radius, 4),
             new THREE.MeshBasicMaterial({
                 transparent: true,
@@ -227,7 +221,7 @@ export default class Sphere {
                 
             })
         );
-        this._hoverTextSphere = new THREE.Mesh(
+        this.#_hoverTextSphere = new THREE.Mesh(
             new THREE.SphereGeometry(this.#_geometry.parameters.radius, 4),
             new THREE.MeshBasicMaterial({
                 transparent: true,
@@ -237,17 +231,17 @@ export default class Sphere {
         );
 
         // Add the label and hovertext meshes to this sphere. 
-        this._labelSphere.add(labelTextMesh);
-        this._hoverTextSphere.add(hoverTextMesh);
+        this.#_labelSphere.add(labelTextMesh);
+        this.#_hoverTextSphere.add(hoverTextMesh);
 
-        this._labelSphere.layers.set(Sphere.#TEXT_LAYER);
-        this._hoverTextSphere.layers.set(Sphere.#TEXT_LAYER);
+        this.#_labelSphere.layers.set(Sphere.#TEXT_LAYER);
+        this.#_hoverTextSphere.layers.set(Sphere.#TEXT_LAYER);
 
-        this._labelSphere.name = "labelMeshContainerMesh";
-        this._hoverTextSphere.name = "hoverTextMeshContainerMesh";
+        this.#_labelSphere.name = "labelMeshContainerMesh";
+        this.#_hoverTextSphere.name = "hoverTextMeshContainerMesh";
 
-        this.#_mesh.add(this._labelSphere);
-        this.#_mesh.add(this._hoverTextSphere);
+        this.#_mesh.add(this.#_labelSphere);
+        this.#_mesh.add(this.#_hoverTextSphere);
     }
     
     // Helper function to split the text into lines based on the max width.
@@ -387,7 +381,7 @@ export default class Sphere {
         const actualMaxNoiseValue = 0.8;
         
         // Calculate maximum displacement in any direction.
-        const maxDisplacementPerAxis = this._noiseScale * actualMaxNoiseValue;
+        const maxDisplacementPerAxis = this.#_noiseScale * actualMaxNoiseValue;
         
         // Calculate the maximum 3D displacement.
         const maxTotalDisplacement = maxDisplacementPerAxis * Math.sqrt(3);
@@ -411,9 +405,9 @@ export default class Sphere {
     // ----------Frame Updates----------
     #updateHover(time) {
         // Use Perlin noise to calculate the new position directly.
-        const newX = simplex3D(this._noiseOffsets.x + this._noiseSpeed * time, 0, 0) * this._noiseScale;
-        const newY = simplex3D(0, this._noiseOffsets.y + this._noiseSpeed * time, 0) * this._noiseScale;
-        const newZ = simplex3D(0, 0, this._noiseOffsets.z + this._noiseSpeed * time) * this._noiseScale;
+        const newX = simplex3D(this.#_noiseOffsets.x + this.#_noiseSpeed * time, 0, 0) * this.#_noiseScale;
+        const newY = simplex3D(0, this.#_noiseOffsets.y + this.#_noiseSpeed * time, 0) * this.#_noiseScale;
+        const newZ = simplex3D(0, 0, this.#_noiseOffsets.z + this.#_noiseSpeed * time) * this.#_noiseScale;
 
         // Calculate the new position relative to the initial position.
         const targetPosition = new THREE.Vector3(
@@ -427,24 +421,23 @@ export default class Sphere {
 
         // Clamp the position to the boundary sphere's radius.
         const boundaryRadius = this.#_geometry.parameters.radius;
-        if (distanceFromCenter > boundaryRadius) {
+        if (distanceFromCenter > boundaryRadius)
             // Scale the position back to the boundary sphere's surface.
             targetPosition.sub(this.#_spherePosition).setLength(boundaryRadius).add(this.#_spherePosition);
-        }
 
         // Apply the clamped position to the sphere.
         this.#_mesh.position.copy(targetPosition);
     }
     
-    #turnTextTo(position) {
-        this._labelSphere?.lookAt(position);
-        this._hoverTextSphere?.lookAt(position);
+    #faceTextSpheresTo(position) {
+        this.#_labelSphere?.lookAt(position);
+        this.#_hoverTextSphere?.lookAt(position);
     }
 
     #_prevState = SphereState.IDLE;
     update(cameraPos) {
         this.#updateHover(performance.now() / 1000);
-        this.#turnTextTo(cameraPos);
+        this.#faceTextSpheresTo(cameraPos);
         switch (this.#_state) {
             case SphereState.IDLE:
                 break;
@@ -491,27 +484,27 @@ export default class Sphere {
         });
 
         // Hide title on swell.
-        gsap.to(this._labelSphere.children[0].material, {
+        gsap.to(this.#_labelSphere.children[0].material, {
             opacity: 0,
             duration: 0.19,
             ease: "swell",
             overwrite: "auto",
             onUpdate: () => {
-                this._labelSphere.children[0].castShadow = true; // Ensure shadow is still active during fade-out
+                this.#_labelSphere.children[0].castShadow = true; // Ensure shadow is still active during fade-out
             },
             onComplete: () => {
-                this._labelSphere.children[0].castShadow = false; // Disable shadow after fade-out
+                this.#_labelSphere.children[0].castShadow = false; // Disable shadow after fade-out
             }
         });
 
         // Show text on swell.
-        gsap.to(this._hoverTextSphere.children[0].material, {
+        gsap.to(this.#_hoverTextSphere.children[0].material, {
             opacity: 1,
             duration: 0.35,
             ease: "swell",
             overwrite: "auto",
             onStart: () => {
-                this._hoverTextSphere.children[0].castShadow = true; // Enable shadow during fade-in
+                this.#_hoverTextSphere.children[0].castShadow = true; // Enable shadow during fade-in
             }
         });
     }
@@ -537,27 +530,27 @@ export default class Sphere {
         });
 
         // Show title on shrink.
-        gsap.to(this._labelSphere.children[0].material, {
+        gsap.to(this.#_labelSphere.children[0].material, {
             opacity: 1,
             duration: 0.3,
             ease: "bounce.out",
             overwrite: "auto",
             onStart: () => {
-                this._labelSphere.children[0].castShadow = true; // Enable shadow during fade-in
+                this.#_labelSphere.children[0].castShadow = true; // Enable shadow during fade-in
             }
         });
 
         // Hide text on shrink
-        gsap.to(this._hoverTextSphere.children[0].material, {
+        gsap.to(this.#_hoverTextSphere.children[0].material, {
             opacity: 0,
             duration: 0.12,
             ease: "bounce.out",
             overwrite: "auto",
             onUpdate: () => {
-                this._hoverTextSphere.children[0].castShadow = true; // Ensure shadow is still active during fade-out
+                this.#_hoverTextSphere.children[0].castShadow = true; // Ensure shadow is still active during fade-out
             },
             onComplete: () => {
-                this._hoverTextSphere.children[0].castShadow = false; // Disable shadow after fade-out
+                this.#_hoverTextSphere.children[0].castShadow = false; // Disable shadow after fade-out
             }
         });
     }
@@ -583,7 +576,7 @@ export default class Sphere {
         });
 
         // Hide the hover text.
-        gsap.to(this._hoverTextSphere.children[0].material, {
+        gsap.to(this.#_hoverTextSphere.children[0].material, {
             opacity: 0,
             duration: 0.1,
             ease: "bounce.out",
@@ -591,35 +584,24 @@ export default class Sphere {
         });
     }
 
-    // ----------User Interaction Handling----------
+    // ----------User Interaction Consequences----------
     #hover() {
-        if (!this.#isInitialized()) return;
-        if (this.#_state != SphereState.SWOLLEN) {
-            this.#animateSwell();
-            this.#_state = SphereState.SWOLLEN;
-        }
+        if (!this.#isInitialized() || this.#_state == SphereState.SWOLLEN) return;
+        this.#animateSwell();
+        this.#_state = SphereState.SWOLLEN;
     }
 
     #shrink() {
-        if (!this.#isInitialized()) return;
-        if (this.#_state != SphereState.IDLE) {
-            this.#animateShrink();
-            this.#_state = SphereState.IDLE;
-        }
+        if (!this.#isInitialized() || this.#_state == SphereState.IDLE) return;
+        this.#animateShrink();
+        this.#_state = SphereState.IDLE;
     }
     
     #explodeToDistance(cameraDistance) {
-        if (!this.#isInitialized()) return;
-        if (this.#_state != SphereState.EXPLODED) { 
-            this.#animateExplode(cameraDistance);
-            this.#renderModal(); 
-            this.#_state = SphereState.EXPLODED;
-        }
-    }
-
-    // Handle modal opens and closes. 
-    #openModal() {
-        this.#renderModal();
+        if (!this.#isInitialized() || this.#_state == SphereState.EXPLODED) return;
+        this.#animateExplode(cameraDistance);
+        this.#renderModal(); 
+        this.#_state = SphereState.EXPLODED;
     }
 
     #closeModal() {
@@ -627,7 +609,7 @@ export default class Sphere {
         this.#shrink();
     }
 
-    // Render the modal onto the screen. This is horrifying and I hate that it just works. JavaScript???????
+    // Render the modal onto the screen. this is grody thank u react :3
     #renderModal() {
         this._root.render(<this._modal />);
     }
