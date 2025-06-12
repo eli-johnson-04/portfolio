@@ -61,7 +61,7 @@ export default class ParticleSystem {
             const lerpSpeed = 0.13;
 
             const target = particle.sphere.isHovered() || particle.sphere.isModalOpen()
-                ? particle.sphere._spherePosition
+                ? particle.sphere.getSpherePosition()
                 : particle.originalPosition;
             particle.position.lerp(target, lerpSpeed);
             positions[i * 3] = particle.position.x;

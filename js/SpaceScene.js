@@ -123,6 +123,16 @@ export default class SpaceScene {
         this.checkHover();
     }
 
+    // Checks all the spheres to see if any have their modal open.
+    isAModalOpen() { 
+        let modalOpen = false;
+        this.spheres.forEach(s => {
+            if (s.isModalOpen()) modalOpen = true;
+            return;
+        });
+        return modalOpen;
+    }
+
     checkHover() {
         if (this.spheres.length === 0) return;
         // Check if the mouse is hovering over a sphere.
@@ -134,39 +144,17 @@ export default class SpaceScene {
         if (intersects.length > 0) {
             const obj = intersects[0].object;
 
+            // Check if the hovered object is a sphere.
             if (Sphere.isSphere(obj)) {
-                // If there is a modal open, no spheres should be hoverable.
-                let modalOpen = false;
-                this.spheres.forEach(s => {
-                    if (s.isModalOpen()) {
-                        modalOpen = true;
-                        return;
-                    }
-                });
-                // Only enable hovering if no modal is open. 
-                console.log("modalOpen: ", modalOpen);
-                if (!modalOpen) 
-                {
+                // Only enable hovering if no modals are open. 
+                if (!this.isAModalOpen()) {
                     this.spheres.forEach(s => {
                         if (s.getInstance() === obj.userData?.instance) {
                                 this.hoveredMesh = s.getMesh();
                                 s.setHover();
-                        } else {
-                            s.setShrink();
-                        }
+                        } else s.setShrink();
                     });
                 }
-
-                // if (!modalOpen) { 
-                //     this.hoveredMesh = obj;
-                //     obj.userData.instance.setHover(); 
-                // }
-
-                // // Cancel the hover of any other hovered spheres.
-                // this.spheres.forEach(s => {
-                //     if (s.getInstance() !== obj.userData.instance)
-                //         s.setShrink();
-                // });
             }
         } else {
             // If not hovered, tell the spheres.
@@ -189,7 +177,7 @@ export default class SpaceScene {
             while (obj.parent && !(obj.parent instanceof THREE.Scene)) obj = obj.parent;
 
             // Check if a sphere was clicked and handle the click.
-            if (Sphere.isSphere(obj)) obj.userData.instance.setClick();
+            if (Sphere.isSphere(obj) && !this.isAModalOpen()) obj.userData.instance.setClick();
         }
     }
 
