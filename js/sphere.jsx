@@ -22,12 +22,14 @@ const simplex3D = createNoise3D(Math.random);
 
 class SphereState {
     static #IDLE = 0;
-    static #HOVERED = 1;
-    static #SWOLLEN = 2;
-    static #CLICKED = 3;
-    static #EXPLODED = 4;
+    static #SHRINK = 1;
+    static #HOVERED = 2;
+    static #SWOLLEN = 3;
+    static #CLICKED = 4;
+    static #EXPLODED = 5;
     
     static get IDLE() { return this.#IDLE; }
+    static get SHRINK() { return this.#SHRINK; }
     static get HOVERED() { return this.#HOVERED; }
     static get SWOLLEN() { return this.#SWOLLEN; }
     static get CLICKED() { return this.#CLICKED; }
@@ -110,16 +112,33 @@ export default class Sphere {
         this.#setupModal();
     }
 
+    // Check for Sphere-hood
+    static isSphere(object) { 
+        return object?.userData?.instance instanceof Sphere 
+            || object?.getMesh?.().userData?.instance instanceof Sphere; 
+    }
+    
+    // ----------Setters----------
+    shrink() { this._state = SphereState.SHRINK; }
+    hover() { this._state = SphereState.HOVERED; }
+    click() { this._state = SphereState.CLICKED; }
+    
+    // ----------Getters----------
+    getMesh() { return this._mesh; }
+    isModalOpen() { return this._isModalOpen; }
+    getInstance() { return this._mesh.userData.instance; }
+
+    // ----------Sphere Setup Helpers----------
     #setupTextMeshes() {
         // Only load the font if it has not been loaded yet. 
         if (!Sphere.#FONT) {
             const loader = new FontLoader();
             loader.load('./fonts/gentilis_regular.typeface.json', (font) => {
                 Sphere.#FONT = font;
-                this.onFontLoaded(font);
+                this.#onFontLoaded(font);
             });
         }
-        else this.onFontLoaded(Sphere.#FONT);
+        else this.#onFontLoaded(Sphere.#FONT);
     }
 
     #setupRandomMovement() {
@@ -165,15 +184,15 @@ export default class Sphere {
         this.renderModal();
     }
 
-    onFontLoaded(font) {
+    #onFontLoaded(font) {
         // Create geometries for sphere texts.
-        const labelTextGeometry = this.createTextGeometry([this._label], font);
-        const hoverText = this.truncateText(this._hoverText, font, 4);
-        const hoverTextGeometry = this.createTextGeometry(hoverText, font);
+        const labelTextGeometry = this.#createTextGeometryFromLines([this._label], font);
+        const hoverText = this.#truncateText(this._hoverText, font, 4);
+        const hoverTextGeometry = this.#createTextGeometryFromLines(hoverText, font);
 
         // Center and wrap the text geometry. 
-        this.centerAndWrapToSphere(hoverTextGeometry);
-        this.centerAndWrapToSphere(labelTextGeometry);
+        this.#centerAndWrapToSphere(hoverTextGeometry);
+        this.#centerAndWrapToSphere(labelTextGeometry);
         
         // Construct the new text to be drawn onto the sphere.
         const labelTextMaterial = new THREE.MeshStandardMaterial({ 
@@ -232,7 +251,7 @@ export default class Sphere {
     }
     
     // Helper function to split the text into lines based on the max width.
-    truncateText(text, font, maxWidth) {
+    #truncateText(text, font, maxWidth) {
         const words = text.split(' ');
         let truncatedTitle = '';
         let currentWidth = 0;
@@ -266,7 +285,7 @@ export default class Sphere {
         return lines;
     }
     
-    createTextGeometry(lines, font) {
+    #createTextGeometryFromLines(lines, font) {
         const textGeometries = [];
         let maxLineWidth = 0;
 
@@ -312,7 +331,7 @@ export default class Sphere {
     }
     
     // Helper function for centering then spherically wrapping text geometry.
-    centerAndWrapToSphere(text) {
+    #centerAndWrapToSphere(text) {
         // Find the bounding box of the text geometry to center the geometry on the sphere. 
         text.computeBoundingBox();
         let boundingBox = text.boundingBox;
@@ -355,12 +374,14 @@ export default class Sphere {
         positionAttribute.needsUpdate = true;
     }
 
+    // ----------Sphere Manipulation----------
     // Set the position of the sphere and modify its "center" or "actual" position.
     setPosition(x = 0, y = 0, z = 0) {
         this._mesh.position.set(x, y, z); // may need to tinker with z-pos when content cards are behind circles
         this._spherePosition = this._mesh.position;
     }
 
+    // TODO: doesn't actually visualize everywhere the sphere could be - noise movement is not bounded
     createBoundaryVisualization() {
         // For this simplex noise implementation, maximum amplitude is ~0.8.
         const actualMaxNoiseValue = 0.8;
@@ -387,7 +408,8 @@ export default class Sphere {
         return boundaryMesh;
     }
 
-    updateHover(time) {
+    // ----------Frame Updates----------
+    #updateHover(time) {
         // Use Perlin noise to calculate the new position directly.
         const newX = simplex3D(this._noiseOffsets.x + this._noiseSpeed * time, 0, 0) * this._noiseScale;
         const newY = simplex3D(0, this._noiseOffsets.y + this._noiseSpeed * time, 0) * this._noiseScale;
@@ -414,20 +436,45 @@ export default class Sphere {
         this._mesh.position.copy(targetPosition);
     }
     
-    turnTextTo(position) {
+    #turnTextTo(position) {
         this._labelSphere?.lookAt(position);
         this._hoverTextSphere?.lookAt(position);
     }
 
+    #_prevState = SphereState.IDLE;
     update(cameraPos) {
-        this.updateHover(performance.now() / 1000);
-        this.turnTextTo(cameraPos);
+        this.#updateHover(performance.now() / 1000);
+        this.#turnTextTo(cameraPos);
+        switch (this._state) {
+            case SphereState.IDLE:
+                break;
+            case SphereState.SHRINK:
+                if (this.#_prevState == SphereState.HOVERED || this.#_prevState == SphereState.EXPLODED)
+                    this.attemptHover(false);
+                // this.#animateShrink();
+                // this._state = SphereState.IDLE;
+                break;
+            case SphereState.HOVERED:
+                this.attemptHover(true);
+                // this.#animateSwell();
+                // this._state = SphereState.SWOLLEN;
+                break;
+            case SphereState.SWOLLEN: // TODO: 
+                break;
+            case SphereState.CLICKED:
+                this.#animateExplode();
+                this._state = SphereState.EXPLODED;
+                break;
+            case SphereState.EXPLODED: // TODO: 
+                break;
+            default:
+                break;
+        }
+        this.#_prevState = this._state;
     }
 
-    getMesh() { return this._mesh; }
-
     // Swell animation for size and opacity.
-    swell() {
+    #animateSwell() {
         // Make sphere bigger on swell.
         gsap.to(this._mesh.scale, {
             x: 1.3,
@@ -473,7 +520,7 @@ export default class Sphere {
     }
     
     // Size and opacity reset animation.
-    shrink() {
+    #animateShrink() {
         // Shrink sphere to normal size.
         gsap.to(this._mesh.scale, {
             x: 1, 
@@ -519,7 +566,7 @@ export default class Sphere {
     }
 
     // Animation for opening modal.
-    explode(cameraDistance) {
+    #animateExplode(cameraDistance) {
         // Explode the sphere up to the distance between the sphere and the camera. 
         gsap.to(this._mesh.scale, {
             x: cameraDistance + 1, 
@@ -547,21 +594,23 @@ export default class Sphere {
         });
     }
 
+    // ----------User Interaction Handling----------
     // Handle hover behavior. 
     attemptHover(mouseHover) {
         // Only proceed if the modal is closed and the sphere is fully initialized.
         if (!(this._labelSphere && this._hoverTextSphere && this._mesh)) return;
         if (!this._isModalOpen) {
-
             // If mouse is hovering and sphere is not hovered, hover sphere and swell.
             if (mouseHover && !this._isHovered) {
-                this.swell();
+                this.#animateSwell();
+                this._state = SphereState.SWOLLEN;
                 this._isHovered = true;
 
-            // If mouse is not hovering and sphere is hovered, sphere is no longer hovered and should shrink. 
             } else if (!mouseHover && this._isHovered) {
+                // If mouse is not hovering and sphere is hovered, sphere is no longer hovered and should shrink. 
                 this._isHovered = false;
-                this.shrink();
+                this.#animateShrink();
+                this._state = SphereState.IDLE;
             }
         }
     }
@@ -571,7 +620,7 @@ export default class Sphere {
         // Only proceed if the modal is closed and the sphere is fully initialized.
         if (!(this._labelSphere && this._hoverTextSphere && this._mesh)) return;
         if (!this._isModalOpen && this._isHovered) { 
-            this.explode(cameraDistance);
+            this.#animateExplode(cameraDistance);
             this.openModal(); 
         }
     }
@@ -589,7 +638,7 @@ export default class Sphere {
     closeModal() {
         this._isModalOpen = false;
         this.renderModal();
-        this.shrink();
+        this.#animateShrink();
     }
 
     // Render the modal onto the screen. This is horrifying and I hate that it just works. JavaScript???????

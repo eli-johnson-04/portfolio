@@ -124,6 +124,7 @@ export default class SpaceScene {
     }
 
     checkHover() {
+        // TODO: REPLACE WITH NEW SPHERE STATE INTERFACE
         if (this.spheres.length === 0) return;
         // Check if the mouse is hovering over a sphere. If so, call its handlePointerHover.
         this.raycaster.layers.set(SpaceScene.SCENE_LAYER)
@@ -134,11 +135,11 @@ export default class SpaceScene {
         if (intersects.length > 0) {
             const sphere = intersects[0].object;
 
-            if (sphere.userData.instance instanceof Sphere) {
+            if (Sphere.isSphere(sphere)) {
                 // If there is a modal open, no spheres should be hoverable.
                 let modalOpen = false;
                 this.spheres.forEach(s => {
-                    if (s._isModalOpen) {
+                    if (s.isModalOpen()) {
                         modalOpen = true;
                         return;
                     }
@@ -152,7 +153,7 @@ export default class SpaceScene {
 
                 // Cancel the hover of any other hovered spheres.
                 this.spheres.forEach(s => {
-                    if (s !== sphere.userData.instance)
+                    if (s.getInstance() !== sphere.userData.instance)
                         s.attemptHover(false);
                 });
             }
@@ -177,14 +178,14 @@ export default class SpaceScene {
             while (obj.parent && !(obj.parent instanceof THREE.Scene)) obj = obj.parent;
 
             // Check if a sphere was clicked and handle the click.
-            if (obj.userData.instance instanceof Sphere) {
+            if (Sphere.isSphere(obj)) {
                 // The sphere's scale will be set to the distance between the camera and the sphere.
                 const sphere = obj.userData.instance;
                 const cameraPos = new THREE.Vector3();
                 this.camera.getWorldPosition(cameraPos);
 
                 const spherePos = new THREE.Vector3();
-                sphere._mesh.getWorldPosition(spherePos);
+                sphere.getMesh().getWorldPosition(spherePos);
 
                 const cameraDist = cameraPos.distanceTo(spherePos);
                 sphere.handleOpen(cameraDist);
