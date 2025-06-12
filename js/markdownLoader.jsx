@@ -79,6 +79,19 @@ export default class markdownLoader {
         return await this.allContent.find(({ path }) => path.includes('Skills.md'))?.loader();;
     }
 
+    getLastPostDate(folder) {
+        const entries = this.allContent.filter(({ path }) => path.includes(`/${folder}/`));
+        if (entries.length === 0) return "No posts yet";
+        
+        // Find the latest entry by date.
+        const latestEntry = entries.reduce((latest, current) => {
+            const currentDate = this.extractDate(current.path.split('/').pop().replace('.md', ''));
+            return currentDate > latest ? currentDate : latest;
+        }, new Date(0));
+
+        return latestEntry.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+    }
+
     // Get all markdown content available in website folders. 
     importAllMarkdown() {
         const rawContent = import.meta.glob('/**/*.md', { query: '?raw', import: 'default' });

@@ -40,16 +40,12 @@ async function setupScene(spaceWorld) {
         mdLoader.getSphereMarkdown(ACTIVITY_PATH),
         mdLoader.getSphereMarkdown(PORTFOLIO_PATH)
     ]);
-    const folderLengths = [
-        mdLoader.countFilesInFolder(ACTIVITY_PATH),
-        mdLoader.countFilesInFolder(PORTFOLIO_PATH)
-    ];
 
     // Create spheres with the loaded content.
     const spheres = [
         new Sphere({
             label: 'Activity',
-            hoverText: 'Recent Work and Projects',
+            hoverText: 'Latest: ' + mdLoader.getLastPostDate(ACTIVITY_PATH),
             content: convertedMarkdown[0],
             layer: SpaceScene.SCENE_LAYER,
             texturePath: 'textures/Pluto.webp',
@@ -63,7 +59,7 @@ async function setupScene(spaceWorld) {
         }),
         new Sphere({
             label: 'Profile',
-            hoverText: 'About Me',
+            hoverText: 'Learn About Me',
             content: <ProfileContent markdown={await mdLoader.getSkillsMarkdown()}/>,
             layer: SpaceScene.SCENE_LAYER,
             texturePath: 'textures/Eris.webp',
@@ -78,7 +74,13 @@ async function setupScene(spaceWorld) {
 
     spheres.forEach(sphere => spaceWorld.addSphere(sphere));
 
-    spaceWorld.initializeParticlesFromMarkdown(folderLengths, spheres);
+    spaceWorld.initializeParticlesFromMarkdown(
+        [
+            mdLoader.countFilesInFolder(ACTIVITY_PATH),
+            mdLoader.countFilesInFolder(PORTFOLIO_PATH)
+        ], 
+        spheres
+    );
 
     await hideLoadingScreen();
 }
@@ -137,19 +139,19 @@ async function handleInteraction(event) {
         await waitForFirstEvent(event);
         if (isTouchEvent && event.type != "touchstart") return;
         lastEvent = event;
+        spaceWorld.startMouseTiming();
     }
     if (lastEvent.type != event.type) {
         //console.log("Interaction modality changed from " + lastEvent.type + " to " + event.type + ". Interactions in new modality may cause unexpected behavior. To use " + event.type + " interactions, please refresh the page.");
         return;
     }
+    if (event.target.localName == "canvas") event.preventDefault();
     switch (event.type) {
         case "pointerdown":
-            event.preventDefault();
             spaceWorld.onInteractorMove(event);
             spaceWorld.handleInteraction();
             break;
         case "touchstart":
-            if (event.target.localName == "canvas") event.preventDefault();
             spaceWorld.handleTouchInteraction(event);
             break;
     }
@@ -159,6 +161,19 @@ async function handleInteraction(event) {
 // Use pointer events for desktop and touch events for mobile
 sceneContainer.addEventListener('pointerdown', handleInteraction, { passive: false });
 sceneContainer.addEventListener('touchstart', handleInteraction, { passive: false });
+
+// TODO: Add controller to show/hide the popup with mousemove
+
+
+// function delay(ms) {
+//     return new Promise(resolve => setTimeout(resolve, ms));
+// }
+
+// async function startTextHideTimer(event) {
+//     sceneContainer.showTextSpheres();
+//     await delay(10000);
+//     sceneContainer.hideTextSpheres();
+// }
 
 // Start rendering the scene immediately.
 spaceWorld.render();

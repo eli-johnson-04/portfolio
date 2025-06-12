@@ -8,7 +8,7 @@ const Popup = () => {
     return (
         <div
             className={`fixed bottom-5 left-5 transition-all duration-700 ease-in-out ${
-                isMinimized ? 'w-auto h-auto flex items-center justify-center rounded-full shadow-lg' : 'p-5 bg-white text-black rounded-lg'
+                isMinimized ? 'w-auto h-auto flex items-center justify-center rounded-full shadow-lg' : 'max-w-[30vw] p-5 bg-white text-black rounded-lg'
             }`}
         >
             {isMinimized ? (
@@ -21,7 +21,7 @@ const Popup = () => {
             ) : (
                 <div className="w-full">
                     <h1 className="text-xl font-semibold mb-3 select-none">Welcome!</h1>
-                    <p className="mb-4 select-none">Press and drag to look around.</p>
+                    <p className="mb-4 select-none break-words">Press and drag to look around. Try clicking a planet!</p>
                     <button
                         className="close-btn text-xl"
                         onClick={() => setIsMinimized(true)}
