@@ -117,7 +117,7 @@ export default class SpaceScene {
     }
 
     onInteractorMove(event) {
-        this.#lastMouse = performance.now();
+        this.#updateMouseTiming();
         this.spheres.forEach(s => s.showText());
         const cX = event.touches ? event.touches[0].clientX : event.clientX;
         const cY = event.touches ? event.touches[0].clientY : event.clientY;
@@ -168,6 +168,7 @@ export default class SpaceScene {
 
     // Handle the case that a sphere was clicked or tapped.
     handleInteraction() {
+        this.#updateMouseTiming();
         this.raycaster.setFromCamera(this.mouse, this.camera);
         const intersects = this.raycaster.intersectObjects(this.scene.children, true);
 
@@ -195,9 +196,12 @@ export default class SpaceScene {
             this.handleInteraction();
     }
 
-    #lastMouse = performance.now();
+    #lastMouse = null;
+    startMouseTiming() { this.#lastMouse = performance.now(); }
+    #updateMouseTiming() { if (this.#lastMouse) this.#lastMouse = performance.now(); }
+
     render() {
-        if (performance.now() - this.#lastMouse > SpaceScene.#WAIT_TIME_TO_HIDE_SPHERES) {
+        if (this.#lastMouse != null && performance.now() - this.#lastMouse > SpaceScene.#WAIT_TIME_TO_HIDE_SPHERES) {
             if (!this.isAModalOpen()) this.spheres.forEach(s => s.hideText());
         }
 

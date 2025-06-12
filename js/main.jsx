@@ -139,6 +139,7 @@ async function handleInteraction(event) {
         await waitForFirstEvent(event);
         if (isTouchEvent && event.type != "touchstart") return;
         lastEvent = event;
+        spaceWorld.startMouseTiming();
     }
     if (lastEvent.type != event.type) {
         //console.log("Interaction modality changed from " + lastEvent.type + " to " + event.type + ". Interactions in new modality may cause unexpected behavior. To use " + event.type + " interactions, please refresh the page.");
