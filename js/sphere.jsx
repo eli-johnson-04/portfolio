@@ -484,26 +484,27 @@ export default class Sphere {
         });
 
         // Hide title on swell.
+        const timeToHideLabelText = 0.19;
         gsap.to(this.#_labelSphere.children[0].material, {
             opacity: 0,
             duration: 0.19,
             ease: "swell",
             overwrite: "auto",
-            onUpdate: () => {
-                this.#_labelSphere.children[0].castShadow = true; // Ensure shadow is still active during fade-out
-            },
-            onComplete: () => {
-                this.#_labelSphere.children[0].castShadow = false; // Disable shadow after fade-out
+            onStart: () => {
+                setTimeout(timeToHideLabelText / 2);
+                this.#_labelSphere.children[0].castShadow = false;
             }
         });
 
         // Show text on swell.
+        const timeToShowHoverText = 0.35;
         gsap.to(this.#_hoverTextSphere.children[0].material, {
             opacity: 1,
-            duration: 0.35,
+            duration: timeToShowHoverText,
             ease: "swell",
             overwrite: "auto",
             onStart: () => {
+                setTimeout(timeToShowHoverText * (5 / 6));
                 this.#_hoverTextSphere.children[0].castShadow = true; // Enable shadow during fade-in
             }
         });
@@ -530,27 +531,28 @@ export default class Sphere {
         });
 
         // Show title on shrink.
+        const timeToShowLabelText = 0.3;
         gsap.to(this.#_labelSphere.children[0].material, {
             opacity: 1,
-            duration: 0.3,
+            duration: timeToShowLabelText,
             ease: "bounce.out",
             overwrite: "auto",
             onStart: () => {
+                setTimeout(timeToShowLabelText * (5 / 6));
                 this.#_labelSphere.children[0].castShadow = true; // Enable shadow during fade-in
             }
         });
 
         // Hide text on shrink
+        const timeToHideHoverText = 0.12;
         gsap.to(this.#_hoverTextSphere.children[0].material, {
             opacity: 0,
             duration: 0.12,
             ease: "bounce.out",
             overwrite: "auto",
-            onUpdate: () => {
-                this.#_hoverTextSphere.children[0].castShadow = true; // Ensure shadow is still active during fade-out
-            },
-            onComplete: () => {
-                this.#_hoverTextSphere.children[0].castShadow = false; // Disable shadow after fade-out
+            onStart: () => {
+                setTimeout(timeToHideHoverText / 2);
+                this.#_hoverTextSphere.children[0].castShadow = false;  
             }
         });
     }
@@ -614,16 +616,15 @@ export default class Sphere {
         if (!this.#_isTextVisible || this.#_state != SphereState.IDLE) return;
         this.#_isTextVisible = false;
         // Hide label.
+        const timeToHideLabelText = 0.3;
         gsap.to(this.#_labelSphere.children[0].material, {
             opacity: 0,
-            duration: 0.3,
+            duration: timeToHideLabelText,
             ease: "swell",
             overwrite: "auto",
-            onUpdate: () => {
-                this.#_labelSphere.children[0].castShadow = true; // Ensure shadow is still active during fade-out
-            },
-            onComplete: () => {
-                this.#_labelSphere.children[0].castShadow = false; // Disable shadow after fade-out
+            onStart: () => {
+                setTimeout(timeToHideLabelText * (9 / 10));
+                this.#_labelSphere.children[0].castShadow = false;
             }
         });
         // Hide text.
@@ -632,9 +633,6 @@ export default class Sphere {
             duration: 0.3,
             ease: "swell",
             overwrite: "auto",
-            onUpdate: () => {
-                //this.#_hoverTextSphere.children[0].castShadow = true; // Ensure shadow is still active during fade-out
-            },
             onComplete: () => {
                 this.#_hoverTextSphere.children[0].castShadow = false; // Disable shadow after fade-out
             }
@@ -645,17 +643,16 @@ export default class Sphere {
         if (this.#_isTextVisible || this.#_state != SphereState.IDLE) return;
         this.#_isTextVisible = true;
         // Show label.
+        const timeToShowLabelText = 0.3;
         gsap.to(this.#_labelSphere.children[0].material, {
             opacity: 1,
-            duration: 0.3,
+            duration: timeToShowLabelText,
             ease: "swell",
             overwrite: "auto",
-            onUpdate: () => {
-                this.#_labelSphere.children[0].castShadow = true; // Ensure shadow is still active during fade-out
+            onStart: () => {
+                setTimeout(timeToShowLabelText * (5 / 6));
+                this.#_labelSphere.children[0].castShadow = true;
             },
-            onComplete: () => {
-                this.#_labelSphere.children[0].castShadow = true; // Disable shadow after fade-out
-            }
         });
     }
 
