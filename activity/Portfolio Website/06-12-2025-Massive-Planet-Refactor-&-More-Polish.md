@@ -12,7 +12,7 @@ Yay states! I should've used TypeScript in the beginning, but this was a solutio
 ![Ugly React](/images/activity/06-12-2025/ugly-react.webp)
 ###### 👀
 
-A relic of an older time. I couldn't make it private though. The react works like this, but not if there's a hashtag in there. I don't even care anymore.
+A relic of an older time. I couldn't `_modal` private though. The react works like this I guess, but not if I change it to `#_modal`. I don't even care anymore.
 
 Anyway yeah, the biggest thing was just making the interface better, making the methods make more sense, and letting each sphere handle its own stuff, the Scene handle inter-sphere stuff and interactions, and letting main do whatever main does.
 
