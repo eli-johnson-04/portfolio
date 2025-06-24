@@ -1,3 +1,5 @@
+*Keywords: software engineering, web-app development, peer programming, full-stack development, project management, Git, GitHub, Agile methods, Scrum, Jira, user stories, story mapping, backlogging, scope creep, Next.JS, React, TailwindCSS, SEO, responsive design, Vercel, nHost, real-time database operations, secure API interactions*
+
 # Introduction to Software Engineering
 *Recipe Drop* is my semester project for CEN3031 - Introduction to Software Engineering. I worked as the project manager of a team of four, including myself. For this project we were tasked with designing and implementing an online recipe book. We named ourselves the Chop Shop, and set out to make our Recipe Drop, the next-up recipe book! Our [codebase](https://www.github.com/cen3031-chop-shop/recipe-drop) was hosted on GitHub, as this was the best version control for our use case.
 
@@ -30,5 +32,3 @@ Most of my duties were with documentation and team activities. However, I commen
 
 ## Reflection
 This project was my first taste of proper team-based software engineering. I loved overseeing the project, as it gave me the opportunity to examine the strengths of different team members, determine the best ways to work together, and how to split project responsibilities. I employed effective communication strategies, felt the pressure of team-based development under a deadline, and learned the importance of user experience design in the context of programming.
-
-*Keywords: software engineering, web-app development, peer programming, full-stack development, project management, Git, GitHub, Agile methods, Scrum, Jira, user stories, story mapping, backlogging, scope creep, Next.JS, React, TailwindCSS, SEO, responsive design, Vercel, nHost, real-time database operations, secure API interactions*
