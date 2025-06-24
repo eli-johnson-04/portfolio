@@ -1,3 +1,5 @@
+*Keywords: software engineering, software development life cycle, Agile methods, Scrum, intercultural competence, African perspective, Electron, ReactJS, NodeJS, TailwindCSS, Git, GitHub, WordPress, cPanel, Gutenberg, Visual Composer, project management, consulting, UXD, Figma, think-aloud*
+
 # Working in the Gold Coast
 In the Summer of 2024 I chose to spend 6 weeks in Ghana, a life-changing experience that provided me with a worldview like no other and a powerful feeling of global citizenship. The University of Florida is pioneering a new service abroad program, where internship work with local nonprofits is incorporated into the study-abroad model. Alongside 17 other students, I built technology for a local organization while taking key courses. I have since resolved to visit all the continents, and I returned with an incomparable sense of intercultural competence. I witnessed the African perspective, saw the impacts of imperialism firsthand, and I will never forget how hot "spicy" can really be. 
 
@@ -62,5 +64,3 @@ I practiced a variety of hard and soft skills while in the Asante Region. I had 
 I arrived in Ghana with no expectations and I was floored at almost every turn with the richness of culture, of food, of nature, and the kindness of those I worked with and met. I was fortunate to have done, seen, tasted, or experienced just about everything worth visiting the country for, and I would love to go back. 
 
 ![Doing the Gator Chomp over a Crocodile LOL](/images/pf/06-30-2024/gator-chomp-over-crocodile.webp)
-
-*Keywords: software engineering, software development life cycle, Agile methods, Scrum, intercultural competence, African perspective, Electron, ReactJS, NodeJS, TailwindCSS, Git, GitHub, WordPress, cPanel, Gutenberg, Visual Composer, project management, consulting, UXD, Figma, think-aloud*
