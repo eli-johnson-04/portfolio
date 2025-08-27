@@ -62,3 +62,7 @@ Unity XR | Meta Quest Platform
 - Prog. Language Concepts
 - Network Fundamentals
 - Databases and Information Systems
+- Intro. to Game Development
+- Intro. to Software Engineering
+- Applctns. of Sofware Engineering
+- VR Design Principles
