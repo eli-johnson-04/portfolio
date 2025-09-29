@@ -1,3 +1,5 @@
+*Keywords: JavaScript, HTML, CSS, React, TailwindCSS, Three.JS, Vite, GSAP, Markdown, react-markdown, GitHub Pages & YML, backlogging, UXD, think-aloud, scope creep, modularization, encapsulation, readability, static website creation, SEO, deployment, hosting, JSX, web development, frontend, backend, graphics, texturing, lighting, Figma, project management*
+
 *Feel free to read 'The Sphere Thing' in my Activity feed for a personal reflection on the journey of realizing this vision.*
 
 # Structure
@@ -63,5 +65,3 @@ I didn't read anything after those seven words. I fixed the problem.
 Two days later I wanted to see if I could make a preview build from the dev branch and serve it separately, and broke my deployment again. I was so frustrated. I fixed it several hours later, but resolved not to touch it again until merging all my dev changes into the main branch and permanently serving the site from main. 
 
 Once I got the site to build and serve as intended, the finish line was finally in sight. Since then I have been adding small features, improving performance, and generally increasing the quality all around. I will reiterate, as I have many times before, I do not enjoy web dev, but I have been entranced by the actualization of this vision and I could not be more excited to have it finished, and to try out new things with my newfound resolve and confidence, empowerment and zeal. 
-
-*Keywords: JavaScript, HTML, CSS, React, TailwindCSS, Three.JS, Vite, GSAP, Markdown, react-markdown, GitHub Pages & YML, backlogging, UXD, think-aloud, scope creep, modularization, encapsulation, readability, static website creation, SEO, deployment, hosting, JSX, web development, frontend, backend, graphics, texturing, lighting, Figma, project management*

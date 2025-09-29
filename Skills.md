@@ -20,7 +20,7 @@ C | C++ | Python | JS | Regex
 
 ## Practices:
 
-Scrum | Software Engineering Life Cycle | UXD
+Agile/ADO | Software Engineering Life Cycle | UXD
 
 ## Web:
 
@@ -45,8 +45,11 @@ Unity XR | Meta Quest Platform
 
 ## Working Knowledge:
 
+- Microsoft Fabric & Power BI Suite
+- SSMS & SQL
+- Agile/Azure
 - Leading Projects
-- Consulting Among Teams
+- Consulting among Teams
 - Working with International Clients
 
 # Coursework
@@ -58,3 +61,8 @@ Unity XR | Meta Quest Platform
 - Algorithm Abstraction & Design
 - Prog. Language Concepts
 - Network Fundamentals
+- Databases and Information Systems
+- Intro. to Game Development
+- Intro. to Software Engineering
+- Applctns. of Sofware Engineering
+- VR Design Principles

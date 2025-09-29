@@ -18,7 +18,7 @@ const ProfileContent = ({ markdown }) => {
                 {/* Profile Picture (Top Left) */}
                 <div className="h-full flex flex-col items-center justify-center">
                     <img 
-                        src="images/headshot.webp"
+                        src="images/pfps/fall-25.webp"
                         alt="Profile"
                         className="w-full h-full rounded-full object-cover"
                     />
@@ -109,7 +109,7 @@ const ProfileContent = ({ markdown }) => {
                     </p>
                     <br/>
                     <p>
-                        In the real world I love cats, serene and extreme music, journaling, and Wikipedia to explore any and everything. I could never learn enough about astrophysics, VR tech advances, interior design, and psychology to name some favorites. Thanks for visiting! Feel free to reach out to me via email or GitHub if you have any questions, comments, or just want to chat! I love meeting people and hearing new ideas. 
+                        In the real world I love cats, serene and extreme music, journaling, Guitar Hero, and Wikipedia to explore any and everything. I could never learn enough about astrophysics, VR tech advances, interior design, and psychology to name some favorites. Thanks for visiting! Feel free to reach out to me via email or GitHub if you have any questions, comments, or just want to chat! I love meeting people and hearing new ideas. 
                     </p>
                     {/* <blockquote className="flex font-gentilis justify-center pl-4 italic text-gray-500 my-4">
                         "Alas, the future will find you. You must find yourself first; life is not hide and seek."
