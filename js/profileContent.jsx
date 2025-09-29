@@ -18,7 +18,7 @@ const ProfileContent = ({ markdown }) => {
                 {/* Profile Picture (Top Left) */}
                 <div className="h-full flex flex-col items-center justify-center">
                     <img 
-                        src="images/headshot.webp"
+                        src="images/pfps/fall-25.webp"
                         alt="Profile"
                         className="w-full h-full rounded-full object-cover"
                     />
