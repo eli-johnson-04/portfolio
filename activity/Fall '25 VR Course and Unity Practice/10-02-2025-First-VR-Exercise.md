@@ -28,4 +28,8 @@ However, I wasn't satisfied. Being a fan of watches (a hobby I'll likely ***neve
 
 Part two was more fun - I was to decorate the room with some specifically requested objects, and whatever else I wanted. I spent the better part of an hour on this, trying to see what all I could do with the surprisingly diverse options provided by the sample project. I'm pretty proud of the space, I wouldn't be upset with an apartment featuring this room. Maybe I'll get lucky and make enough money to have an apartment with more than one room!
 
-[youtube vid]
+This part also featured creating a teleportation area for the large rug behind the couch and adding teleportation anchors to some mats placed around the room, whose meshes I elected to hide because I didn't plan for my room to have them. They still work, but they just aren't as cool and awesome as everything else, so they're invisible :) Last, I added custom reticles, one for the large rug and a separate one for the anchors. I wanted to make it obvious that I put effort into making them appear visually distinct. Check out the finished product!
+
+<iframe width="1339" height="753" src="https://www.youtube.com/embed/ePT19LW4cBE" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+...until next week!
