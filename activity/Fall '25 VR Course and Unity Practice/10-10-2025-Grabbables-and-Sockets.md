@@ -1,7 +1,8 @@
 **TL;DR: Exercise 6 was a useful recap of XR Interaction Toolkit basics I learned earlier this summer, and I was even able to do some cool camera work. Check out my awesome studio apartment!**
 
-[insert some kind of music here i want music]
-[don't forget to convert pngs to webps]
+> Press play bro
+
+<iframe width="1339" height="753" src="https://www.youtube.com/embed/Qd3zynSctnM" title="Nexus" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 # Let's "learn" grabbables and sockets!
 
@@ -132,6 +133,6 @@ I would like to do a dynamic solution here that allows easy snapping of the book
 
 Overall this was a great recap of XR interaction basics and gave me a lot of insight into how the toolkit has evolved! I'm excited to see where it goes next... and how much easier it hopefully gets to make interactions like this. The newer toolkits are so much more intuitive, especially with respect to the XR Rig... wow.
 
-[demo embed]
+<iframe width="900" height="515" src="https://www.youtube.com/embed/7vDVtD1xgFA" title="CIS4930  - Introduction to Virtual Reality | Exercise 6 - (VR Development 2) | Elijah Johnson" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 Cheers!
