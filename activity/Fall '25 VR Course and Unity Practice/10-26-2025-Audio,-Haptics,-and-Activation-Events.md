@@ -1,14 +1,10 @@
-**TL;DR: Exercise 7 **
+**TL;DR: Activation events are at the core of VR experiences, so it was a joy to properly learn how they work here in Exercise 7! I did some cool stuff in here, even including a Beat Saber video of mine from Covid lockdown!**
 
 # Back at it...
 
 School has been bad. Hard. Brutal. My schedule sucks.
 
 Let's do more VR!
-
-> My music taste has... expanded.... lately. Anyway Bolt Thrower were awesome this riff is so crazy
-
-<iframe width="1177" height="741" src="https://www.youtube.com/embed/iBYhcqG-NwA" title="Salvo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Part 1: Sounds and Vibrations
 
@@ -63,3 +59,76 @@ There was a third extension activity to make it so that the volume of a sound pl
 ## Part 2: Activation Events
 
 Now we get to learn how to make interactions actually do things! Meaningful things! I've kind of learned this before with Unity Timeline and similar features e.g. callbacks, but we'll see what the Unity tutorial has in store.
+
+> Update - I saved my changes last night and pushed to the repo... I had a merge conflict and chose the wrong option. Moved a bunch of stuff around in ways that don't make sense LOL. I was extremely frustrated but fortunately it was easy to fix! Yay!
+
+Onward!
+
+### Grabbable Remote Control
+
+> I just noticed that my in-world room only has the walls rendered on one side and I took a moment to ascertain why - it's definitely for performance or optimization. It would make a lot of sense that the only meaningful space in this scene is the inside of the room and that the player never needs to leave, so for editing and debugging purposes it is quite sensible to only render one side of the walls! Cool!
+
+![Invisible Walls](/images/activity/10-26-2025/invisible-walls.webp)
+
+Let's add a remote to the world, give it a Rigidbody with Continuous Dynamic collision detection, and add an XR Grab Interactable to it. Cool. Now we make an attach transform and set it up so that the remote feels held naturally. Perfect.
+
+![Hello Remote](/images/activity/10-26-2025/hello-remote.webp)
+###### Hello remote!
+
+### Add Sound to the Remote
+
+Now let's add an AudioSource to the remote, cranking its Spatial Blend all the way to 3D, and give it an audio clip to play.
+
+To make it play when the remote is picked up via the Grab Interactable, we scroll to the bottom at the Interactable Events fold-out and locate the Activated event, then add a new action, drag the Remote GameObject into the slot, and click Play Quick Sound->`Play()`. Cool! Now, when the remote is activated, it plays a sound!
+
+Also, we can add a Unity-provided `ChangeMaterial` script that swaps the material at will (to a red glow in our case), and have the Grab Interactable toggle it when activated/deactivated. Cool!
+
+![Interaction Events](/images/activity/10-26-2025/interaction-events.webp)
+
+We'll see if I'm able to demo this sound in the video at the end... Quest Link hasn't worked with this editor for me yet so we will find out!
+
+### Give the TV a Video
+
+To give the TV audio that can be played, select the "Screen" child object of the TV and give it an Audio Source with 3D spatial audio. Then add a Video Player component, and set its material properly so that it can project video to tha material instead of the texture. Make sure the Material Property is set to _BaseMap instead of _MainTex.
+
+Now add a Play Video component, ensuring it plays at start. Add a video from assets to the Video Clip slot (after adding a slot), and the setup should look like this, and automatically play the TV when the application is run:
+
+![TV Playing](/images/activity/10-26-2025/tv-playing.webp)
+###### Chopin's Nocturne No.2 was playing in the background when I took this screenshot LOL
+###### I decided to use a Beat Saber recording of mine from years ago and happened to peak during it. 16 year-old me would be so flattered, and if you'd like to see the whole thing...
+
+<iframe width="900" height="515" src="https://www.youtube.com/embed/SlMXiUQNhNU" title="METHAMPHETAMINE FIRST TRY COMPLETE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+###### Only missed 84 notes out of 2095? I became an animal at this game lowkey
+
+### Make the Remote Turn on the TV
+
+Let's uncheck the box to Play the Video at start. We want the remote to turn the TV on! It's easy too - go to the Remote's XR Grab Interactable, add an Activated event, drag in the Screen GameObject, and select `PlayVideo.TogglePlayPause`. Splendid. Now it alternates!
+
+### Part 2 Extensions
+
+#### Make a phone that plays video when you press the trigger \[Easy\]
+
+I unfortunately do not have time for this one, but it's super straightforward. Basically the same setup as the TV and the Remote, just without the middleman. Put an Audio Source on the phone screen, add a Video Player and a Play Video component, an XR Grab Interactable, and give the Grab Interactable an Activation event that toggles the video. If I wanted to make it cycle through multiple videos, I could add multiple videos to the list in the Play Video component's Video Clips list, and change the Activation event to use `Play Video.NextClip` instead.
+
+#### Add a functioning flashlight \[Medium\]
+
+To do this one, I would create a flashlight first, then add a child SpotLight object to it, and use an Activation event on an XR Grab Interactable to call the `ToggleLight.Flip` function to turn the light source on/off.
+
+#### Add a functional lighter and candle that can be lit with it \[Difficult\]
+
+I've actually done something very similar to this before! Check out my post *Designing My Inaugural VR Experience* to see some cool stuff I've done with candles and lighting using hand tracking!
+
+#### Add a dart gun or stapler projectile \[Expert\]
+
+To do this, I would first add XR Grab Interactables to a dart gun and a stapler. Then I would use the provided LaunchProjectile script and a prefab of the dart and staple respectively. To make this work, I'll have the Grab Interactables use an Activation Event to call `LaunchProjectile.Fire` and make them launch their projectiles!
+
+#### Add a functioning polaroid camera \[Expert\]\[Requires Programming\]
+
+I'm actually considering doing something very similar for my term project in this class, so we'll see what happens. However, for this exercise, I would use my knowledge from making the magnifying glass in the last post to create a working viewfinder. Then I would use an Activation Event and some custom scripting to spawn a Polaroid-style prefab with a capture of the viewfinder's texture and have it drop out the bottom of the camera. I wish I had time to do this one now, but I have so many other things to do!
+
+## Demo
+
+And with all that, here's the demo!
+
+<iframe width="1337" height="752" src="https://www.youtube.com/embed/8eoyzSKMhZQ" title="CIS4930 - Introduction to VR | Exercise 7 - (Haptics, Sound, Activation Events| Elijah Johnson" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
